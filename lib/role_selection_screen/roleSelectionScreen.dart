@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../on_boarding_screen/onBoardingScreensParkingOwner.dart';
+import '../driver_path/on_boarding_screen/onBoardingScreen.dart';
+
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
