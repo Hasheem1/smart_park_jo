@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../owner_Login_Screen/ownerLoginScreen.dart';
+
 class OnboardingScreenParkingOwner extends StatefulWidget {
   const OnboardingScreenParkingOwner({super.key});
 
@@ -137,8 +139,7 @@ class _OnboardingScreenParkingOwnerState
                   ),
                   onPressed: () {
                     if (_currentPage == onboardingData.length - 1) {
-                      // ✅ Navigate to RoleSelectionScreen or main app
-                      // Navigator.pushReplacementNamed(context, '/roleSelection');
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OwnerLoginScreen(),));
                     } else {
                       _controller.nextPage(
                         duration: const Duration(milliseconds: 400),
