@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../garage_owner_path/on_boarding_screen/onBoardingOwnerS.dart';
+import '../users_path/on_boarding_users/onBoardingUsers.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
@@ -61,6 +62,12 @@ class RoleSelectionScreen extends StatelessWidget {
                       icon: Icons.directions_car_rounded,
                       textColor: Colors.blueAccent,
                       onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => onBoardingUsers(),
+                          ),
+                        );
                         // Navigate to Driver screen
                       },
                     ),

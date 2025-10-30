@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
-import '../owner_Login_Screen/ownerLoginScreen.dart';
+import '../users_login_reg/usersLogIn.dart';
 
-class OnboardingScreenParkingOwner extends StatefulWidget {
-  const OnboardingScreenParkingOwner({super.key});
+class onBoardingUsers extends StatefulWidget {
+  const onBoardingUsers({super.key});
 
   @override
-  State<OnboardingScreenParkingOwner> createState() =>
-      _OnboardingScreenParkingOwnerState();
+  State<onBoardingUsers> createState() =>
+      _onBoardingUsersState();
 }
 
-class _OnboardingScreenParkingOwnerState
-    extends State<OnboardingScreenParkingOwner> {
+class _onBoardingUsersState
+    extends State<onBoardingUsers> {
   final PageController _controller = PageController();
   int _currentPage = 0;
 
   final List<Map<String, String>> onboardingData = [
     {
-      "title": "Add Your Parking Lot in Minutes",
+      "title": "Find Parking Near You",
       "desc":
-      "Register your garage location, set your price per hour, and make it visible to thousands of drivers instantly..",
-      "image": "https://media.istockphoto.com/id/1068879782/vector/isometric-cars-in-the-car-parking-mobile-searching-looking-for-parking-flat-3d-isometric.jpg?s=612x612&w=0&k=20&c=dWEGHlqiuWQabjeO0sN102SaM9hKLewT8xUNxIbfdZI=",
+      "Discover available parking spots in real-time on an interactive map.",
+      "image": "https://i.pinimg.com/736x/c3/d5/46/c3d546e24f48b489e3a1a85b43a37e59.jpg",
     },
     {
-      "title": "Earn and Manage Smartly",
+      "title": "Reserve in Seconds",
       "desc":
-      "Track occupancy, control spot availability, and see your daily or monthly revenue in one dashboard.",
-      "image": "https://i.pinimg.com/1200x/81/38/fb/8138fbd86197f17374d4a40a4eabbcf4.jpg",
+      "Book your parking spot instantly and avoid the hassle of searching.",
+      "image": "https://i.pinimg.com/736x/37/49/cd/3749cddbfbd6398d326936f60fceec27.jpg",
     },
     {
-      "title": "Join the Smart City Movement",
+      "title": "Save Time & Money",
       "desc":
-      "Help reduce traffic congestion and make parking easier for everyone — all while growing your business.",
-      "image": "https://i.pinimg.com/736x/26/88/ff/2688ff3973d4057f20801a0f9436eea2.jpg",
+      "Get the best rates and never waste time looking for parking again.",
+      "image": "https://i.pinimg.com/1200x/f3/54/8f/f3548ff58fc60fea162847c24e8b7796.jpg",
     },
   ];
 
@@ -63,10 +63,10 @@ class _OnboardingScreenParkingOwnerState
 
                             // 🖼️ Smaller fixed-size image
                             SizedBox(
-                              height: 300, // 👈 reduced image height
+                              height: 250, // 👈 reduced image height
                               child: Image.network(
                                 onboardingData[index]["image"]!,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.contain,
                               ),
                             ),
                             const SizedBox(height: 30),
@@ -143,7 +143,7 @@ class _OnboardingScreenParkingOwnerState
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const OwnerLoginScreen(),
+                          builder: (context) => const UsersLogIn(),
                         ),
                       );
                     } else {
