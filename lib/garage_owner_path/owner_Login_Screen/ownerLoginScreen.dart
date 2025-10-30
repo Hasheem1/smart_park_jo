@@ -9,7 +9,12 @@ class OwnerLoginScreen extends StatefulWidget {
 
 class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
   bool isLogin = true;
+
+  // Controllers
+  final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -115,7 +120,74 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
 
               const SizedBox(height: 30),
 
-              // Email field
+              // Show fields based on login or register
+              if (!isLogin) ...[
+                // Full Name
+                const Text(
+                  "Full Name",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: fullNameController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.person),
+                    hintText: "John Doe",
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Phone
+                const Text(
+                  "Phone",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.phone),
+                    hintText: "+123456789",
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Username
+                const Text(
+                  "Username",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.account_circle),
+                    hintText: "username123",
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+
+              // Email
               const Text(
                 "Email",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -134,10 +206,9 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
 
-              // Password field
+              // Password
               const Text(
                 "Password",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -158,29 +229,19 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Forgot password?",
-                    style: TextStyle(
-                      color: Color(0xFF2F66F5),
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Login button
+              // Login / Register Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (isLogin) {
+                      // Handle login
+                    } else {
+                      // Handle registration
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF2F66F5),
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -188,48 +249,9 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 25),
-
-              // Divider
-              Row(
-                children: [
-                  const Expanded(
-                    child: Divider(thickness: 1, endIndent: 10),
-                  ),
-                  Text("Or continue with",
-                      style: TextStyle(color: Colors.grey.shade600)),
-                  const Expanded(
-                    child: Divider(thickness: 1, indent: 10),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              // Google button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () {},
-                  // icon: const FaIcon(FontAwesomeIcons.google, color: Colors.red),
-                  icon: const Icon(Icons.web,color: Colors.red),
-                  label: const Text(
-                    "Google",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    side: const BorderSide(color: Colors.grey),
+                  child: Text(
+                    isLogin ? "Login" : "Register",
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
