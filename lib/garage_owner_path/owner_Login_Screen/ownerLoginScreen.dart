@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../owner_Dashboard/ownerDashboardScreen.dart';
+
 class OwnerLoginScreen extends StatefulWidget {
   const OwnerLoginScreen({Key? key}) : super(key: key);
 
@@ -237,9 +239,9 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (isLogin) {
-                      // Handle login
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OwnerDashboardScreen(),));
                     } else {
-                      // Handle registration
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OwnerDashboardScreen(),));
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -248,6 +250,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+
                   ),
                   child: Text(
                     isLogin ? "Login" : "Register",

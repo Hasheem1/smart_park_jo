@@ -43,7 +43,6 @@ class _OnboardingScreenParkingOwnerState
         child: SafeArea(
           child: Column(
             children: [
-              // 🖼️ PageView section (with smaller images)
               Expanded(
                 flex: 4,
                 child: Padding(
@@ -61,9 +60,8 @@ class _OnboardingScreenParkingOwnerState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
 
-                            // 🖼️ Smaller fixed-size image
                             SizedBox(
-                              height: 300, // 👈 reduced image height
+                              height: 300,
                               child: Image.network(
                                 onboardingData[index]["image"]!,
                                 fit: BoxFit.fill,
@@ -126,7 +124,6 @@ class _OnboardingScreenParkingOwnerState
 
               const SizedBox(height: 40),
 
-              // 🎯 Next / Get Started button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: ElevatedButton(
