@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../add_lot/addLotScreen.dart';
+import '../manage_spots/manageSpotsS.dart';
 import '../owner_Earnings/ownerEarnings.dart';
+import '../owner_profile/ownerProfile.dart';
 
 class OwnerDashboardScreen extends StatelessWidget {
   const OwnerDashboardScreen({super.key});
@@ -38,9 +39,19 @@ class OwnerDashboardScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Icon(
-                          Icons.person_outline,
-                          color: Colors.white,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OwnerProfileScreen(),
+                              ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.person_outline,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
@@ -72,17 +83,32 @@ class OwnerDashboardScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
+              // Action Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GestureDetector(onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => AddParkingLotScreen(),) );
-                  },
-                      child: _actionButton(Icons.add, "Add Lot")),
-                  GestureDetector(onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EarningsScreen(),));
-                  },
-                      child: _actionButton(Icons.bar_chart_rounded, "Earnings")),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddParkingLotScreen(),
+                        ),
+                      );
+                    },
+                    child: _actionButton(Icons.add, "Add Lot"),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EarningsScreen(),
+                        ),
+                      );
+                    },
+                    child: _actionButton(Icons.bar_chart_rounded, "Earnings"),
+                  ),
                 ],
               ),
 
@@ -98,8 +124,9 @@ class OwnerDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Example lot card
+              // Example lot cards
               _lotCard(
+                context: context,
                 imageUrl:
                 "https://scontent.famm11-1.fna.fbcdn.net/v/t39.30808-6/510798250_9897478867046860_3176114765940016402_n.jpg?stp=dst-jpg_p843x403_tt6&_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=J12B0aEyKk4Q7kNvwFmUIoz&_nc_oc=AdnKBda1SUyfHsxFsfjmR9GSUWUMH5OYZSGyNOhfZHoW90F4xcrlf6IpdmXUHOn-SDsyGEzjyNVW8iB7ys9YoOtl&_nc_zt=23&_nc_ht=scontent.famm11-1.fna&_nc_gid=YIeg4odDFMGd-vfU_9Z0PA&oh=00_AfcQ6BomaxvjLmNfQnYA0mvmmJhEMiRKgbyXRkunIn2HEg&oe=6909854A",
                 title: "Irbid City Center Mall",
@@ -111,6 +138,7 @@ class OwnerDashboardScreen extends StatelessWidget {
               const SizedBox(height: 12),
 
               _lotCard(
+                context: context,
                 imageUrl:
                 "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
                 title: "Amman Downtown",
@@ -186,6 +214,7 @@ class OwnerDashboardScreen extends StatelessWidget {
   }
 
   static Widget _lotCard({
+    required BuildContext context, // ✅ fixed here
     required String imageUrl,
     required String title,
     required String occupied,
@@ -217,9 +246,13 @@ class OwnerDashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w600)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,12 +272,19 @@ class OwnerDashboardScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
-                    onPressed: () {},
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ManageSpotsScreen(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "Manage Spots",
                       style: TextStyle(

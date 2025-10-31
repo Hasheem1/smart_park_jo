@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../garage_owner_path/on_boarding_screen/onBoardingOwnerS.dart';
+import '../garage_owner_path/on_boarding/onBoardingOwnerS.dart';
 import '../users_path/on_boarding_users/onBoardingUsers.dart';
 
 class RoleSelectionScreen extends StatelessWidget {

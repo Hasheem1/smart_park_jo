@@ -11,6 +11,13 @@ class EarningsScreen extends StatefulWidget {
 class _EarningsScreenState extends State<EarningsScreen> {
   String selectedTab = "Daily";
 
+  // Example datasets for different tabs
+  final Map<String, List<double>> chartData = {
+    "Daily": [300, 320, 310, 450, 580, 620, 500],
+    "Weekly": [1500, 2200, 1800, 2600],
+    "Monthly": [9200, 9750, 8600, 10300, 9700],
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,24 +43,17 @@ class _EarningsScreenState extends State<EarningsScreen> {
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Total This Month",
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
+                  Text("Total This Month",
+                      style: TextStyle(color: Colors.white70, fontSize: 16)),
                   SizedBox(height: 8),
-                  Text(
-                    "9750 JD",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text("9750 JD",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
-                  Text(
-                    "+12% from last month",
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
+                  Text("+12% from last month",
+                      style: TextStyle(color: Colors.white70, fontSize: 14)),
                 ],
               ),
             ),
@@ -87,16 +87,14 @@ class _EarningsScreenState extends State<EarningsScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 25),
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? Colors.white
-                            : Colors.grey[200],
+                        color: isSelected ? Colors.white : Colors.grey[200],
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: isSelected
                             ? [
                           BoxShadow(
                             color: Colors.black12,
                             blurRadius: 5,
-                            offset: Offset(0, 3),
+                            offset: const Offset(0, 3),
                           ),
                         ]
                             : [],
@@ -119,59 +117,79 @@ class _EarningsScreenState extends State<EarningsScreen> {
 
             const SizedBox(height: 25),
 
-            // 📊 Bar Chart
-            const Text(
-              "Daily Earnings",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            // 📊 Dynamic Bar Chart
+            Text(
+              "$selectedTab Earnings",
+              style: const TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
+
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: BarChart(
-                  BarChartData(
-                    borderData: FlBorderData(show: false),
-                    gridData: FlGridData(show: false),
-                    titlesData: FlTitlesData(
-                      leftTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: true, reservedSize: 40)),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            final days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+              child: BarChart(
+                BarChartData(
+                  borderData: FlBorderData(show: false),
+                  gridData: FlGridData(show: false),
+                  titlesData: FlTitlesData(
+                    leftTitles: const AxisTitles(
+                      sideTitles:
+                      SideTitles(showTitles: true, reservedSize: 40),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          List<String> labels;
+                          if (selectedTab == "Daily") {
+                            labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                          } else if (selectedTab == "Weekly") {
+                            labels = ["W1", "W2", "W3", "W4"];
+                          } else {
+                            labels = ["Jun", "Jul", "Aug", "Sep", "Oct"];
+                          }
+                          if (value.toInt() < labels.length) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
-                                days[value.toInt() % 7],
+                                labels[value.toInt()],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             );
-                          },
-                        ),
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
-                      rightTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
-                    barGroups: [
-                      _barData(0, 300),
-                      _barData(1, 320),
-                      _barData(2, 310),
-                      _barData(3, 450),
-                      _barData(4, 580),
-                      _barData(6, 500),
-                    ],
+                    rightTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
+                  barGroups: _generateBars(),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Generate Bar Data Dynamically
+  List<BarChartGroupData> _generateBars() {
+    final data = chartData[selectedTab]!;
+    return List.generate(
+      data.length,
+          (index) => BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: data[index],
+            color: const Color(0xFF43A047),
+            width: 20,
+            borderRadius: BorderRadius.circular(6),
+          ),
+        ],
       ),
     );
   }
@@ -189,36 +207,15 @@ class _EarningsScreenState extends State<EarningsScreen> {
         ),
         child: Column(
           children: [
-            Text(
-              title,
-              style: const TextStyle(color: Colors.black54, fontSize: 15),
-            ),
+            Text(title,
+                style: const TextStyle(color: Colors.black54, fontSize: 15)),
             const SizedBox(height: 5),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(value,
+                style: const TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
-    );
-  }
-
-  // Bar chart data
-  BarChartGroupData _barData(int x, double y) {
-    return BarChartGroupData(
-      x: x,
-      barRods: [
-        BarChartRodData(
-          toY: y,
-          color: const Color(0xFF43A047),
-          width: 20,
-          borderRadius: BorderRadius.circular(6),
-        ),
-      ],
     );
   }
 }

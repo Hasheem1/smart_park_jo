@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../owner_Dashboard/ownerDashboardScreen.dart';
+import '../owner_Dashboard/ownerDashboardS.dart';
 
 class OwnerLoginScreen extends StatefulWidget {
   const OwnerLoginScreen({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../owner_Login_Screen/ownerLoginScreen.dart';
+import '../owner_Login/ownerLoginS.dart';
 
 class OnboardingScreenParkingOwner extends StatefulWidget {
   const OnboardingScreenParkingOwner({super.key});
