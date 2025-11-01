@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../users_home_screen/UsersHomeScreen.dart';
+
 class UsersLogIn extends StatefulWidget {
   const UsersLogIn({Key? key}) : super(key: key);
 
@@ -213,16 +215,10 @@ class _UsersLogInState extends State<UsersLogIn> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  final plate = plateNumberController.text.trim();
-                                  final phone = phoneController.text.trim();
-
-                                  if (isLogin) {
-                                    debugPrint("Logging in with Plate: $plate, Phone: $phone");
-                                  } else {
-                                    debugPrint(
-                                        "Registering with Plate: $plate, Phone: $phone");
-                                  }
+                                if (isLogin) {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DriverHomeScreen(),));
+                                } else {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DriverHomeScreen(),));
                                 }
                               },
                               style: ElevatedButton.styleFrom(

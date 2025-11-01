@@ -174,6 +174,8 @@ class OwnerProfileScreen extends StatelessWidget {
                         "Log Out",
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
+
+
                     ),
                   ),
                 ],
