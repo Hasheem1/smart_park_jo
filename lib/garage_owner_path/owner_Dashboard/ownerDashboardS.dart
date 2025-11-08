@@ -128,7 +128,7 @@ class OwnerDashboardScreen extends StatelessWidget {
               _lotCard(
                 context: context,
                 imageUrl:
-                "https://scontent.famm11-1.fna.fbcdn.net/v/t39.30808-6/510798250_9897478867046860_3176114765940016402_n.jpg?stp=dst-jpg_p843x403_tt6&_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=J12B0aEyKk4Q7kNvwFmUIoz&_nc_oc=AdnKBda1SUyfHsxFsfjmR9GSUWUMH5OYZSGyNOhfZHoW90F4xcrlf6IpdmXUHOn-SDsyGEzjyNVW8iB7ys9YoOtl&_nc_zt=23&_nc_ht=scontent.famm11-1.fna&_nc_gid=YIeg4odDFMGd-vfU_9Z0PA&oh=00_AfcQ6BomaxvjLmNfQnYA0mvmmJhEMiRKgbyXRkunIn2HEg&oe=6909854A",
+                "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
                 title: "Irbid City Center Mall",
                 occupied: "38/50",
                 rate: "76%",

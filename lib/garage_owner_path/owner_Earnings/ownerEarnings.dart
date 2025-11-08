@@ -11,71 +11,89 @@ class EarningsScreen extends StatefulWidget {
 class _EarningsScreenState extends State<EarningsScreen> {
   String selectedTab = "Daily";
 
-  // Example datasets for different tabs
   final Map<String, List<double>> chartData = {
-    "Daily": [300, 320, 310, 450, 580, 620, 500],
-    "Weekly": [1500, 2200, 1800, 2600],
-    "Monthly": [9200, 9750, 8600, 10300, 9700],
+    "Daily": [300, 320, 310, 500],
+    "Weekly": [1500, 2200, 1800],
+    "Monthly": [9200, 9750,],
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFE8F5E9),
       appBar: AppBar(
-        title: const Text("Earnings", style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF2E7D32),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          "Earnings",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+            fontSize: 20,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true, // <-- This centers the title
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🟩 Total This Month
+            // Total This Month Card
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color(0xFF43A047),
-                borderRadius: BorderRadius.circular(12),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF43A047), Color(0xFF66BB6A)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.shade200.withOpacity(0.4),
+                    blurRadius: 15,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Total This Month",
-                      style: TextStyle(color: Colors.white70, fontSize: 16)),
+                  Text("Total This Month", style: TextStyle(color: Colors.white70, fontSize: 16)),
                   SizedBox(height: 8),
-                  Text("9750 JD",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold)),
+                  Text("9750 JD", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
-                  Text("+12% from last month",
-                      style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  Text("+12% from last month", style: TextStyle(color: Colors.white70, fontSize: 14)),
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
 
-            // 📦 Today & This Week Summary
+            // Today & This Week Summary
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildStatCard("Today", "450 JD"),
-                _buildStatCard("This Week", "2900 JD"),
+                _buildStatCard("Today", "450 JD", Colors.orangeAccent),
+                _buildStatCard("This Week", "2900 JD", Colors.lightBlueAccent),
               ],
             ),
-
             const SizedBox(height: 25),
 
-            // 🔘 Tabs
+            // Tabs
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -83,18 +101,18 @@ class _EarningsScreenState extends State<EarningsScreen> {
                   final isSelected = selectedTab == tab;
                   return GestureDetector(
                     onTap: () => setState(() => selectedTab = tab),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 25),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.white : Colors.grey[200],
+                        color: isSelected ? Colors.green.shade50 : Colors.white,
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: isSelected
                             ? [
                           BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                            color: Colors.green.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
                         ]
                             : [],
@@ -102,11 +120,9 @@ class _EarningsScreenState extends State<EarningsScreen> {
                       child: Text(
                         tab,
                         style: TextStyle(
-                          color: isSelected
-                              ? Colors.black
-                              : Colors.grey[600],
-                          fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? Colors.green.shade800 : Colors.grey.shade600,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -114,17 +130,16 @@ class _EarningsScreenState extends State<EarningsScreen> {
                 }).toList(),
               ),
             ),
-
             const SizedBox(height: 25),
 
-            // 📊 Dynamic Bar Chart
+            // Chart Label
             Text(
               "$selectedTab Earnings",
-              style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
 
+            // Bar Chart
             Expanded(
               child: BarChart(
                 BarChartData(
@@ -132,8 +147,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                   gridData: FlGridData(show: false),
                   titlesData: FlTitlesData(
                     leftTitles: const AxisTitles(
-                      sideTitles:
-                      SideTitles(showTitles: true, reservedSize: 40),
+                      sideTitles: SideTitles(showTitles: true, reservedSize: 40),
                     ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
@@ -149,10 +163,10 @@ class _EarningsScreenState extends State<EarningsScreen> {
                           }
                           if (value.toInt() < labels.length) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 6),
                               child: Text(
                                 labels[value.toInt()],
-                                style: const TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                               ),
                             );
                           }
@@ -160,10 +174,8 @@ class _EarningsScreenState extends State<EarningsScreen> {
                         },
                       ),
                     ),
-                    rightTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
                   barGroups: _generateBars(),
                 ),
@@ -175,7 +187,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
     );
   }
 
-  // Generate Bar Data Dynamically
+  // Generate Bar Data
   List<BarChartGroupData> _generateBars() {
     final data = chartData[selectedTab]!;
     return List.generate(
@@ -185,8 +197,12 @@ class _EarningsScreenState extends State<EarningsScreen> {
         barRods: [
           BarChartRodData(
             toY: data[index],
-            color: const Color(0xFF43A047),
-            width: 20,
+            gradient: const LinearGradient(
+              colors: [Color(0xFF66BB6A), Color(0xFF43A047)],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+            width: 22,
             borderRadius: BorderRadius.circular(6),
           ),
         ],
@@ -194,25 +210,29 @@ class _EarningsScreenState extends State<EarningsScreen> {
     );
   }
 
-  // Reusable Stat Card
-  Widget _buildStatCard(String title, String value) {
+
+  // Stat Card
+  Widget _buildStatCard(String title, String value, Color color) {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5),
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Column(
           children: [
-            Text(title,
-                style: const TextStyle(color: Colors.black54, fontSize: 15)),
-            const SizedBox(height: 5),
-            Text(value,
-                style: const TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(title, style: const TextStyle(color: Colors.black54, fontSize: 15)),
+            const SizedBox(height: 8),
+            Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87)),
           ],
         ),
       ),
