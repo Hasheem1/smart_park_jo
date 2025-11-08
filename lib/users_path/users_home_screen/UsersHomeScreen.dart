@@ -456,6 +456,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: 0,
@@ -470,6 +471,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.book_online_rounded),
               label: "Bookings",
+
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),

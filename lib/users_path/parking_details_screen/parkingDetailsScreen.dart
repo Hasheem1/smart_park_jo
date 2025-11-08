@@ -457,6 +457,8 @@ import 'package:smart_park_jo/users_path/parking_details_screen/widgets/feature_
 import 'package:smart_park_jo/users_path/parking_details_screen/widgets/info_box.dart';
 import 'package:smart_park_jo/users_path/parking_details_screen/widgets/section_box.dart';
 
+import '../reservation/reservation_main.dart';
+
 class ParkingDetailsScreen extends StatefulWidget {
   final String imageUrl, title, price, rating, distance, spots, description;
 
@@ -669,17 +671,30 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                   ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: _showReservationSheet,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ReserveSpotScreen(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       minimumSize: const Size(160, 50),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                    child: const Text("Reserve Spot",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      "Reserve Spot",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   )
+
                 ],
               ),
             ),
