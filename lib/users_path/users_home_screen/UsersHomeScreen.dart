@@ -469,8 +469,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               label: "Home",
             ),
             BottomNavigationBarItem(
+
               icon: Icon(Icons.book_online_rounded),
               label: "Bookings",
+
 
             ),
             BottomNavigationBarItem(

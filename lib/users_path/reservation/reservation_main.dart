@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../active reservation/active_reservation.dart';
+
 class ReserveSpotScreen extends StatefulWidget {
   const ReserveSpotScreen({super.key});
 
@@ -236,15 +238,7 @@ class _ReserveSpotScreenState extends State<ReserveSpotScreen>
               // Confirm Button (floating style)
               ElevatedButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Reservation confirmed for ${plateController.text.isEmpty ? "unknown car" : plateController.text}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      backgroundColor: Colors.green.shade600,
-                    ),
-                  );
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveReservationScreen(),));
                 },
                 icon: const Icon(CupertinoIcons.checkmark_alt, size: 22),
                 label: const Text(
