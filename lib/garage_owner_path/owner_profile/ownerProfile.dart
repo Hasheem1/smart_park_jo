@@ -1,5 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
+import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
+import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
+import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
 class OwnerProfileScreen extends StatelessWidget {
   const OwnerProfileScreen({super.key});
@@ -99,6 +103,12 @@ class OwnerProfileScreen extends StatelessWidget {
                   title: "Business Information",
                   subtitle: "Update business details",
                   color: const Color(0xFF2F66F5),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const BusinessInfoScreen()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 15),
                 _buildGlassTile(
@@ -106,6 +116,12 @@ class OwnerProfileScreen extends StatelessWidget {
                   title: "Payment Methods",
                   subtitle: "Manage payout accounts",
                   color: const Color(0xFF2F66F5),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AddPaymentMethodScreen()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
 
@@ -131,18 +147,24 @@ class OwnerProfileScreen extends StatelessWidget {
                   activeColor: const Color(0xFF2F66F5),
                 ),
                 const SizedBox(height: 12),
-                _buildGlassTile(
-                  icon: Icons.language_outlined,
-                  title: "Language",
-                  subtitle: "English",
-                  color: const Color(0xFF2F66F5),
-                ),
+                // _buildGlassTile(
+                //   icon: Icons.language_outlined,
+                //   title: "Language",
+                //   subtitle: "English",
+                //   color: const Color(0xFF2F66F5),
+                // ),
                 const SizedBox(height: 12),
                 _buildGlassTile(
                   icon: Icons.lock_outline,
                   title: "Privacy & Security",
                   subtitle: "الخصوصية والأمان",
                   color: const Color(0xFF2F66F5),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const PrivacySecurityScreen()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
 
@@ -163,6 +185,12 @@ class OwnerProfileScreen extends StatelessWidget {
                   title: "Help Center",
                   subtitle: "مركز المساعدة",
                   color: const Color(0xFF2F66F5),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HelpCenterScreen()),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 35),
@@ -220,11 +248,13 @@ class OwnerProfileScreen extends StatelessWidget {
   }
 
   // 🔹 Modern Glassmorphic Info Tile
+// 🔹 Modern Glassmorphic Info Tile
   Widget _buildGlassTile({
     required IconData icon,
     required String title,
     required String subtitle,
     required Color color,
+    VoidCallback? onTap, // 👈 added optional onTap
   }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
@@ -242,12 +272,13 @@ class OwnerProfileScreen extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w600)),
             subtitle: Text(subtitle),
             trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-            onTap: () {},
+            onTap: onTap, // 👈 call custom onTap action
           ),
         ),
       ),
     );
   }
+
 
   // 🔹 Glassmorphic Tile with Switch
   Widget _buildGlassSwitch({

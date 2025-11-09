@@ -20,7 +20,9 @@ class OwnerDashboardScreen extends StatelessWidget {
               // Header
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2E5BFF),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16),
@@ -164,7 +166,9 @@ class OwnerDashboardScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF3C6FFF),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+        ),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.white24),
       ),
@@ -214,7 +218,7 @@ class OwnerDashboardScreen extends StatelessWidget {
   }
 
   static Widget _lotCard({
-    required BuildContext context, // ✅ fixed here
+    required BuildContext context,
     required String imageUrl,
     required String title,
     required String occupied,
@@ -265,7 +269,7 @@ class OwnerDashboardScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 LinearProgressIndicator(
                   value: 0.76,
-                  color: const Color(0xFF2E5BFF),
+                  color: const Color(0xFF1565C0),
                   backgroundColor: Colors.grey.shade200,
                 ),
                 const SizedBox(height: 12),
