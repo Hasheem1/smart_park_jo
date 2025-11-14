@@ -1,19 +1,32 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
-class OwnerProfileScreen extends StatelessWidget {
+class OwnerProfileScreen extends StatefulWidget {
   const OwnerProfileScreen({super.key});
 
   @override
+  State<OwnerProfileScreen> createState() => _OwnerProfileScreenState();
+}
+
+class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+
     final primaryGradient = const LinearGradient(
       colors: [Color(0xFF2F66F5), Color(0xFF4A90FF)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
+    );
+
+    final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+    final CollectionReference users = FirebaseFirestore.instance.collection(
+      'owners',
     );
 
     return Scaffold(
@@ -41,59 +54,98 @@ class OwnerProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 // ✨ Blue Glassmorphic Profile Header
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: primaryGradient,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 12,
-                              offset: const Offset(0, 6))
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 32,
-                            backgroundColor: Colors.white24,
-                            child: Text(
-                              "MJ",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                FutureBuilder<DocumentSnapshot>(
+                    future: users.doc(userEmail).get(),
+                    builder: (
+                        BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot,
+                        ) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text(
+                            "Something went wrong",
+                            style: TextStyle(color: Colors.red, fontSize: 18),
                           ),
-                          const SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Mohammad Jamal",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                        );
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(color: Colors.orange),
+                        );
+                      }
+
+                      if (!snapshot.hasData || !snapshot.data!.exists) {
+                        return const Center(
+                            child: Text(
+                              "No data found",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                "mohammad.j@email.com",
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 14),
-                              ),
+                            )
+                        );
+                        // );
+                      }
+                      Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                      String trimEmail=data['email'];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            gradient: primaryGradient,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6))
                             ],
                           ),
-                        ],
+                          child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CircleAvatar(backgroundColor: Colors.grey[100],
+                                  radius: 35,
+                                  child: Text("${trimEmail.substring(0,2).toUpperCase()}",style: TextStyle(fontSize: 30,color: Color(0xFF2F66F5)),),
+                                  // backgroundImage: NetworkImage(
+                                  //   "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png",
+                                  // ),
+                                ),
+                                const SizedBox(width: 18),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${data['name']}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                     ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "${data['email']}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white70,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 ),
                 const SizedBox(height: 25),
 
@@ -248,7 +300,6 @@ class OwnerProfileScreen extends StatelessWidget {
   }
 
   // 🔹 Modern Glassmorphic Info Tile
-// 🔹 Modern Glassmorphic Info Tile
   Widget _buildGlassTile({
     required IconData icon,
     required String title,
@@ -278,7 +329,6 @@ class OwnerProfileScreen extends StatelessWidget {
       ),
     );
   }
-
 
   // 🔹 Glassmorphic Tile with Switch
   Widget _buildGlassSwitch({

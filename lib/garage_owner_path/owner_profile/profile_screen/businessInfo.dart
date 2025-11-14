@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BusinessInfoScreen extends StatefulWidget {
@@ -10,229 +12,300 @@ class BusinessInfoScreen extends StatefulWidget {
 class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController fullNameController =
-  TextEditingController(text: "Mohammad Jamal");
-  final TextEditingController usernameController =
-  TextEditingController(text: "mjamal_97");
-  final TextEditingController phoneController =
-  TextEditingController(text: "+962 79 123 4567");
-  final TextEditingController emailController =
-  TextEditingController(text: "mohammad.j@email.com");
-  final TextEditingController passwordController =
-  TextEditingController(text: "********");
+  final TextEditingController fullNameController = TextEditingController(
+    text: "Mohammad Jamal",
+  );
+  final TextEditingController usernameController = TextEditingController(
+    text: "mjamal_97",
+  );
+  final TextEditingController phoneController = TextEditingController(
+    text: "+962 79 123 4567",
+  );
+  final TextEditingController emailController = TextEditingController(
+    text: "mohammad.j@email.com",
+  );
+  final TextEditingController passwordController = TextEditingController(
+    text: "********",
+  );
 
   bool isPasswordVisible = false;
+
+  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  final CollectionReference users = FirebaseFirestore.instance.collection(
+    'owners',
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      body: Stack(
+      body:
+          userEmail == null
+              ? const Center(
+                child: Text(
+                  "No user logged in",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              )
+              : FutureBuilder<DocumentSnapshot>(
+                future: users.doc(userEmail).get(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot,
+                ) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(
+                        "Something went wrong",
+                        style: TextStyle(color: Colors.red, fontSize: 18),
+                      ),
+                    );
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.orange),
+                    );
+                  }
+
+                  if (!snapshot.hasData || !snapshot.data!.exists) {
+                    return const Center(
+                      child: Text(
+                        "No data found",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    );
+                  }
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+
+                  return Stack(
+                    children: [
+                      // 🔵 Fullscreen gradient background
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
+
+                      // 🌫️ SafeArea + scrollable content
+                      SafeArea(
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 0,
+                          ),
+                          child: Column(
+                            children: [
+                              // 🔹 Custom AppBar
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 0,
+                                  vertical: 10,
+                                ),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios_new_rounded,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "Business Information",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.95),
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 5),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: 10),
+                                          buildInfoTile(
+                                            context,
+                                            "email",
+                                            data['email']?.toString() ?? '',
+                                            userEmail!,
+                                          ),
+                                          buildInfoTile(
+                                            context,
+                                            "fullName",
+                                            data['name'] ?? 'rgeg',
+                                            userEmail!,
+                                          ),
+                                          buildInfoTile(
+                                            context,
+                                            "phone number",
+                                            data['phone number']?.toString() ?? '',
+                                            userEmail!,
+                                          ),
+                                          buildInfoTile(
+                                            context,
+                                            "password",
+                                            data['password']?.toString() ?? '',
+                                            userEmail!,
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Image.network(
+                                      "https://i.pinimg.com/1200x/24/17/85/2417854e56cdab795d8abf85998e86f8.jpg",
+                                      height: 150,
+                                      width: 150,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+    );
+  }
+
+  // 🔹 Reusable input field
+  Widget buildInfoTile(
+    BuildContext context,
+    String label,
+    String value,
+    String documentId,
+  ) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Color(0xFF2F66F5), width: 2),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
         children: [
-          // 🔵 Fullscreen gradient background
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+          Expanded(
+            child: Text(
+              "$label :",
+              style: TextStyle(
+                color: Color(0xFF2F66F5),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-
-          // 🌫️ SafeArea + scrollable content
-          SafeArea(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              child: Column(
-                children: [
-                  // 🔹 Custom AppBar
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                              color: Colors.white),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 4),
-                        const Text(
-                          "Business Information",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // 🌫️ Frosted glass form container
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.95),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-
-                          _buildInputField(
-                            controller: fullNameController,
-                            label: "Full Name",
-                            icon: Icons.person_outline,
-                          ),
-                          _buildInputField(
-                            controller: usernameController,
-                            label: "Username",
-                            icon: Icons.alternate_email,
-                          ),
-                          _buildInputField(
-                            controller: phoneController,
-                            label: "Phone Number",
-                            icon: Icons.phone_outlined,
-                            keyboardType: TextInputType.phone,
-                          ),
-                          _buildInputField(
-                            controller: emailController,
-                            label: "Email",
-                            icon: Icons.email_outlined,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          _buildInputField(
-                            controller: passwordController,
-                            label: "Password",
-                            icon: Icons.lock_outline,
-                            isPassword: true,
-                          ),
-
-                          const SizedBox(height: 35),
-
-                          // 💾 Save Button
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            width: double.infinity,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          "Business information updated successfully"),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                              child: const Text(
-                                "Save Changes",
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          Expanded(
+            child: Text(
+              "$value ",
+              style: const TextStyle(color: Color(0xFF2F66F5), fontSize: 20),
+              textAlign: TextAlign.right,
             ),
+          ),
+          IconButton(
+            icon: Icon(Icons.mode_edit, color: Color(0xFF2F66F5)),
+            onPressed: () {
+              showEditDialogInfo(context, label, value, documentId);
+            },
           ),
         ],
       ),
     );
   }
 
-  // 🔹 Reusable input field
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool isPassword = false,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: isPassword && !isPasswordVisible,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF1565C0)),
-          labelText: label,
-          labelStyle: const TextStyle(color: Colors.black54),
-          filled: true,
-          fillColor: Colors.white.withOpacity(0.9),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide:
-            const BorderSide(color: Colors.blueAccent, width: 1.2),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide:
-            const BorderSide(color: Color(0xFF1565C0), width: 1.5),
-          ),
-          suffixIcon: isPassword
-              ? IconButton(
-            icon: Icon(
-              isPasswordVisible
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
-              color: Colors.blueGrey,
-            ),
-            onPressed: () {
-              setState(() => isPasswordVisible = !isPasswordVisible);
-            },
-          )
-              : null,
-        ),
-        validator: (value) =>
-        (value == null || value.isEmpty) ? "Please enter $label" : null,
-      ),
+  void showEditDialogInfo(
+    BuildContext context,
+    String field,
+    String oldValue,
+    String documentId,
+  ) {
+    final TextEditingController controller = TextEditingController(
+      text: oldValue,
     );
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text("Update $field"),
+            content: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: "Enter new $field",
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  String newValue = controller.text.trim();
+                  if (newValue.isNotEmpty) {
+                    await FirebaseFirestore.instance
+                        .collection('owners')
+                        .doc(documentId)
+                        .update({
+                          field.toLowerCase(): _castValue(field, newValue),
+                        });
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                child: const Text("Update"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+            ],
+          ),
+    );
+  }
+
+  dynamic _castValue(String field, String value) {
+    if (field.toLowerCase() == "email" ||
+        field.toLowerCase() == "fullName" ||
+        field.toLowerCase() == "phone number" ||
+        field.toLowerCase() == "password") {
+      return int.tryParse(value) ?? value;
+    }
+    return value;
   }
 }

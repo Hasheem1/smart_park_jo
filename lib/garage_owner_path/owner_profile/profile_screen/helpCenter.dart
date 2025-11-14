@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HelpCenterScreen extends StatefulWidget {
@@ -10,7 +12,10 @@ class HelpCenterScreen extends StatefulWidget {
 class _HelpCenterScreenState extends State<HelpCenterScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _messageController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,6 +129,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
+                                  addReservation();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Your message has been sent to the Help Center!"),
@@ -176,5 +182,43 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         ),
       ),
     );
+  }
+  Future<void> addReservation() async {
+    if ( emailController == null || _messageController == null) return;
+
+
+
+    Map<String, dynamic> joinUsMessage = {
+      'Message ':_messageController.text,
+      'cuurent user email':userEmail,
+      'message time':DateTime.now()
+    };
+
+    try {
+
+      final reservationCollection = firestore
+          // .collection('owners')
+          // .doc(userEmail)
+          .collection('Help Center Messages');
+
+      final snapshot = await reservationCollection.get();
+      int reservationCountMessage = snapshot.docs.length;
+
+      String newDocName = 'Help Center message ${reservationCountMessage + 1}';
+      await reservationCollection.doc(newDocName).set(joinUsMessage);
+      print('Reservation added as $newDocName');
+      _submitForm();
+    } catch (error) {
+      print('Failed to add reservation: $error');
+    }
+  }
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Thank you for reaching out!", style: TextStyle(color: Colors.green))),
+      );
+      emailController.clear();
+      _messageController.clear();
+    }
   }
 }
