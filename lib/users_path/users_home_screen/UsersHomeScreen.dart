@@ -31,7 +31,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     },
     {
       "image":
-      "https://images.unsplash.com/photo-1529429611273-4ca675c9a99c?auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=60",
       "title": "Irbid Downtown Parking",
       "price": "1.8 JD/hr",
       "distance": "1.1 km",
@@ -79,7 +79,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       case 2: // ✅ ADDED: For the Smart City Profile screen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const SmartCityProfileScreen()),
+          MaterialPageRoute(builder: (context) => const OwnerProfileScreen()),
         );
         break;
 

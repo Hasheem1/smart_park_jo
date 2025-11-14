@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My Bookings',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        useMaterial3: true,
+      ),
+      home: const MyBookingsScreen(),
+    );
+  }
+}
+
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({Key? key}) : super(key: key);
 
@@ -9,11 +27,11 @@ class MyBookingsScreen extends StatefulWidget {
 
 class _MyBookingsScreenState extends State<MyBookingsScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  late final TabController _tabController;
 
-  final Color primaryBlue = const Color(0xFF2196F3);
-  final Color accentGreen = const Color(0xFF00C49A);
-  final Color background = const Color(0xFFF8FAFC);
+  static const Color primaryBlue = Color(0xFF2196F3);
+  static const Color accentGreen = Color(0xFF2196F3);
+  static const Color background = Color(0xFFF8FAFC);
 
   @override
   void initState() {
@@ -21,79 +39,82 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  Future<void> _refresh() async {
+    // placeholder for refresh logic
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(138),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [primaryBlue, accentGreen],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
-              ),
-            ],
           ),
           child: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12.0),
+              child: Column(
+                children: [
+                  // Top row
+                  Row(
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                            color: Colors.white, size: 22),
-                        onPressed: () => Navigator.pop(context),
+                            color: Colors.white),
+                        onPressed: () => Navigator.maybePop(context),
                       ),
-                      const Text(
-                        "My Bookings",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                      const SizedBox(width: 6),
+                      const Expanded(
+                        child: Text(
+                          'My Bookings',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
-                      const SizedBox(width: 40),
+                      // small action (example)
+                      IconButton(
+                        icon: const Icon(Icons.filter_list, color: Colors.white),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.white70,
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+
+                  const SizedBox(height: 10),
+
+                  // Tab pill
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.14),
+                      borderRadius: BorderRadius.circular(26),
                     ),
-                    indicator: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Colors.white54, width: 1),
+                    child: TabBar(
+                      controller: _tabController,
+                      indicator: BoxDecoration(
+                        color: Colors.white.withOpacity(0.26),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.white70,
+                      labelStyle: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w600),
+                      tabs: const [Tab(text: 'Upcoming'), Tab(text: 'Past')],
                     ),
-                    tabs: const [
-                      Tab(text: "Upcoming"),
-                      Tab(text: "Past"),
-                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -101,49 +122,73 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Upcoming
-          ListView(
-            padding: const EdgeInsets.all(16),
-            physics: const BouncingScrollPhysics(),
-            children: const [
-              BookingCard(
-                imageUrl:
-                'https://upload.wikimedia.org/wikipedia/commons/9/90/Mall_parking_lot.jpg',
-                title: 'City Center Mall',
-                dateTime: 'Today • 14:00 - 16:00',
-                duration: '2 hours',
-                price: '4 JD',
-                status: 'Confirmed',
-              ),
-              BookingCard(
-                imageUrl:
-                'https://upload.wikimedia.org/wikipedia/commons/3/3f/Parking_lot_overview.jpg',
-                title: 'Rainbow Street Parking',
-                dateTime: 'Tomorrow • 10:00 - 12:00',
-                duration: '2 hours',
-                price: '3 JD',
-                status: 'Confirmed',
-              ),
-            ],
-          ),
-
-          // Past
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.history_rounded,
-                    color: Colors.grey.shade400, size: 64),
-                const SizedBox(height: 10),
-                const Text(
-                  'No past bookings',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+          // Upcoming - list with pull to refresh
+          RefreshIndicator(
+            onRefresh: _refresh,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              children: const [
+                BookingCard(
+                  imageUrl:
+                  'https://upload.wikimedia.org/wikipedia/commons/9/90/Mall_parking_lot.jpg',
+                  title: 'City Center Mall',
+                  dateTime: 'Today • 14:00 - 16:00',
+                  duration: '2 hours',
+                  price: '4 JD',
+                  status: 'Confirmed',
+                ),
+                BookingCard(
+                  imageUrl:
+                  'https://upload.wikimedia.org/wikipedia/commons/3/3f/Parking_lot_overview.jpg',
+                  title: 'Rainbow Street Parking',
+                  dateTime: 'Tomorrow • 10:00 - 12:00',
+                  duration: '2 hours',
+                  price: '3 JD',
+                  status: 'Confirmed',
+                ),
+                BookingCard(
+                  imageUrl: '',
+                  title: 'Old Town Parking',
+                  dateTime: 'Sat • 09:00 - 11:00',
+                  duration: '2 hours',
+                  price: '2.5 JD',
+                  status: 'Pending',
                 ),
               ],
+            ),
+          ),
+
+          // Past - empty state
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.history_rounded,
+                      size: 72, color: Colors.grey.shade400),
+                  const SizedBox(height: 12),
+                  Text(
+                    'No past bookings',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Your finished bookings will appear here.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -170,151 +215,168 @@ class BookingCard extends StatelessWidget {
     required this.status,
   }) : super(key: key);
 
+  static const Color primaryBlue = Color(0xFF2196F3);
+  static const Color accentGreen = Color(0xFF2196F3);
+
   @override
   Widget build(BuildContext context) {
-    final Color primaryBlue = const Color(0xFF2196F3);
-    final Color accentGreen = const Color(0xFF00C49A);
-
+    // Card layout is minimal & clean
     return Container(
-      margin: const EdgeInsets.only(bottom: 18),
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: primaryBlue.withOpacity(0.05),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
             offset: const Offset(0, 3),
-          ),
+          )
         ],
-        border: Border.all(color: Colors.grey.shade200, width: 1),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                imageUrl,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: 80,
-                  height: 80,
-                  color: Colors.grey.shade200,
-                  child: Icon(Icons.image_not_supported,
-                      color: Colors.grey.shade400, size: 28),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Image thumbnail
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: (imageUrl.isEmpty)
+                ? Container(
+              width: 76,
+              height: 76,
+              color: Colors.grey.shade100,
+              alignment: Alignment.center,
+              child: Icon(Icons.location_on_outlined,
+                  size: 30, color: Colors.grey.shade400),
+            )
+                : Image.network(
+              imageUrl,
+              width: 76,
+              height: 76,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) return child;
+                return Container(
+                  width: 76,
+                  height: 76,
+                  color: Colors.grey.shade100,
+                  child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                );
+              },
+              errorBuilder: (_, __, ___) => Container(
+                width: 76,
+                height: 76,
+                color: Colors.grey.shade100,
+                alignment: Alignment.center,
+                child: Icon(Icons.broken_image,
+                    size: 28, color: Colors.grey.shade400),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          // Main info (title + details)
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // title and optional tag
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w700),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+
+                const SizedBox(height: 6),
+
+                // date/time
+                Row(
+                  children: [
+                    Icon(Icons.access_time_rounded,
+                        size: 14, color: Colors.grey.shade600),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        dateTime,
+                        style: TextStyle(
+                            fontSize: 13, color: Colors.grey.shade700),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 6),
+
+                // duration & spacer
+                Row(
+                  children: [
+                    Icon(Icons.timer_outlined,
+                        size: 14, color: Colors.grey.shade600),
+                    const SizedBox(width: 8),
+                    Text(
+                      duration,
+                      style: TextStyle(
+                          fontSize: 13, color: Colors.grey.shade700),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          // Right column: status badge + price
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Status badge (small)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: status.toLowerCase() == 'confirmed'
+                      ? accentGreen
+                      : (status.toLowerCase() == 'pending'
+                      ? Colors.orange
+                      : Colors.grey.shade400),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  status,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-            ),
-            const SizedBox(width: 12),
 
-            // Expanded info + status container
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Info section
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        _infoRow(Icons.access_time_rounded, dateTime),
-                        const SizedBox(height: 4),
-                        _infoRow(Icons.timer_outlined, duration),
-                      ],
-                    ),
-                  ),
+              const SizedBox(height: 12),
 
-                  const SizedBox(width: 8),
-
-                  // Price + Status
-                  Flexible(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                accentGreen.withOpacity(0.8),
-                                accentGreen
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            status,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            price,
-                            style: TextStyle(
-                              color: primaryBlue,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              Text(
+                price,
+                style: const TextStyle(
+                    color: primaryBlue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _infoRow(IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(icon, size: 14, color: Colors.grey.shade600),
-        const SizedBox(width: 6),
-        Expanded(
-          child: Text(
-            text,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 12.5,
-            ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
