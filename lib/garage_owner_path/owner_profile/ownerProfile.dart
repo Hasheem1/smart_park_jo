@@ -7,6 +7,8 @@ import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/hel
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
+import '../../role_selection_screen/roleSelectionScreen.dart';
+
 class OwnerProfileScreen extends StatefulWidget {
   const OwnerProfileScreen({super.key});
 
@@ -152,8 +154,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 // 🏢 Business Info + Payment Methods
                 _buildGlassTile(
                   icon: Icons.store_mall_directory_outlined,
-                  title: "Business Information",
-                  subtitle: "Update business details",
+                  title: "Parking Owner Information",
+                  subtitle: "Update Parking Owner details",
                   color: const Color(0xFF2F66F5),
                   onTap: () {
                     Navigator.push(
@@ -163,19 +165,19 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 15),
-                _buildGlassTile(
-                  icon: Icons.payment_outlined,
-                  title: "Payment Methods",
-                  subtitle: "Manage payout accounts",
-                  color: const Color(0xFF2F66F5),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const AddPaymentMethodScreen()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 25),
+                // _buildGlassTile(
+                //   icon: Icons.payment_outlined,
+                //   title: "Payment Methods",
+                //   subtitle: "Manage payout accounts",
+                //   color: const Color(0xFF2F66F5),
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (_) => const AddPaymentMethodScreen()),
+                //     );
+                //   },
+                // ),
+              //  const SizedBox(height: 25),
 
                 // ⚙️ Settings Section
                 Align(
@@ -190,15 +192,15 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 ),
                 const SizedBox(height: 15),
 
-                _buildGlassSwitch(
-                  icon: Icons.notifications_none,
-                  title: "Notifications",
-                  subtitle: "إشعارات",
-                  value: true,
-                  onChanged: (v) {},
-                  activeColor: const Color(0xFF2F66F5),
-                ),
-                const SizedBox(height: 12),
+                // _buildGlassSwitch(
+                //   icon: Icons.notifications_none,
+                //   title: "Notifications",
+                //   subtitle: "إشعارات",
+                //   value: true,
+                //   onChanged: (v) {},
+                //   activeColor: const Color(0xFF2F66F5),
+                // ),
+              //  const SizedBox(height: 12),
                 // _buildGlassTile(
                 //   icon: Icons.language_outlined,
                 //   title: "Language",
@@ -276,15 +278,20 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                               offset: const Offset(0, 6))
                         ],
                       ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 56,
-                        child: const Text(
-                          "Log Out",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                      child: InkWell(onTap: (){
+                        logout();
+
+                      },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 56,
+                          child: const Text(
+                            "Log Out",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -298,8 +305,52 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
       ),
     );
   }
-
-  // 🔹 Modern Glassmorphic Info Tile
+  void logout() {
+    final user=FirebaseAuth.instance.currentUser;
+    if(user==null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RoleSelectionScreen()));
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.red[400],
+            title: Text(
+              "Log out of your account",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Text(
+              "Are you sure you want to log out?",
+              style: TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+                  );
+                },
+                child: const Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
   Widget _buildGlassTile({
     required IconData icon,
     required String title,
@@ -330,7 +381,6 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
     );
   }
 
-  // 🔹 Glassmorphic Tile with Switch
   Widget _buildGlassSwitch({
     required IconData icon,
     required String title,
@@ -366,7 +416,6 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   }
 }
 
-// 🚫 Removes scroll glow
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(

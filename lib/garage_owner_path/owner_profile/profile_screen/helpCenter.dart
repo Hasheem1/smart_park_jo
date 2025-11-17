@@ -129,14 +129,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  addReservation();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Your message has been sent to the Help Center!"),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                  _messageController.clear();
+                                  addMesseage();
+
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -183,7 +177,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       ),
     );
   }
-  Future<void> addReservation() async {
+  Future<void> addMesseage() async {
     if ( emailController == null || _messageController == null) return;
 
 
@@ -214,8 +208,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   }
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Thank you for reaching out!", style: TextStyle(color: Colors.green))),
+      // );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Thank you for reaching out!", style: TextStyle(color: Colors.green))),
+        const SnackBar(
+          content: Text("Your message has been sent to the Help Center!"),
+          backgroundColor: Colors.green,
+        ),
       );
       emailController.clear();
       _messageController.clear();

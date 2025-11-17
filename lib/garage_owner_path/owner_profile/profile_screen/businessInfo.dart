@@ -12,21 +12,7 @@ class BusinessInfoScreen extends StatefulWidget {
 class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController fullNameController = TextEditingController(
-    text: "Mohammad Jamal",
-  );
-  final TextEditingController usernameController = TextEditingController(
-    text: "mjamal_97",
-  );
-  final TextEditingController phoneController = TextEditingController(
-    text: "+962 79 123 4567",
-  );
-  final TextEditingController emailController = TextEditingController(
-    text: "mohammad.j@email.com",
-  );
-  final TextEditingController passwordController = TextEditingController(
-    text: "********",
-  );
+
 
   bool isPasswordVisible = false;
 
@@ -120,7 +106,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                     ),
                                     const SizedBox(width: 4),
                                     const Text(
-                                      "Business Information",
+                                      "Parking Owner Information",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 22,
@@ -192,6 +178,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                       width: 150,
                                     ),
                                   ),
+
                                 ],
                               ),
                             ],
