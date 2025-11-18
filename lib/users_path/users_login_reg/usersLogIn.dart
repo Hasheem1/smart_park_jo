@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../users_home_screen/UsersHomeScreen.dart';
 
 class UsersLogIn extends StatefulWidget {
@@ -12,12 +13,65 @@ class UsersLogIn extends StatefulWidget {
 class _UsersLogInState extends State<UsersLogIn> {
   bool isLogin = true;
 
-  // Form key
   final _formKey = GlobalKey<FormState>();
-
-  // Controllers
-  final TextEditingController plateNumberController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Convert phone to "fake email" for Firebase
+  String phoneToEmail(String phone) => "$phone@user.app";
+
+  // Login
+  Future<void> loginUser() async {
+    final phone = phoneController.text.trim();
+    final password = passwordController.text.trim();
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: phoneToEmail(phone),
+        password: password,
+      );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const DriverHomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? "Login failed")));
+    }
+  }
+
+  // Register
+  Future<void> registerUser() async {
+    final phone = phoneController.text.trim();
+    final password = passwordController.text.trim();
+
+    try {
+      // 1️⃣ Create user in Firebase Auth
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: "$phone@user.app",
+        password: password,
+      );
+
+      // 2️⃣ Get UID
+      String uid = userCredential.user!.uid;
+
+      // 3️⃣ Save user data in Firestore (this is the code you asked about)
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'phoneNumber': phone,
+        'password': password,
+        'uid': uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // 4️⃣ Navigate to home screen
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const DriverHomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message ?? "Registration failed")));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +81,7 @@ class _UsersLogInState extends State<UsersLogIn> {
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              // Blue Header Background
+              // Blue Header
               Container(
                 height: 260,
                 width: double.infinity,
@@ -39,7 +93,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
@@ -64,9 +118,9 @@ class _UsersLogInState extends State<UsersLogIn> {
                 ),
               ),
 
-              // Main Content (Card)
+              // Main Card
               Padding(
-                padding: const EdgeInsets.only(top: 180.0),
+                padding: const EdgeInsets.only(top: 180),
                 child: Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -147,39 +201,9 @@ class _UsersLogInState extends State<UsersLogIn> {
                               ],
                             ),
                           ),
-
-                          const SizedBox(height: 30),
-
-                          // Plate Number
-                          const Text(
-                            "Plate Number",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFormField(
-                            controller: plateNumberController,
-                            decoration: InputDecoration(
-                              prefixIcon:
-                              const Icon(Icons.directions_car, color: Color(0xFF2F66F5)),
-                              hintText: "Enter your plate number",
-                              filled: true,
-                              fillColor: Colors.grey.shade100,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter your plate number";
-                              }
-                              return null;
-                            },
-                          ),
-
                           const SizedBox(height: 20),
 
-                          // Phone Number
+                          // ----------------Phone Number (used as email)------------------
                           const Text(
                             "Phone Number",
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -201,12 +225,42 @@ class _UsersLogInState extends State<UsersLogIn> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Please enter your phone number";
-                              } else if (value.length < 9) {
-                                return "Please enter a valid phone number";
                               }
                               return null;
                             },
                           ),
+
+                          const SizedBox(height: 30),
+
+                          // ----------------Plate Number (used as password)---------------
+                          const Text(
+                            "Password",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              prefixIcon:
+                              const Icon(Icons.security, color: Color(0xFF2F66F5)),
+                              hintText: "Enter your Password",
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your Password";
+                              }
+                              return null;
+                            },
+                          ),
+
+
 
                           const SizedBox(height: 30),
 
@@ -215,10 +269,12 @@ class _UsersLogInState extends State<UsersLogIn> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {
-                                if (isLogin) {
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DriverHomeScreen(),));
-                                } else {
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DriverHomeScreen(),));
+                                if (_formKey.currentState!.validate()) {
+                                  if (isLogin) {
+                                    loginUser();
+                                  } else {
+                                    registerUser();
+                                  }
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -230,7 +286,8 @@ class _UsersLogInState extends State<UsersLogIn> {
                               ),
                               child: Text(
                                 isLogin ? "Login" : "Register",
-                                style: const TextStyle(fontSize: 18, color: Colors.white),
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.white),
                               ),
                             ),
                           ),
