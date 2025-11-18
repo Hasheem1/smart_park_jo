@@ -92,6 +92,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
 
   // Add Parking to Firestore
   Future<void> addParking() async {
+    print("object");
     try {
       String? imageUrl;
       if (_image != null) {
@@ -462,6 +463,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     }
 
     return Scaffold(
+
       appBar: AppBar(
         title: const Text("Pick Parking Location"),
         actions: [
