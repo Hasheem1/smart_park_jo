@@ -79,7 +79,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       case 2: // ✅ ADDED: For the Smart City Profile screen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const OwnerProfileScreen()),
+          MaterialPageRoute(builder: (context) => const UserProfileScreen()),
         );
         break;
 

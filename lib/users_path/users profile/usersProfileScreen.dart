@@ -7,8 +7,8 @@ import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/pri
 
 import 'info/userDetails.dart';
 
-class OwnerProfileScreen extends StatelessWidget {
-  const OwnerProfileScreen({super.key});
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
