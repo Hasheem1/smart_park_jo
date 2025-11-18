@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../ai_chat_bot/chatBot.dart';
+import '../../users_path/users profile/usersProfileScreen.dart';
 import '../add_lot/addLotScreen.dart';
 import '../manage_spots/manageSpotsS.dart';
 import '../owner_Earnings/ownerEarnings.dart';
-import '../owner_profile/ownerProfile.dart';
+import '../owner_profile/ownerProfile.dart' hide ChatScreen;
 
 class OwnerDashboardScreen extends StatelessWidget {
   const OwnerDashboardScreen({super.key});
@@ -33,27 +35,50 @@ class OwnerDashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Dashboard",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const OwnerProfileScreen(),
+                        Row(
+                          children: [
+                            const Text(
+                              "Dashboard",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
                               ),
-                            );
-                          },
-                          child: const Icon(
-                            Icons.person_outline,
-                            color: Colors.white,
-                          ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => const ChatScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text("✨",style: TextStyle(fontSize: 25),)
+                            ),
+                            SizedBox(width: 10,),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => const OwnerProfileScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Icon(size: 30,
+                                Icons.person_outline,
+                                color: Colors.white,
+                              ),
+                            ),
+
+                          ],
                         ),
                       ],
                     ),
@@ -119,10 +144,7 @@ class OwnerDashboardScreen extends StatelessWidget {
               // My Lots section
               const Text(
                 "My Lots",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
 
@@ -130,7 +152,7 @@ class OwnerDashboardScreen extends StatelessWidget {
               _lotCard(
                 context: context,
                 imageUrl:
-                "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
+                    "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
                 title: "Irbid City Center Mall",
                 occupied: "38/50",
                 rate: "76%",
@@ -142,7 +164,7 @@ class OwnerDashboardScreen extends StatelessWidget {
               _lotCard(
                 context: context,
                 imageUrl:
-                "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
+                    "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
                 title: "Amman Downtown",
                 occupied: "22/40",
                 rate: "55%",
@@ -186,10 +208,7 @@ class OwnerDashboardScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: TextStyle(color: subtitleColor, fontSize: 14),
-          ),
+          Text(subtitle, style: TextStyle(color: subtitleColor, fontSize: 14)),
         ],
       ),
     );
@@ -208,10 +227,7 @@ class OwnerDashboardScreen extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.black87),
           const SizedBox(height: 6),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
         ],
       ),
     );
@@ -236,8 +252,7 @@ class OwnerDashboardScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Image.network(
               imageUrl,
               height: 150,
@@ -300,7 +315,7 @@ class OwnerDashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -310,8 +325,10 @@ class OwnerDashboardScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(color: Colors.black54, fontSize: 13)),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.black54, fontSize: 13),
+        ),
         Text(
           value,
           style: TextStyle(

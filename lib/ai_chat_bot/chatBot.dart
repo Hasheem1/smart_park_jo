@@ -5,9 +5,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
-/// ---------------------------
-/// MODEL
-/// ---------------------------
 class ChatMessage {
   final String id;
   String content;
@@ -22,9 +19,6 @@ class ChatMessage {
   });
 }
 
-/// ---------------------------
-/// SERVICE – OpenAI API call
-/// ---------------------------
 class ChatService {
   final String? apiKey;
   ChatService([this.apiKey]);
@@ -42,7 +36,8 @@ class ChatService {
         "Content-Type": "application/json",
         "Authorization": "Bearer $apiKey",
       },
-      body: '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"$message"}],"temperature":0.2,"max_tokens":800}',
+      body:
+      '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"$message"}],"temperature":0.2,"max_tokens":800}',
     );
 
     if (resp.statusCode >= 400) {
@@ -54,9 +49,7 @@ class ChatService {
   }
 }
 
-/// ---------------------------
-/// MODERN CHAT BUBBLE
-/// ---------------------------
+/// Modern floating bubble with gradient
 class MessageBubble extends StatelessWidget {
   final String text;
   final bool isUser;
@@ -65,57 +58,49 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isUser ? const Color(0xFF2F66F5) : Colors.grey.shade200;
-    final textColor = isUser ? Colors.white : Colors.black87;
-    final radius = isUser
-        ? const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-      bottomLeft: Radius.circular(20),
-    )
-        : const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-      bottomRight: Radius.circular(20),
-    );
-
-    return Align(
+    final radius = BorderRadius.circular(20);
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        constraints:
+        BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
-          color: bgColor,
+          gradient: isUser
+              ? const LinearGradient(
+              colors: [Color(0xFF2F66F5), Color(0xFF5B8DFB)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight)
+              : LinearGradient(
+              colors: [Colors.grey.shade200, Colors.grey.shade100],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
           borderRadius: radius,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(2, 2),
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(2, 4),
             ),
           ],
         ),
         child: MarkdownBody(
           data: text,
           styleSheet: MarkdownStyleSheet(
-            p: TextStyle(
-              color: textColor,
-              fontSize: 16,
-              height: 1.3,
-            ),
-          ),
+              p: TextStyle(
+                color: isUser ? Colors.white : Colors.black87,
+                fontSize: 16,
+                height: 1.3,
+              )),
         ),
       ),
     );
   }
 }
 
-/// ---------------------------
-/// CHAT SCREEN
-/// ---------------------------
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -123,7 +108,8 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen>
+    with SingleTickerProviderStateMixin {
   final List<ChatMessage> _messages = [];
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
@@ -150,6 +136,10 @@ class _ChatScreenState extends State<ChatScreen> {
       "question": "what features are inside",
       "answer": "Features include sending messages, typing animation, auto-scroll, and AI responses."
     },
+    {
+      "question": "who make this app",
+      "answer": "hashem and yaman"
+    },
   ];
 
   @override
@@ -164,9 +154,6 @@ class _ChatScreenState extends State<ChatScreen> {
     ));
   }
 
-  /// ---------------------------
-  /// Handle QA locally or fallback to API
-  /// ---------------------------
   Future<String> handleUserQuery(String message) async {
     final lower = message.toLowerCase();
     for (var qa in faqList) {
@@ -177,9 +164,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return await _service.sendMessage(message);
   }
 
-  /// ---------------------------
-  /// Send message
-  /// ---------------------------
   Future<void> _sendMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
@@ -223,9 +207,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
   }
 
-  /// ---------------------------
-  /// Typing animation
-  /// ---------------------------
   Future<void> _typeWriter(ChatMessage msg, String fullText) async {
     for (int i = 0; i < fullText.length; i++) {
       await Future.delayed(const Duration(milliseconds: 12));
@@ -236,9 +217,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  /// ---------------------------
-  /// Auto scroll
-  /// ---------------------------
   void _scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
@@ -251,95 +229,113 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  /// ---------------------------
-  /// BUILD
-  /// ---------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFf5f7ff),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2F66F5),
-        elevation: 2,
-        title: const Text("AI Chat Bot", style: TextStyle(fontWeight: FontWeight.bold)),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.only(top: 15, bottom: 20),
-              itemCount: _messages.length,
-              itemBuilder: (context, i) {
-                final msg = _messages[i];
-                return MessageBubble(text: msg.content, isUser: msg.isUser);
-              },
-            ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          "AI Chat Bot",
+          style: TextStyle(
+            color: Color(0xFF2F66F5),
+            fontWeight: FontWeight.bold,
           ),
-          // Input
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
-                )
-              ],
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    style: const TextStyle(fontSize: 16),
-                    decoration: InputDecoration(
-                      hintText: "Type a message...",
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none,
+        ),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.only(top: 20, bottom: 80),
+                  itemCount: _messages.length,
+                  itemBuilder: (context, i) {
+                    final msg = _messages[i];
+                    return MessageBubble(text: msg.content, isUser: msg.isUser);
+                  },
+                ),
+              ),
+            ],
+          ),
+          // Glassmorphic input bar
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.4),
+                    Colors.white.withOpacity(0.2),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                  width: 1.5,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      style: const TextStyle(fontSize: 16, color: Colors.black87),
+                      decoration: const InputDecoration(
+                        hintText: "Type a message...",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.black45),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: _isSending ? null : _sendMessage,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2F66F5),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF2F66F5).withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(2, 2),
+                  GestureDetector(
+                    onTap: _isSending ? null : _sendMessage,
+                    child: Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF2F66F5), Color(0xFF5B8DFB)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                      ],
-                    ),
-                    child: _isSending
-                        ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
                       ),
-                    )
-                        : const Icon(Icons.send, color: Colors.white, size: 22),
+                      child: _isSending
+                          ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : const Icon(Icons.send, color: Colors.white, size: 22),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
