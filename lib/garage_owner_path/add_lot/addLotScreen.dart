@@ -69,6 +69,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
         _image = File(pickedFile.path);
       });
     }
+    print("object");
   }
 
   // Upload Image
