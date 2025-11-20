@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../ai_chat_bot/chatBot.dart';
 import '../../users_path/users profile/usersProfileScreen.dart';
@@ -149,27 +151,45 @@ class OwnerDashboardScreen extends StatelessWidget {
               const SizedBox(height: 8),
 
               // Example lot cards
-              _lotCard(
-                context: context,
-                imageUrl:
-                    "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
-                title: "Irbid City Center Mall",
-                occupied: "38/50",
-                rate: "76%",
-                today: "285 JD",
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('owners')
+                    .doc(FirebaseAuth.instance.currentUser!.email)
+                    .collection('Owners Parking')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "No parking lots added yet.",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    );
+                  }
+
+                  final docs = snapshot.data!.docs;
+
+                  return Column(
+                    children: docs.map((doc) {
+                      final data = doc.data();
+                      return _lotCard(
+                        context: context,
+                        imageUrl: data['image_url'] ?? "",
+                        title: data['Parking name'] ?? 'No Name',
+                        occupied: "0/${data['Parking Capacity'] ?? '0'}",
+                     //   rate: "0%",
+                        today: "0 JD",
+                      );
+                    }).toList(),
+                  );
+                },
               ),
 
-              const SizedBox(height: 12),
-
-              _lotCard(
-                context: context,
-                imageUrl:
-                    "https://i0.wp.com/www.touristjordan.com/wp-content/uploads/2023/02/shutterstock_1347742772.jpg?resize=800%2C533&ssl=1",
-                title: "Amman Downtown",
-                occupied: "22/40",
-                rate: "55%",
-                today: "160 JD",
-              ),
             ],
           ),
         ),
@@ -238,7 +258,7 @@ class OwnerDashboardScreen extends StatelessWidget {
     required String imageUrl,
     required String title,
     required String occupied,
-    required String rate,
+   // required String rate,
     required String today,
   }) {
     return Container(
@@ -274,10 +294,10 @@ class OwnerDashboardScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _infoText("Occupied", occupied),
-                    _infoText("Rate", rate),
+                    // _infoText("Rate", rate),
                     _infoText("Today", today, color: Colors.green),
                   ],
                 ),

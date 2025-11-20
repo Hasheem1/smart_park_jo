@@ -117,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen>
   late ChatService _service;
   bool _isSending = false;
 
-  final String apiKey = "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"; // ← PUT YOUR KEY HERE
+  final String apiKey = "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"; // ← PUT YOUR KEY HERE
 
   final List<Map<String, String>> faqList = [
     {
