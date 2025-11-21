@@ -346,7 +346,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 import '../bookings/bookingsScreen.dart';
 import '../parking_details_screen/parkingDetailsScreen.dart';
 import '../users profile/usersProfileScreen.dart';
@@ -374,26 +374,26 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _getUserLocation();
+  //  _getUserLocation();
   }
 
-  Future<void> _getUserLocation() async {
-    Location location = Location();
-    bool serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) serviceEnabled = await location.requestService();
-    if (!serviceEnabled) return;
-
-
-    PermissionStatus permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) permissionGranted = await location.requestPermission();
-    if (permissionGranted != PermissionStatus.granted) return;
-
-    final loc = await location.getLocation();
-    setState(() => _userLocation = LatLng(loc.latitude!, loc.longitude!));
-    _loadNearbyGarages();
-
-
-  }
+  // Future<void> _getUserLocation() async {
+  //   Location location = Location();
+  //   bool serviceEnabled = await location.serviceEnabled();
+  //   if (!serviceEnabled) serviceEnabled = await location.requestService();
+  //   if (!serviceEnabled) return;
+  //
+  //
+  //   PermissionStatus permissionGranted = await location.hasPermission();
+  //   if (permissionGranted == PermissionStatus.denied) permissionGranted = await location.requestPermission();
+  //   if (permissionGranted != PermissionStatus.granted) return;
+  //
+  //   final loc = await location.getLocation();
+  //   setState(() => _userLocation = LatLng(loc.latitude!, loc.longitude!));
+  //   _loadNearbyGarages();
+  //
+  //
+  // }
 
   void _loadNearbyGarages() async {
     final snapshot = await FirebaseFirestore.instance.collectionGroup('Owners Parking').get();

@@ -1,3 +1,7 @@
+// ✅ FINAL MODERNIZED UI VERSION OF OwnerDashboardScreen
+// You chose to use NEW FIREBASE FIELD NAMES:
+// Parking Image / Parking name / Parking Capacity / Occupied Spots / Today Earnings
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,162 +12,215 @@ import 'editParkingScreen.dart';
 import '../manage_spots/manageSpotsS.dart';
 import '../../ai_chat_bot/chatBot.dart';
 
-class OwnerDashboardScreen extends StatelessWidget {
+class OwnerDashboardScreen extends StatefulWidget {
   const OwnerDashboardScreen({super.key});
 
+  @override
+  State<OwnerDashboardScreen> createState() => _OwnerDashboardScreenState();
+}
+
+class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final userEmail = FirebaseAuth.instance.currentUser?.email;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF5F7FA),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Top bar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Dashboard",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600)),
-                        Row(
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const ChatScreen()),
-                                  );
-                                },
-                                child: const Text(
-                                  "✨",
-                                  style: TextStyle(fontSize: 25),
-                                )),
-                            const SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const OwnerProfileScreen()),
-                                );
-                              },
-                              child: const Icon(
-                                size: 30,
-                                Icons.person_outline,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    // Occupancy and Today cards
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _smallInfoCard(
-                              title: "Occupancy", value: "75%", subtitle: "60/80 spots"),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _smallInfoCard(
-                              title: "Today", value: "450 JD", subtitle: "+12%", subtitleColor: Colors.green),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      final added = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddParkingLotScreen(),
-                        ),
-                      );
-                      if (added == true) {
-                        (context as Element).reassemble();
-                      }
-                    },
-                    child: _actionButton(Icons.add, "Add Lot"),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const EarningsScreen()),
-                      );
-                    },
-                    child: _actionButton(Icons.bar_chart_rounded, "Earnings"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text("My Lots", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('owners')
-                    .doc(userEmail)
-                    .collection('Owners Parking')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text("No parking lots added yet.",
-                          style: TextStyle(fontSize: 16, color: Colors.grey)),
-                    );
-                  }
+              _modernHeader(context),
+              const SizedBox(height: 18),
+              _modernStats(userEmail),
+              const SizedBox(height: 25),
+              _modernActions(context),
+              const SizedBox(height: 25),
 
-                  final docs = snapshot.data!.docs;
 
-                  return Column(
-                    children: docs.map((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
-                      return _lotCard(
-                        context: context,
-                        imageUrl: data['image_url'] ?? "",
-                        title: data['Parking name'] ?? 'No Name',
-                        occupied: "0/${data['Parking Capacity'] ?? '0'}",
-                        today: "0 JD",
-                        fullData: data,
-                        parkingId: doc.id,
-                      );
-                    }).toList(),
-                  );
-                },
+              const Text(
+                "My Parking Lots",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 14),
+
+              _modernLotsList(context, userEmail),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // -----------------------------------------------------------
+  Widget _modernHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364),],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Owner Dashboard",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Row(children: [
+            IconButton(
+              icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ChatScreen()),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.account_circle, color: Colors.white),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const OwnerProfileScreen()),
+              ),
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  // -----------------------------------------------------------
+  Widget _modernStats(String? userEmail) {
+    return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('owners')
+          .doc(userEmail)
+          .collection('Owners Parking')
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox(height: 80);
+        }
+
+        int totalCapacity = 0;
+        int totalOccupied = 0;
+
+        for (var doc in snapshot.data!.docs) {
+          final data = doc.data() as Map<String, dynamic>;
+
+          totalCapacity += int.tryParse(data['Parking Capacity'].toString()) ?? 0;
+          totalOccupied += int.tryParse(data['Occupied Spots'].toString()) ?? 0;
+        }
+
+        return Row(
+          children: [
+            _statCard("Occupancy", "$totalOccupied / $totalCapacity", Icons.local_parking),
+            const SizedBox(width: 12),
+            _statCard("Active Lots", snapshot.data!.docs.length.toString(), Icons.layers),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _statCard(String title, String value, IconData icon) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: const Color(0xFF2C5364)),
+            const SizedBox(height: 10),
+            Text(title, style: TextStyle(color: Colors.grey.shade600)),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // -----------------------------------------------------------
+  Widget _modernActions(BuildContext context) {
+    return Row(
+      children: [
+        _actionCard(
+          context,
+          "Add Lot",
+          Icons.add_circle,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const AddParkingLotScreen())),
+        ),
+        const SizedBox(width: 15),
+        _actionCard(
+          context,
+          "Earnings",
+          Icons.payments,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const EarningsScreen())),
+        ),
+      ],
+    );
+  }
+
+  Widget _actionCard(
+      BuildContext context, String title, IconData icon, VoidCallback onTap) {
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 22),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+                colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)]),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Icon(icon, color: Colors.white, size: 30),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style:
+                const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -172,144 +229,231 @@ class OwnerDashboardScreen extends StatelessWidget {
     );
   }
 
-  // --- Helper Widgets ---
-  static Widget _smallInfoCard({
-    required String title,
-    required String value,
-    required String subtitle,
-    Color subtitleColor = Colors.white70,
+  // -----------------------------------------------------------
+  Widget _modernLotsList(BuildContext context, String? userEmail) {
+    return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('owners')
+          .doc(userEmail)
+          .collection('Owners Parking')
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final docs = snapshot.data!.docs;
+
+        if (docs.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(
+              child: Text(
+                "No parking lots added yet.",
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+              ),
+            ),
+          );
+        }
+
+        return Column(
+          children: docs.map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            return _lotCard(context: context, data: data, parkingId: doc.id,userEmail: userEmail);
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  Widget _lotCard({
+    required BuildContext context,
+    required Map<String, dynamic> data,
+    required String parkingId,
+    required String? userEmail, // add this
+
+
   }) {
+    final imageUrl = data['image_url'] ?? "";
+    final capacity =
+        "${data['Occupied Spots'] ?? 0}/${data['Parking Capacity'] ?? 0}";
+
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade50.withOpacity(0.5), Colors.blue.shade100.withOpacity(0.3)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(color: Colors.white70)),
-          const SizedBox(height: 4),
-          Text(value,
-              style: const TextStyle(
-                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
-          const SizedBox(height: 2),
-          Text(subtitle, style: TextStyle(color: subtitleColor, fontSize: 14)),
-        ],
-      ),
-    );
-  }
-
-  static Widget _actionButton(IconData icon, String label) {
-    return Container(
-      width: 100,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.black87),
-          const SizedBox(height: 6),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
-        ],
-      ),
-    );
-  }
-
-  static Widget _lotCard({
-    required BuildContext context,
-    required String imageUrl,
-    required String title,
-    required String occupied,
-    required String today,
-    required Map<String, dynamic> fullData,
-    required String parkingId,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: imageUrl.isNotEmpty
-                ? Image.network(imageUrl, height: 150, width: double.infinity, fit: BoxFit.cover)
-                : Container(height: 150, color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.shade200.withOpacity(0.2),
+            blurRadius: 12,
+            offset: const Offset(0, 8),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Circular Image with subtle shadow
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipOval(
+              child: imageUrl.isNotEmpty
+                  ? Image.network(
+                imageUrl,
+                width: 70,
+                height: 70,
+                fit: BoxFit.cover,
+              )
+                  : Container(
+                width: 70,
+                height: 70,
+                color: Colors.grey.shade300,
+                child: const Icon(Icons.image_not_supported, size: 32, color: Colors.grey),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Info Column
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _infoText("Occupied", occupied),
-                    _infoText("Today", today, color: Colors.green),
-                  ],
+                Text(
+                  data['Parking name'] ?? "Unnamed Parking",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "Capacity: $capacity",
+                  style: TextStyle(
+                    color: Colors.grey.shade700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 10),
-                LinearProgressIndicator(
-                  value: 0.76,
-                  color: const Color(0xFF1565C0),
-                  backgroundColor: Colors.grey.shade200,
-                ),
-                const SizedBox(height: 12),
+
+                // Buttons Row
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF36D1DC),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => ManageSpotsScreen()),
-                          );
-                        },
-                        child: const Text("Manage Spots",
-                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EditParkingScreen(
+                              parkingData: data,
+                              parkingId: parkingId,
+                            ),
+                          ),
+                        ),
+                        child: const Text("Edit"),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 8),
                     Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF36D1DC),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => ManageSpotsScreen()),
+                        ),
+                        child: const Text("Manage"),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF36D1DC),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                         ),
                         onPressed: () async {
-                          final updated = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditParkingScreen(
-                                  parkingData: fullData, parkingId: parkingId),
+                          // Show confirmation dialog
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Confirm Delete"),
+                              content: const Text("Are you sure you want to delete this parking lot?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(false),
+                                  child: const Text("Cancel"),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(true),
+                                  child: const Text("Delete", style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
                             ),
                           );
-                          if (updated == true) {
-                            (context as Element).reassemble();
+
+                          if (confirm != null && confirm) {
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('owners')
+                                  .doc(userEmail) // Make sure userEmail is passed to _lotCard
+                                  .collection('Owners Parking')
+                                  .doc(parkingId)
+                                  .delete();
+
+                              // Optional: Show success message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Parking lot deleted successfully!")),
+                              );
+
+                              // Refresh UI
+                              setState(() {});
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Failed to delete: $e")),
+                              );
+                            }
                           }
                         },
-                        child: const Text("Edit Parking",
-                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blue)),
+
+                        child: const Text("Delete"),
                       ),
                     ),
                   ],
@@ -322,13 +466,4 @@ class OwnerDashboardScreen extends StatelessWidget {
     );
   }
 
-  static Widget _infoText(String label, String value, {Color? color}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(color: Colors.black54, fontSize: 13)),
-        Text(value, style: TextStyle(fontWeight: FontWeight.w500, color: color ?? Colors.black)),
-      ],
-    );
-  }
 }

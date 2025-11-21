@@ -108,8 +108,6 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
       return;
     }
 
-    int capacity = int.tryParse(_capacityController.text) ?? 0;
-    double price = double.tryParse(_priceController.text) ?? 0.0;
 
     String? imageUrl = widget.parkingData['image_url'];
     if (_image != null) {
