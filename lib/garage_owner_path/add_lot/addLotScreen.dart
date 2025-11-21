@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../owner_Dashboard/ownerDashboardS.dart';
+
 class AddParkingLotScreen extends StatefulWidget {
   const AddParkingLotScreen({super.key});
 
@@ -48,9 +50,14 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _fadeAnim = CurvedAnimation(parent: _animationController!, curve: Curves.easeInOut);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _fadeAnim = CurvedAnimation(
+      parent: _animationController!,
+      curve: Curves.easeInOut,
+    );
     _animationController!.forward();
   }
 
@@ -62,8 +69,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
 
   // Pick Image
   Future<void> _pickImage() async {
-    final pickedFile =
-    await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -108,12 +117,13 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
         "EV Charging": evCharging,
         "Disabled Access": disabledAccess,
         "image_url": imageUrl,
-        "location": _pickedLocation != null
-            ? {
-          "latitude": _pickedLocation!.latitude,
-          "longitude": _pickedLocation!.longitude
-        }
-            : null,
+        "location":
+            _pickedLocation != null
+                ? {
+                  "latitude": _pickedLocation!.latitude,
+                  "longitude": _pickedLocation!.longitude,
+                }
+                : null,
         'created_at': DateTime.now(),
       };
 
@@ -128,7 +138,33 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
       await parkingCollection.doc("Parking ${count + 1}").set(parkingData);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Parking Added Successfully")),
+        SnackBar(
+          behavior: SnackBarBehavior.floating, // Makes it float above content
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.all(16),
+          backgroundColor: Colors.green.shade600, // Modern color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Rounded corners
+          ),
+          elevation: 6,
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: const [
+              Icon(Icons.check_circle_outline, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "Parking Added Successfully",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 
       // Clear fields
@@ -140,6 +176,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
       setState(() {
         _image = null;
         _pickedLocation = null;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OwnerDashboardScreen()),
+        );
       });
     } catch (e) {
       print("Error adding parking: $e");
@@ -151,17 +191,18 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
     final selectedLocation = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => MapPickerScreen(
-          initialLocation: _pickedLocation,
-          initialPlaceName: _locationController.text,
-        ),
+        builder:
+            (_) => MapPickerScreen(
+              initialLocation: _pickedLocation,
+              initialPlaceName: _locationController.text,
+            ),
       ),
     );
     if (selectedLocation != null) {
       setState(() {
         _pickedLocation = selectedLocation;
         _locationController.text =
-        "Lat: ${selectedLocation.latitude}, Lng: ${selectedLocation.longitude}";
+            "Lat: ${selectedLocation.latitude}, Lng: ${selectedLocation.longitude}";
       });
     }
   }
@@ -200,43 +241,54 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
                   decoration: BoxDecoration(
                     gradient: _image == null ? gradient : null,
                     borderRadius: BorderRadius.circular(20),
-                    image: _image != null
-                        ? DecorationImage(
-                      image: FileImage(_image!),
-                      fit: BoxFit.cover,
-                    )
-                        : null,
+                    image:
+                        _image != null
+                            ? DecorationImage(
+                              image: FileImage(_image!),
+                              fit: BoxFit.cover,
+                            )
+                            : null,
                   ),
-                  child: _image == null
-                      ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.add_a_photo_outlined,
-                          size: 50, color: Colors.white),
-                      SizedBox(height: 10),
-                      Text("Upload Parking Image",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  )
-                      : Stack(
-                    children: [
-                      Positioned(
-                        right: 10,
-                        top: 10,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.black54,
-                          child: IconButton(
-                            icon: const Icon(Icons.edit,
-                                color: Colors.white, size: 20),
-                            onPressed: _pickImage,
+                  child:
+                      _image == null
+                          ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.add_a_photo_outlined,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "Upload Parking Image",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          )
+                          : Stack(
+                            children: [
+                              Positioned(
+                                right: 10,
+                                top: 10,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black54,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    onPressed: _pickImage,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
               const SizedBox(height: 25),
@@ -250,10 +302,16 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
                 ),
                 child: Column(
                   children: [
-                    _buildTextField(_nameController, "Parking Lot Name",
-                        Icons.local_parking_rounded),
                     _buildTextField(
-                        _descController, "Description", Icons.text_fields_outlined),
+                      _nameController,
+                      "Parking Lot Name",
+                      Icons.local_parking_rounded,
+                    ),
+                    _buildTextField(
+                      _descController,
+                      "Description",
+                      Icons.text_fields_outlined,
+                    ),
                     _buildTextField(
                       _locationController,
                       "Place Name / Location",
@@ -261,12 +319,18 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
                       readOnly: true,
                       onTap: _pickLocationOnMap,
                     ),
-                    _buildTextField(_capacityController, "Capacity",
-                        Icons.people_outline,
-                        inputType: TextInputType.number),
-                    _buildTextField(_priceController, "Pricing (per hour)",
-                        Icons.attach_money_outlined,
-                        inputType: TextInputType.number),
+                    _buildTextField(
+                      _capacityController,
+                      "Capacity",
+                      Icons.people_outline,
+                      inputType: TextInputType.number,
+                    ),
+                    _buildTextField(
+                      _priceController,
+                      "Pricing (per hour)",
+                      Icons.attach_money_outlined,
+                      inputType: TextInputType.number,
+                    ),
                   ],
                 ),
               ),
@@ -285,21 +349,36 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
                       padding: EdgeInsets.all(14),
                       child: Text(
                         "Features",
-                        style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     _buildCheckbox(
-                        "24/7 Access", Icons.access_time_rounded, access24,
-                            (v) => access24 = v!),
+                      "24/7 Access",
+                      Icons.access_time_rounded,
+                      access24,
+                      (v) => access24 = v!,
+                    ),
                     _buildCheckbox(
-                        "CCTV Security", Icons.videocam_outlined, cctv,
-                            (v) => cctv = v!),
+                      "CCTV Security",
+                      Icons.videocam_outlined,
+                      cctv,
+                      (v) => cctv = v!,
+                    ),
                     _buildCheckbox(
-                        "EV Charging", Icons.ev_station_outlined, evCharging,
-                            (v) => evCharging = v!),
+                      "EV Charging",
+                      Icons.ev_station_outlined,
+                      evCharging,
+                      (v) => evCharging = v!,
+                    ),
                     _buildCheckbox(
-                        "Disabled Access", Icons.accessible_rounded, disabledAccess,
-                            (v) => disabledAccess = v!),
+                      "Disabled Access",
+                      Icons.accessible_rounded,
+                      disabledAccess,
+                      (v) => disabledAccess = v!,
+                    ),
                   ],
                 ),
               ),
@@ -317,8 +396,9 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
                 ),
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent),
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
                   onPressed: addParking,
                   icon: const Icon(Icons.add_location_alt_outlined, size: 22),
                   label: const Text(
@@ -335,10 +415,14 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, IconData icon,
-      {TextInputType inputType = TextInputType.text,
-        bool readOnly = false,
-        VoidCallback? onTap}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    TextInputType inputType = TextInputType.text,
+    bool readOnly = false,
+    VoidCallback? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
@@ -358,7 +442,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
   }
 
   Widget _buildCheckbox(
-      String title, IconData icon, bool value, ValueChanged<bool?> onChanged) {
+    String title,
+    IconData icon,
+    bool value,
+    ValueChanged<bool?> onChanged,
+  ) {
     return CheckboxListTile(
       title: Text(title),
       secondary: Icon(icon, color: const Color(0xFF2F66F5)),
@@ -372,7 +460,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen>
 class MapPickerScreen extends StatefulWidget {
   final LatLng? initialLocation;
   final String? initialPlaceName;
-  const MapPickerScreen({super.key, this.initialLocation, this.initialPlaceName});
+  const MapPickerScreen({
+    super.key,
+    this.initialLocation,
+    this.initialPlaceName,
+  });
 
   @override
   State<MapPickerScreen> createState() => _MapPickerScreenState();
@@ -398,7 +490,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location services are disabled')));
+        const SnackBar(content: Text('Location services are disabled')),
+      );
       setState(() => loading = false);
       return;
     }
@@ -408,7 +501,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permission denied')));
+          const SnackBar(content: Text('Location permission denied')),
+        );
         setState(() => loading = false);
         return;
       }
@@ -416,13 +510,17 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location permissions are permanently denied')));
+        const SnackBar(
+          content: Text('Location permissions are permanently denied'),
+        ),
+      );
       setState(() => loading = false);
       return;
     }
 
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
 
     setState(() {
       currentLocation = LatLng(position.latitude, position.longitude);
@@ -431,7 +529,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     });
 
     // Move pin if place name is provided
-    if (widget.initialPlaceName != null && widget.initialPlaceName!.isNotEmpty) {
+    if (widget.initialPlaceName != null &&
+        widget.initialPlaceName!.isNotEmpty) {
       await movePinToAddress(widget.initialPlaceName!);
     }
   }
@@ -449,16 +548,16 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Could not find location: $e")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Could not find location: $e")));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Scaffold(
-          body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -472,21 +571,29 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                 Navigator.pop(context, pickedLocation);
               }
             },
-          )
+          ),
         ],
       ),
       body: GoogleMap(
         onMapCreated: (controller) => _controller = controller,
         initialCameraPosition: CameraPosition(
-            target: pickedLocation ?? currentLocation!, zoom: 16),
+          target: pickedLocation ?? currentLocation!,
+          zoom: 16,
+        ),
         onTap: (LatLng latLng) {
           setState(() {
             pickedLocation = latLng;
           });
         },
-        markers: pickedLocation != null
-            ? {Marker(markerId: const MarkerId("picked"), position: pickedLocation!)}
-            : {},
+        markers:
+            pickedLocation != null
+                ? {
+                  Marker(
+                    markerId: const MarkerId("picked"),
+                    position: pickedLocation!,
+                  ),
+                }
+                : {},
       ),
     );
   }
