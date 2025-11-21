@@ -5,23 +5,24 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'mapPickerScreen.dart';
 
-import '../owner_Dashboard/mapPickerScreen.dart';
+class EditParkingScreen extends StatefulWidget {
+  final Map<String, dynamic> parkingData;
+  final String parkingId;
 
-
-class AddParkingLotScreen extends StatefulWidget {
-  const AddParkingLotScreen({super.key});
+  const EditParkingScreen({required this.parkingData, required this.parkingId, super.key});
 
   @override
-  State<AddParkingLotScreen> createState() => _AddParkingLotScreenState();
+  State<EditParkingScreen> createState() => _EditParkingScreenState();
 }
 
-class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _capacityController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+class _EditParkingScreenState extends State<EditParkingScreen> {
+  late TextEditingController _nameController;
+  late TextEditingController _descController;
+  late TextEditingController _capacityController;
+  late TextEditingController _priceController;
+  late TextEditingController _locationController;
 
   bool access24 = false;
   bool cctv = false;
@@ -32,8 +33,32 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   final ImagePicker _picker = ImagePicker();
   LatLng? _pickedLocation;
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  @override
+  void initState() {
+    super.initState();
+
+    _nameController = TextEditingController(text: widget.parkingData['Parking name']);
+    _descController = TextEditingController(text: widget.parkingData['Parking Description']);
+    _capacityController =
+        TextEditingController(text: widget.parkingData['Parking Capacity'].toString());
+    _priceController =
+        TextEditingController(text: widget.parkingData['Parking Pricing (per hour)'].toString());
+    _locationController = TextEditingController(
+      text: widget.parkingData['location'] != null
+          ? "Lat: ${widget.parkingData['location']['latitude']}, Lng: ${widget.parkingData['location']['longitude']}"
+          : "",
+    );
+
+    access24 = widget.parkingData["24/7 Access"] ?? false;
+    cctv = widget.parkingData["CCTV"] ?? false;
+    evCharging = widget.parkingData["EV Charging"] ?? false;
+    disabledAccess = widget.parkingData["Disabled Access"] ?? false;
+
+    if (widget.parkingData['location'] != null) {
+      _pickedLocation = LatLng(widget.parkingData['location']['latitude'],
+          widget.parkingData['location']['longitude']);
+    }
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
@@ -42,9 +67,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
 
   Future<String?> _uploadImage(File imageFile) async {
     try {
+      final email = FirebaseAuth.instance.currentUser!.email!;
       final ref = FirebaseStorage.instance
           .ref()
-          .child("owners/$userEmail/parking_images/${DateTime.now().millisecondsSinceEpoch}.jpg");
+          .child("owners/$email/parking_images/${widget.parkingId}.jpg");
       await ref.putFile(imageFile);
       return await ref.getDownloadURL();
     } catch (e) {
@@ -73,7 +99,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     }
   }
 
-  Future<void> addParking() async {
+  Future<void> updateParking() async {
     if (_nameController.text.isEmpty ||
         _capacityController.text.isEmpty ||
         _priceController.text.isEmpty) {
@@ -82,43 +108,56 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       return;
     }
 
-    String? imageUrl;
-    if (_image != null) imageUrl = await _uploadImage(_image!);
+    int capacity = int.tryParse(_capacityController.text) ?? 0;
+    double price = double.tryParse(_priceController.text) ?? 0.0;
 
-    final parkingCollection =
-    firestore.collection('owners').doc(userEmail).collection('Owners Parking');
+    String? imageUrl = widget.parkingData['image_url'];
+    if (_image != null) {
+      String? uploadedUrl = await _uploadImage(_image!);
+      if (uploadedUrl != null) imageUrl = uploadedUrl;
+    }
 
-    // Generate unique parking id
-    final parkingDoc = parkingCollection.doc();
+    final email = FirebaseAuth.instance.currentUser!.email!;
+    final docRef = FirebaseFirestore.instance
+        .collection('owners')
+        .doc(email)
+        .collection('Owners Parking')
+        .doc(widget.parkingId);
 
-    Map<String, dynamic> parkingData = {
-      'Parking name': _nameController.text,
-      'Parking Description': _descController.text,
-      'Parking Capacity': int.parse(_capacityController.text),
-      'Parking Pricing (per hour)': double.parse(_priceController.text),
-      'Access': access24,
-      'CCTV': cctv,
-      'EV Charging': evCharging,
-      'Disabled Access': disabledAccess,
-      'image_url': imageUrl,
-      'location': _pickedLocation != null
-          ? {'latitude': _pickedLocation!.latitude, 'longitude': _pickedLocation!.longitude}
-          : null,
-      'created_at': DateTime.now(),
-    };
+    try {
+      await docRef.update({
+        'Parking name': _nameController.text,
+        'Parking description': _descController.text,
+        'Parking Pricing (per hour)': double.parse(_priceController.text),
+        'Parking Capacity': int.parse(_capacityController.text),
 
-    await parkingDoc.set(parkingData);
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Parking Added Successfully")));
+        'Access': access24,
+        'cctv': cctv,
+        'EV Charging': evCharging,
+        'Disabled Access': disabledAccess,
+        'image_url': imageUrl,
+        'location': _pickedLocation != null
+            ? {'latitude': _pickedLocation!.latitude, 'longitude': _pickedLocation!.longitude}
+            : widget.parkingData['location'],
+      });
 
-    Navigator.pop(context, true); // Return true to refresh dashboard
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Parking updated successfully!")));
+
+      Navigator.pop(context, true); // Return true to refresh dashboard
+    } catch (e) {
+      print("Update failed: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Update failed: $e")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Parking Lot")),
+      appBar: AppBar(title: const Text("Edit Parking")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -131,9 +170,15 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(16),
-                  image: _image != null ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover) : null,
+                  image: _image != null
+                      ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
+                      : widget.parkingData['image_url'] != null
+                      ? DecorationImage(
+                      image: NetworkImage(widget.parkingData['image_url']),
+                      fit: BoxFit.cover)
+                      : null,
                 ),
-                child: _image == null
+                child: _image == null && widget.parkingData['image_url'] == null
                     ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
                     : null,
               ),
@@ -143,7 +188,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             _buildTextField(_descController, "Description", Icons.text_fields_outlined),
             _buildTextField(_locationController, "Location", Icons.location_on_outlined,
                 readOnly: true, onTap: _pickLocationOnMap),
-            _buildTextField(_capacityController, "Capacity", Icons.people_outline, inputType: TextInputType.number),
+            _buildTextField(_capacityController, "Capacity", Icons.people_outline,
+                inputType: TextInputType.number),
             _buildTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
                 inputType: TextInputType.numberWithOptions(decimal: true)),
             const SizedBox(height: 20),
@@ -152,7 +198,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             _buildCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
             _buildCheckbox("Disabled Access", disabledAccess, (v) => setState(() => disabledAccess = v!)),
             const SizedBox(height: 25),
-            ElevatedButton(onPressed: addParking, child: const Text("Add Parking")),
+            ElevatedButton(onPressed: updateParking, child: const Text("Save Changes")),
           ],
         ),
       ),

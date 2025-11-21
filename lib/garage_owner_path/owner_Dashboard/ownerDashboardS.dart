@@ -1,18 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../ai_chat_bot/chatBot.dart';
-import '../../users_path/users profile/usersProfileScreen.dart';
 import '../add_lot/addLotScreen.dart';
-import '../manage_spots/manageSpotsS.dart';
 import '../owner_Earnings/ownerEarnings.dart';
-import '../owner_profile/ownerProfile.dart' hide ChatScreen;
+import '../owner_profile/ownerProfile.dart';
+import 'editParkingScreen.dart';
+import '../manage_spots/manageSpotsS.dart';
+import '../../ai_chat_bot/chatBot.dart';
 
 class OwnerDashboardScreen extends StatelessWidget {
   const OwnerDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userEmail = FirebaseAuth.instance.currentUser?.email;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
@@ -37,18 +39,11 @@ class OwnerDashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Text(
-                              "Dashboard",
-                              style: TextStyle(
+                        const Text("Dashboard",
+                            style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                                fontWeight: FontWeight.w600)),
                         Row(
                           children: [
                             GestureDetector(
@@ -56,30 +51,29 @@ class OwnerDashboardScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder:
-                                          (context) => const ChatScreen(),
-                                    ),
+                                        builder: (context) => const ChatScreen()),
                                   );
                                 },
-                                child: const Text("✨",style: TextStyle(fontSize: 25),)
-                            ),
-                            SizedBox(width: 10,),
+                                child: const Text(
+                                  "✨",
+                                  style: TextStyle(fontSize: 25),
+                                )),
+                            const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder:
-                                        (context) => const OwnerProfileScreen(),
-                                  ),
+                                      builder: (context) =>
+                                      const OwnerProfileScreen()),
                                 );
                               },
-                              child: const Icon(size: 30,
+                              child: const Icon(
+                                size: 30,
                                 Icons.person_outline,
                                 color: Colors.white,
                               ),
                             ),
-
                           ],
                         ),
                       ],
@@ -90,40 +84,34 @@ class OwnerDashboardScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _smallInfoCard(
-                            title: "Occupancy",
-                            value: "75%",
-                            subtitle: "60/80 spots",
-                          ),
+                              title: "Occupancy", value: "75%", subtitle: "60/80 spots"),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: _smallInfoCard(
-                            title: "Today",
-                            value: "450 JD",
-                            subtitle: "+12%",
-                            subtitleColor: Colors.green,
-                          ),
+                              title: "Today", value: "450 JD", subtitle: "+12%", subtitleColor: Colors.green),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 16),
-
               // Action Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      final added = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddParkingLotScreen(),
                         ),
                       );
+                      if (added == true) {
+                        (context as Element).reassemble();
+                      }
                     },
                     child: _actionButton(Icons.add, "Add Lot"),
                   ),
@@ -131,44 +119,31 @@ class OwnerDashboardScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const EarningsScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => const EarningsScreen()),
                       );
                     },
                     child: _actionButton(Icons.bar_chart_rounded, "Earnings"),
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
-
-              // My Lots section
-              const Text(
-                "My Lots",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
+              const Text("My Lots", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
-
-              // Example lot cards
-              StreamBuilder(
+              StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('owners')
-                    .doc(FirebaseAuth.instance.currentUser!.email)
+                    .doc(userEmail)
                     .collection('Owners Parking')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Padding(
                       padding: EdgeInsets.all(20),
-                      child: Text(
-                        "No parking lots added yet.",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
+                      child: Text("No parking lots added yet.",
+                          style: TextStyle(fontSize: 16, color: Colors.grey)),
                     );
                   }
 
@@ -176,20 +151,20 @@ class OwnerDashboardScreen extends StatelessWidget {
 
                   return Column(
                     children: docs.map((doc) {
-                      final data = doc.data();
+                      final data = doc.data() as Map<String, dynamic>;
                       return _lotCard(
                         context: context,
                         imageUrl: data['image_url'] ?? "",
                         title: data['Parking name'] ?? 'No Name',
                         occupied: "0/${data['Parking Capacity'] ?? '0'}",
-                     //   rate: "0%",
                         today: "0 JD",
+                        fullData: data,
+                        parkingId: doc.id,
                       );
                     }).toList(),
                   );
                 },
               ),
-
             ],
           ),
         ),
@@ -198,7 +173,6 @@ class OwnerDashboardScreen extends StatelessWidget {
   }
 
   // --- Helper Widgets ---
-
   static Widget _smallInfoCard({
     required String title,
     required String value,
@@ -219,14 +193,9 @@ class OwnerDashboardScreen extends StatelessWidget {
         children: [
           Text(title, style: const TextStyle(color: Colors.white70)),
           const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text(value,
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 2),
           Text(subtitle, style: TextStyle(color: subtitleColor, fontSize: 14)),
         ],
@@ -258,8 +227,9 @@ class OwnerDashboardScreen extends StatelessWidget {
     required String imageUrl,
     required String title,
     required String occupied,
-   // required String rate,
     required String today,
+    required Map<String, dynamic> fullData,
+    required String parkingId,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -273,31 +243,22 @@ class OwnerDashboardScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.network(
-              imageUrl,
-              height: 150,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: imageUrl.isNotEmpty
+                ? Image.network(imageUrl, height: 150, width: double.infinity, fit: BoxFit.cover)
+                : Container(height: 150, color: Colors.grey.shade300),
           ),
           Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                Text(title,
+                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _infoText("Occupied", occupied),
-                    // _infoText("Rate", rate),
                     _infoText("Today", today, color: Colors.green),
                   ],
                 ),
@@ -308,30 +269,50 @@ class OwnerDashboardScreen extends StatelessWidget {
                   backgroundColor: Colors.grey.shade200,
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ManageSpotsScreen(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                      );
-                    },
-                    child: const Text(
-                      "Manage Spots",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => ManageSpotsScreen()),
+                          );
+                        },
+                        child: const Text("Manage Spots",
+                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () async {
+                          final updated = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditParkingScreen(
+                                  parkingData: fullData, parkingId: parkingId),
+                            ),
+                          );
+                          if (updated == true) {
+                            (context as Element).reassemble();
+                          }
+                        },
+                        child: const Text("Edit Parking",
+                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blue)),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -345,17 +326,8 @@ class OwnerDashboardScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(color: Colors.black54, fontSize: 13),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: color ?? Colors.black,
-          ),
-        ),
+        Text(label, style: const TextStyle(color: Colors.black54, fontSize: 13)),
+        Text(value, style: TextStyle(fontWeight: FontWeight.w500, color: color ?? Colors.black)),
       ],
     );
   }
