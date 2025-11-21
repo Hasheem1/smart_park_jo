@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../owner_Dashboard/ownerDashboardS.dart';
 
 class OwnerLoginScreen extends StatefulWidget {
-  const OwnerLoginScreen({Key? key}) : super(key: key);
+  const OwnerLoginScreen({super.key});
 
   @override
   State<OwnerLoginScreen> createState() => _OwnerLoginScreenState();
@@ -159,7 +159,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                   icon: Icons.lock_outline,
                   obscureText: true,
                   validator: (value) =>
-                  value!.length < 6 || value.length==0 ? " Enter valid Password  " : null,
+                  value!.length < 6 || value.isEmpty ? " Enter valid Password  " : null,
                 ),
                 const SizedBox(height: 20),
 

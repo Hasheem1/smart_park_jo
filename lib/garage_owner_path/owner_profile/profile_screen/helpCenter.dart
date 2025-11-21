@@ -178,10 +178,6 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     );
   }
   Future<void> addMesseage() async {
-    if ( emailController == null || _messageController == null) return;
-
-
-
     Map<String, dynamic> joinUsMessage = {
       'Message ':_messageController.text,
       'cuurent user email':userEmail,

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBookingsScreen extends StatefulWidget {
-  const MyBookingsScreen({Key? key}) : super(key: key);
+  const MyBookingsScreen({super.key});
 
   @override
   State<MyBookingsScreen> createState() => _MyBookingsScreenState();
@@ -206,14 +206,14 @@ class BookingCard extends StatelessWidget {
   final String status;
 
   const BookingCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.dateTime,
     required this.duration,
     required this.price,
     required this.status,
-  }) : super(key: key);
+  });
 
   static const Color primaryBlue = Color(0xFF2196F3);
   static const Color accentGreen = Color(0xFF2196F3);

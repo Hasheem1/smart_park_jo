@@ -52,7 +52,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
       setState(() {
         currentLocation = LatLng(position.latitude, position.longitude);
-        if (pickedLocation == null) pickedLocation = currentLocation;
+        pickedLocation ??= currentLocation;
         loading = false;
       });
 

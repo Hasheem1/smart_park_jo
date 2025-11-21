@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
-import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
 import 'info/userDetails.dart';
@@ -304,7 +302,7 @@ class UserProfileScreen extends StatelessWidget {
             trailing: Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: activeColor ?? const Color(0xFF2F66F5),
+              activeThumbColor: activeColor ?? const Color(0xFF2F66F5),
             ),
           ),
         ),
@@ -313,11 +311,28 @@ class UserProfileScreen extends StatelessWidget {
   }
 }
 
+// // 🚫 Removes scroll glow
+// class _NoGlowScrollBehavior extends ScrollBehavior {
+//   @override
+//   Widget buildOverscrollIndicator(
+//       BuildContext context, Widget child,
+//       AxisDirection axisDirection) {
+//     return child;
+//   }
+//
+//   @override
+//   ScrollPhysics getScrollPhysics(BuildContext context) {
+//     return const BouncingScrollPhysics();
+//   }
+// }
 // 🚫 Removes scroll glow
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildOverscrollIndicator(
+      BuildContext context,
+      Widget child,
+      ScrollableDetails details,
+      ) {
     return child;
   }
 
@@ -326,3 +341,4 @@ class _NoGlowScrollBehavior extends ScrollBehavior {
     return const BouncingScrollPhysics();
   }
 }
+

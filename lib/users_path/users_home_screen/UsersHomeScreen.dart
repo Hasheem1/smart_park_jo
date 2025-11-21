@@ -400,7 +400,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
 
     final filteredMarkers = snapshot.docs.map((doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data();
     final name = (data["Parking name"] ?? "").toString().toLowerCase();
     final locationName = (data["location"] ?? "").toString().toLowerCase();
 
@@ -514,7 +514,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
     final docs = snapshot.data!.docs;
     final filteredDocs = docs.where((doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data();
     final name = (data["Parking name"] ?? "").toString().toLowerCase();
     final locationName = (data["location"] ?? "").toString().toLowerCase();
     return name.contains(searchQuery) || locationName.contains(searchQuery);
@@ -527,7 +527,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     return ListView(
     padding: const EdgeInsets.all(16),
     children: filteredDocs.map((doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data();
     return GestureDetector(
     onTap: () {
     Navigator.push(

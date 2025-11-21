@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../users_home_screen/UsersHomeScreen.dart';
 
 class UsersLogIn extends StatefulWidget {
-  const UsersLogIn({Key? key}) : super(key: key);
+  const UsersLogIn({super.key});
 
   @override
   State<UsersLogIn> createState() => _UsersLogInState();

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class ActiveReservationScreen extends StatefulWidget {
-  const ActiveReservationScreen({Key? key}) : super(key: key);
+  const ActiveReservationScreen({super.key});
 
   @override
   _ActiveReservationScreenState createState() =>

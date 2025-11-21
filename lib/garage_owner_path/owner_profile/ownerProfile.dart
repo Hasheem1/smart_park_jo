@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
-import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
 
@@ -106,7 +105,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                             children: [
                               CircleAvatar(backgroundColor: Colors.white,
                                 radius: 30,
-                                child: Text("${trimEmail.substring(0,2).toUpperCase()}",style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
                                 // backgroundImage: NetworkImage(
                                 //   "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png",
                                 // ),
@@ -338,7 +337,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
             trailing: Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: activeColor ?? const Color(0xFF2F66F5),
+              activeThumbColor: activeColor ?? const Color(0xFF2F66F5),
             ),
           ),
         ),
@@ -396,13 +395,29 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
 }
 
 // 🚫 Removes scroll glow
+// class _NoGlowScrollBehavior extends ScrollBehavior {
+//   @override
+//   Widget buildOverscrollIndicator(
+//     BuildContext context,
+//     Widget child,
+//     AxisDirection axisDirection,
+//   ) {
+//     return child;
+//   }
+//
+//   @override
+//   ScrollPhysics getScrollPhysics(BuildContext context) {
+//     return const BouncingScrollPhysics();
+//   }
+// }
+// 🚫 Removes scroll glow
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-    BuildContext context,
-    Widget child,
-    AxisDirection axisDirection,
-  ) {
+  Widget buildOverscrollIndicator(
+      BuildContext context,
+      Widget child,
+      ScrollableDetails details,
+      ) {
     return child;
   }
 

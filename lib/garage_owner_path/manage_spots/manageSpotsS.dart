@@ -220,7 +220,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                                 Switch(
                                   value: isAvailable,
                                   onChanged: (_) {},
-                                  activeColor: statusColor,
+                                  activeThumbColor: statusColor,
                                   inactiveThumbColor: Colors.grey,
                                 ),
                               ],
