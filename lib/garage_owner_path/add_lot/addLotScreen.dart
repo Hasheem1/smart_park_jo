@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../owner_Dashboard/mapPickerScreen.dart';
 
-
 class AddParkingLotScreen extends StatefulWidget {
   const AddParkingLotScreen({super.key});
 
@@ -36,7 +35,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   final String? userEmail = FirebaseAuth.instance.currentUser?.email;
 
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final pickedFile =
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (pickedFile != null) setState(() => _image = File(pickedFile.path));
   }
 
@@ -77,8 +77,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     if (_nameController.text.isEmpty ||
         _capacityController.text.isEmpty ||
         _priceController.text.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please fill all required fields")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please fill all required fields")));
       return;
     }
 
@@ -88,7 +88,6 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     final parkingCollection =
     firestore.collection('owners').doc(userEmail).collection('Owners Parking');
 
-    // Generate unique parking id
     final parkingDoc = parkingCollection.doc();
 
     Map<String, dynamic> parkingData = {
@@ -112,7 +111,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text("Parking Added Successfully")));
 
-    Navigator.pop(context, true); // Return true to refresh dashboard
+    Navigator.pop(context, true);
   }
 
   @override
@@ -131,26 +130,32 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(16),
-                  image: _image != null ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover) : null,
+                  image: _image != null
+                      ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
+                      : null,
                 ),
                 child: _image == null
-                    ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
+                    ? const Center(
+                    child:
+                    Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
                     : null,
               ),
             ),
             const SizedBox(height: 20),
             _buildTextField(_nameController, "Parking Name", Icons.local_parking_rounded),
             _buildTextField(_descController, "Description", Icons.text_fields_outlined),
-            _buildTextField(_locationController, "Location", Icons.location_on_outlined,
-                readOnly: true, onTap: _pickLocationOnMap),
-            _buildTextField(_capacityController, "Capacity", Icons.people_outline, inputType: TextInputType.number),
+            _buildLocationField(), // Modern location picker with map preview
+            const SizedBox(height: 16),
+            _buildTextField(_capacityController, "Capacity", Icons.people_outline,
+                inputType: TextInputType.number),
             _buildTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
                 inputType: TextInputType.numberWithOptions(decimal: true)),
             const SizedBox(height: 20),
             _buildCheckbox("24/7 Access", access24, (v) => setState(() => access24 = v!)),
             _buildCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
             _buildCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
-            _buildCheckbox("Disabled Access", disabledAccess, (v) => setState(() => disabledAccess = v!)),
+            _buildCheckbox("Disabled Access", disabledAccess,
+                    (v) => setState(() => disabledAccess = v!)),
             const SizedBox(height: 25),
             ElevatedButton(onPressed: addParking, child: const Text("Add Parking")),
           ],
@@ -158,6 +163,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       ),
     );
   }
+
+  // ---------------- Widgets ----------------
 
   Widget _buildTextField(TextEditingController controller, String label, IconData icon,
       {TextInputType inputType = TextInputType.text, bool readOnly = false, VoidCallback? onTap}) {
@@ -179,5 +186,64 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
 
   Widget _buildCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
     return CheckboxListTile(title: Text(title), value: value, onChanged: onChanged);
+  }
+
+  Widget _buildLocationField() {
+    return GestureDetector(
+      onTap: _pickLocationOnMap,
+      child: Container(
+        height: 140,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blueAccent.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.blueAccent, width: 1.5),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.location_on, size: 36, color: Colors.blueAccent),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _pickedLocation == null
+                  ? const Text(
+                "Pick parking location",
+                style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+              )
+                  : ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  height: 100,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                        target: _pickedLocation!, zoom: 15),
+                    markers: {
+                      Marker(
+                          markerId: const MarkerId('picked'),
+                          position: _pickedLocation!)
+                    },
+                    zoomControlsEnabled: false,
+                    scrollGesturesEnabled: false,
+                    tiltGesturesEnabled: false,
+                    rotateGesturesEnabled: false,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: const Text(
+                "Pick",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

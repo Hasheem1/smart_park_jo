@@ -104,7 +104,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                 : {},
           ),
           Positioned(
-            bottom: 20,
+            bottom: 120,
             left: 20,
             right: 20,
             child: ElevatedButton.icon(
