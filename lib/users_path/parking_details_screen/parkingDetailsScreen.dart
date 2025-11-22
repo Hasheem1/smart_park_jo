@@ -1,7 +1,22 @@
+
+
 // import 'package:flutter/material.dart';
-// // 🚗 Parking Details Screen
+// import 'package:smart_park_jo/users_path/parking_details_screen/theme/app_colors.dart';
+// import '../reservation/reservation_main.dart';
+//
 // class ParkingDetailsScreen extends StatefulWidget {
-//   final String imageUrl, title, price, rating, distance, spots, description;
+//   final String imageUrl;
+//   final String title;
+//   final String price;
+//   final String rating;
+//   final String distance;
+//   final String spots;
+//   final String description;
+//
+//   final bool access24;
+//   final bool cctv;
+//   final bool evCharging;
+//   final bool disabledAccess;
 //
 //   const ParkingDetailsScreen({
 //     super.key,
@@ -12,6 +27,10 @@
 //     required this.distance,
 //     required this.spots,
 //     required this.description,
+//     required this.access24,
+//     required this.cctv,
+//     required this.evCharging,
+//     required this.disabledAccess,
 //   });
 //
 //   @override
@@ -21,222 +40,71 @@
 // class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
 //   @override
 //   Widget build(BuildContext context) {
-//     final Color primaryBlue = const Color(0xFF007BFF);
-//     final Color successGreen = const Color(0xFF2ECC71);
-//
 //     return Scaffold(
-//       backgroundColor: const Color(0xFFF4F6F8),
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         elevation: 0,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         padding: const EdgeInsets.symmetric(horizontal: 16),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             ClipRRect(
-//               borderRadius: BorderRadius.circular(14),
-//               child: Image.network(widget.imageUrl,
-//                   height: 180, width: double.infinity, fit: BoxFit.cover),
-//             ),
-//             const SizedBox(height: 12),
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: Text(widget.title,
-//                       style: const TextStyle(
-//                           fontSize: 20, fontWeight: FontWeight.bold)),
-//                 ),
-//                 Container(
-//                   decoration: BoxDecoration(
-//                     color: successGreen.withOpacity(0.15),
-//                     borderRadius: BorderRadius.circular(8),
-//                   ),
-//                   padding:
-//                   const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-//                   child: Text(widget.spots,
-//                       style: TextStyle(
-//                           color: successGreen, fontWeight: FontWeight.w600)),
-//                 )
-//               ],
-//             ),
-//             const SizedBox(height: 16),
-//
-//             // Info boxes
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 _infoBox("Price/hour", widget.price),
-//                 _infoBox("Rating", "⭐ ${widget.rating}"),
-//                 _infoBox("Distance", widget.distance),
-//               ],
-//             ),
-//             const SizedBox(height: 16),
-//
-//             // Features
-//             _sectionBox("Features", [
-//               _feature(Icons.access_time, "24/7 Access"),
-//               _feature(Icons.videocam_outlined, "CCTV Security"),
-//             ]),
-//             const SizedBox(height: 12),
-//
-//             // About
-//             _sectionBox("About", [
-//               Text(widget.description,
-//                   style: const TextStyle(color: Colors.black87, height: 1.4)),
-//             ]),
-//             const SizedBox(height: 80),
-//           ],
-//         ),
-//       ),
-//       bottomNavigationBar: Padding(
-//         padding: const EdgeInsets.all(16),
-//         child: ElevatedButton(
-//           onPressed: () {},
-//           style: ElevatedButton.styleFrom(
-//             backgroundColor: primaryBlue,
-//             minimumSize: const Size(double.infinity, 50),
-//             shape:
-//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-//           ),
-//           child: const Text("Reserve Spot",
-//               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _infoBox(String title, String value) {
-//     return Expanded(
-//       child: Container(
-//         padding: const EdgeInsets.all(12),
-//         margin: const EdgeInsets.symmetric(horizontal: 4),
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         child: Column(
-//           children: [
-//             Text(title,
-//                 style: const TextStyle(color: Colors.grey, fontSize: 13)),
-//             const SizedBox(height: 6),
-//             Text(value,
-//                 style:
-//                 const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _sectionBox(String title, List<Widget> children) {
-//     return Container(
-//       width: double.infinity,
-//       padding: const EdgeInsets.all(14),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(title,
-//                 style:
-//                 const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-//             const SizedBox(height: 8),
-//             ...children,
-//           ]),
-//     );
-//   }
-//
-//   Widget _feature(IconData icon, String text) {
-//     return Padding(
-//       padding: const EdgeInsets.only(bottom: 4),
-//       child: Row(children: [
-//         Icon(icon, size: 18, color: Colors.black54),
-//         const SizedBox(width: 8),
-//         Text(text, style: const TextStyle(color: Colors.black87)),
-//       ]),
-//     );
-//   }
-// }
-//
-// import 'package:flutter/material.dart';
-//
-// class ParkingDetailsScreen extends StatefulWidget {
-//   final String imageUrl, title, price, rating, distance, spots, description;
-//
-//   const ParkingDetailsScreen({
-//     super.key,
-//     required this.imageUrl,
-//     required this.title,
-//     required this.price,
-//     required this.rating,
-//     required this.distance,
-//     required this.spots,
-//     required this.description,
-//   });
-//
-//   @override
-//   State<ParkingDetailsScreen> createState() => _ParkingDetailsScreenState();
-// }
-//
-// class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
-//   final Color primaryBlue = const Color(0xFF007BFF);
-//   final Color successGreen = const Color(0xFF2ECC71);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: const Color(0xFFF4F6F8),
+//       backgroundColor: AppColors.backgroundGray,
 //       body: Stack(
 //         children: [
-//           // ✅ Image Header
+//
+//           // 🔹 Header Image
 //           SizedBox(
 //             height: 260,
 //             width: double.infinity,
-//             child: Image.network(
-//               widget.imageUrl,
-//               fit: BoxFit.cover,
+//             child: Stack(
+//               children: [
+//                 Hero(
+//                   tag: widget.title,
+//                   child: Image.network(
+//                     widget.imageUrl,
+//                     fit: BoxFit.cover,
+//                     width: double.infinity,
+//                     height: 260,
+//                   ),
+//                 ),
+//                 Container(
+//                   height: 260,
+//                   decoration: BoxDecoration(
+//                     gradient: LinearGradient(
+//                       begin: Alignment.bottomCenter,
+//                       end: Alignment.topCenter,
+//                       colors: [
+//                         Colors.black.withOpacity(0.45),
+//                         Colors.transparent
+//                       ],
+//                     ),
+//                   ),
+//                 )
+//               ],
 //             ),
 //           ),
 //
-//           // ✅ Transparent AppBar
+//           // 🔹 Back Button
 //           SafeArea(
 //             child: Padding(
 //               padding: const EdgeInsets.all(12),
 //               child: CircleAvatar(
 //                 backgroundColor: Colors.white.withOpacity(0.9),
 //                 child: IconButton(
-//                   icon: const Icon(Icons.arrow_back_ios_new,
-//                       color: Colors.black87),
+//                   icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
 //                   onPressed: () => Navigator.pop(context),
 //                 ),
 //               ),
 //             ),
 //           ),
 //
-//           // ✅ Scrollable Content
+//           // 🔹 Content Sheet
 //           DraggableScrollableSheet(
-//             initialChildSize: 0.65,
-//             minChildSize: 0.6,
+//             initialChildSize: 0.75,
+//             minChildSize: 0.75,
 //             maxChildSize: 0.95,
 //             builder: (context, scrollController) {
 //               return Container(
-//                 padding:
-//                 const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+//                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
 //                 decoration: const BoxDecoration(
 //                   color: Colors.white,
-//                   borderRadius:
-//                   BorderRadius.vertical(top: Radius.circular(24)),
+//                   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
 //                   boxShadow: [
 //                     BoxShadow(
-//                       color: Colors.black12,
+//                       color: Colors.black26,
 //                       blurRadius: 10,
 //                       offset: Offset(0, -2),
 //                     ),
@@ -247,19 +115,22 @@
 //                   child: Column(
 //                     crossAxisAlignment: CrossAxisAlignment.start,
 //                     children: [
+//
+//                       // Handle Indicator
 //                       Center(
 //                         child: Container(
-//                           width: 40,
-//                           height: 4,
+//                           width: 45,
+//                           height: 5,
 //                           decoration: BoxDecoration(
 //                             color: Colors.grey[300],
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
 //                         ),
 //                       ),
-//                       const SizedBox(height: 12),
 //
-//                       // Title + Spots
+//                       const SizedBox(height: 20),
+//
+//                       // 🔹 Title + Spots
 //                       Row(
 //                         crossAxisAlignment: CrossAxisAlignment.start,
 //                         children: [
@@ -267,62 +138,70 @@
 //                             child: Text(
 //                               widget.title,
 //                               style: const TextStyle(
-//                                 fontSize: 22,
+//                                 fontSize: 24,
 //                                 fontWeight: FontWeight.bold,
 //                                 color: Colors.black87,
 //                               ),
 //                             ),
 //                           ),
 //                           Container(
-//                             decoration: BoxDecoration(
-//                               color: successGreen.withOpacity(0.1),
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
 //                             padding: const EdgeInsets.symmetric(
-//                                 horizontal: 10, vertical: 6),
+//                                 horizontal: 12, vertical: 6),
+//                             decoration: BoxDecoration(
+//                               color: Colors.green.withOpacity(0.12),
+//                               borderRadius: BorderRadius.circular(10),
+//                             ),
 //                             child: Text(
-//                               widget.spots,
-//                               style: TextStyle(
-//                                   color: successGreen,
-//                                   fontWeight: FontWeight.w600),
+//                               "${widget.spots}",
+//                               style: const TextStyle(
+//                                 color: Colors.green,
+//                                 fontWeight: FontWeight.bold,
+//                               ),
 //                             ),
 //                           ),
 //                         ],
 //                       ),
-//                       const SizedBox(height: 16),
 //
-//                       // Info boxes
+//                       const SizedBox(height: 20),
+//
+//                       // 🔹 Info Boxes Row (Modern Style)
 //                       Row(
 //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                         children: [
-//                           _infoBox("💰 Price/hour", widget.price),
-//                           _infoBox("⭐ Rating", widget.rating),
-//                           _infoBox("📍 Distance", widget.distance),
+//                           _infoCard("💰 /hour", widget.price),
+//                           _infoCard("⭐ Rating", widget.rating),
+//                           _infoCard("📍 Distance", widget.distance),
 //                         ],
 //                       ),
-//                       const SizedBox(height: 24),
 //
-//                       // Features
-//                       _sectionBox("Features", [
-//                         _feature(Icons.lock_clock, "24/7 Access"),
-//                         _feature(Icons.videocam_outlined, "CCTV Security"),
-//                         _feature(Icons.ev_station_outlined, "EV Charging"),
-//                         _feature(Icons.local_parking_outlined, "Covered Parking"),
-//                       ]),
-//                       const SizedBox(height: 16),
+//                       const SizedBox(height: 28),
 //
-//                       // About section
-//                       _sectionBox("About", [
-//                         Text(
-//                           widget.description,
-//                           style: const TextStyle(
-//                             color: Colors.black87,
-//                             height: 1.5,
-//                             fontSize: 15,
-//                           ),
-//                         ),
-//                       ]),
-//                       const SizedBox(height: 100),
+//                       // 🔹 FEATURES (Dynamic Showing ONLY Selected)
+//                       const Text(
+//                         "Features",
+//                         style: TextStyle(
+//                             fontSize: 20, fontWeight: FontWeight.bold),
+//                       ),
+//                       const SizedBox(height: 10),
+//
+//                       _buildFeatureList(),
+//
+//                       const SizedBox(height: 28),
+//
+//                       // 🔹 About Section
+//                       const Text(
+//                         "About",
+//                         style: TextStyle(
+//                             fontSize: 20, fontWeight: FontWeight.bold),
+//                       ),
+//                       const SizedBox(height: 10),
+//                       Text(
+//                         widget.description,
+//                         style: const TextStyle(
+//                             fontSize: 16, height: 1.5, color: Colors.black87),
+//                       ),
+//
+//                       const SizedBox(height: 120),
 //                     ],
 //                   ),
 //                 ),
@@ -330,127 +209,123 @@
 //             },
 //           ),
 //
-//           // ✅ Bottom reservation bar
-//           Align(
-//             alignment: Alignment.bottomCenter,
-//             child: Container(
-//               height: 85,
-//               padding:
-//               const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-//               decoration: const BoxDecoration(
-//                 color: Colors.white,
-//                 boxShadow: [
-//                   BoxShadow(
-//                       color: Colors.black12, blurRadius: 8, offset: Offset(0, -2))
-//                 ],
-//               ),
-//               child: Row(
-//                 children: [
-//                   Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       const Text("Price per hour",
-//                           style: TextStyle(color: Colors.grey, fontSize: 13)),
-//                       Text(
-//                         widget.price,
-//                         style: const TextStyle(
-//                             fontSize: 18, fontWeight: FontWeight.bold),
-//                       ),
-//                     ],
-//                   ),
-//                   const Spacer(),
-//                   ElevatedButton(
-//                     onPressed: () {},
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: primaryBlue,
-//                       minimumSize: const Size(160, 50),
-//                       shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(14)),
-//                     ),
-//                     child: const Text(
-//                       "Reserve Spot",
-//                       style: TextStyle(
-//                           fontSize: 16, fontWeight: FontWeight.bold),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
+//           // 🔹 Bottom Reservation Bar
+//           _bottomBar(context),
 //         ],
 //       ),
 //     );
 //   }
 //
-//   Widget _infoBox(String title, String value) {
-//     return Expanded(
+//   // ----------------------------------
+//   // ⭐ MODERN WIDGETS
+//   // ----------------------------------
+//
+//   Widget _infoCard(String label, String value) {
+//     return Container(
+//       width: 100,
+//       padding: const EdgeInsets.symmetric(vertical: 14),
+//       decoration: BoxDecoration(
+//         color: AppColors.backgroundGray,
+//         borderRadius: BorderRadius.circular(14),
+//       ),
+//       child: Column(
+//         children: [
+//           Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+//           const SizedBox(height: 4),
+//           Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   // 🔥 Only show features that are TRUE
+//   Widget _buildFeatureList() {
+//     final List<Map<String, dynamic>> features = [];
+//
+//     if (widget.access24) features.add({"icon": Icons.lock_clock, "text": "24/7 Access"});
+//     if (widget.cctv) features.add({"icon": Icons.videocam_outlined, "text": "CCTV Security"});
+//     if (widget.evCharging) features.add({"icon": Icons.ev_station_outlined, "text": "EV Charging"});
+//     if (widget.disabledAccess) features.add({"icon": Icons.accessible, "text": "Disabled Access"});
+//
+//     return Column(
+//       children: features
+//           .map(
+//             (f) => Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 6),
+//           child: Row(
+//             children: [
+//               Icon(f["icon"], color: AppColors.primaryBlue, size: 26),
+//               const SizedBox(width: 12),
+//               Text(
+//                 f["text"],
+//                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+//               ),
+//             ],
+//           ),
+//         ),
+//       )
+//           .toList(),
+//     );
+//   }
+//
+//   // 🔹 Bottom Bar
+//   Widget _bottomBar(BuildContext context) {
+//     return Align(
+//       alignment: Alignment.bottomCenter,
 //       child: Container(
-//         padding: const EdgeInsets.symmetric(vertical: 10),
-//         margin: const EdgeInsets.symmetric(horizontal: 4),
-//         decoration: BoxDecoration(
-//           color: const Color(0xFFF8F9FB),
-//           borderRadius: BorderRadius.circular(12),
+//         height: 85,
+//         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+//         decoration: const BoxDecoration(
+//           color: Colors.white,
 //           boxShadow: [
-//             BoxShadow(
-//               color: Colors.black.withOpacity(0.05),
-//               blurRadius: 6,
-//               offset: const Offset(0, 3),
+//             BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -2)),
+//           ],
+//         ),
+//         child: Row(
+//           children: [
+//             Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 const Text("Price per hour",
+//                     style: TextStyle(color: Colors.grey, fontSize: 14)),
+//                 Text(
+//                   widget.price,
+//                   style: const TextStyle(
+//                       fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//               ],
+//             ),
+//             const Spacer(),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (_) => const ReserveSpotScreen()));
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: AppColors.primaryBlue,
+//                 minimumSize: const Size(160, 50),
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(14),
+//                 ),
+//               ),
+//               child: const Text(
+//                 "Reserve Spot",
+//                 style: TextStyle(
+//                     fontSize: 17,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.white),
+//               ),
 //             )
 //           ],
 //         ),
-//         child: Column(
-//           children: [
-//             Text(title,
-//                 style: const TextStyle(color: Colors.grey, fontSize: 13)),
-//             const SizedBox(height: 5),
-//             Text(value,
-//                 style: const TextStyle(
-//                     fontWeight: FontWeight.bold, fontSize: 15)),
-//           ],
-//         ),
 //       ),
-//     );
-//   }
-//
-//   Widget _sectionBox(String title, List<Widget> children) {
-//     return Container(
-//       width: double.infinity,
-//       padding: const EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: const Color(0xFFF8F9FB),
-//         borderRadius: BorderRadius.circular(14),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.black.withOpacity(0.05),
-//             blurRadius: 6,
-//             offset: const Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(title,
-//                 style: const TextStyle(
-//                     fontWeight: FontWeight.w700, fontSize: 16)),
-//             const SizedBox(height: 8),
-//             ...children,
-//           ]),
-//     );
-//   }
-//
-//   Widget _feature(IconData icon, String text) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 6),
-//       child: Row(children: [
-//         Icon(icon, size: 20, color: Colors.blueAccent),
-//         const SizedBox(width: 10),
-//         Text(text, style: const TextStyle(color: Colors.black87, fontSize: 15)),
-//       ]),
 //     );
 //   }
 // }
+
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/users_path/parking_details_screen/theme/app_colors.dart';
 import 'package:smart_park_jo/users_path/parking_details_screen/widgets/feature_item.dart';
@@ -460,7 +335,18 @@ import 'package:smart_park_jo/users_path/parking_details_screen/widgets/section_
 import '../reservation/reservation_main.dart';
 
 class ParkingDetailsScreen extends StatefulWidget {
-  final String imageUrl, title, price, rating, distance, spots, description;
+  final String imageUrl;
+  final String title;
+  final String price;
+  final String rating;
+  final String distance;
+  final String spots;
+  final String description;
+
+  final bool access24;
+  final bool cctv;
+  final bool evCharging;
+  final bool disabledAccess;
 
   const ParkingDetailsScreen({
     super.key,
@@ -471,6 +357,10 @@ class ParkingDetailsScreen extends StatefulWidget {
     required this.distance,
     required this.spots,
     required this.description,
+    required this.access24,
+    required this.cctv,
+    required this.evCharging,
+    required this.disabledAccess,
   });
 
   @override
@@ -478,23 +368,42 @@ class ParkingDetailsScreen extends StatefulWidget {
 }
 
 class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
+  double scrollOffset = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundGray,
       body: Stack(
         children: [
-          // ✅ Header image with gradient
+          // 🔥 Animated Header Image
           SizedBox(
             height: 260,
             width: double.infinity,
             child: Stack(
               children: [
-                Hero(
-                  tag: widget.title,
-                  child: Image.network(widget.imageUrl,
-                      fit: BoxFit.cover, width: double.infinity, height: 260),
+                AnimatedBuilder(
+                  animation: Listenable.merge([]),
+                  builder: (_, __) {
+                    return Transform.translate(
+                      offset: Offset(0, scrollOffset * 0.15), // Parallax effect
+                      child: Transform.scale(
+                        scale: 1 + (scrollOffset * 0.0004), // Zoom on drag
+                        child: Hero(
+                          tag: widget.title,
+                          child: Image.network(
+                            widget.imageUrl,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 260,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
+
+                // Gradient Overlay
                 Container(
                   height: 260,
                   decoration: BoxDecoration(
@@ -512,7 +421,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
             ),
           ),
 
-          // ✅ Back button
+          // Back Button
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(12),
@@ -527,19 +436,23 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
             ),
           ),
 
-          // ✅ Scrollable content
+          // 🔥 Animated Scrollable Sheet
           DraggableScrollableSheet(
             initialChildSize: 0.75,
             minChildSize: 0.75,
             maxChildSize: 0.95,
             builder: (context, scrollController) {
+              scrollController.addListener(() {
+                setState(() {
+                  scrollOffset = scrollController.offset;
+                });
+              });
+
               return Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
@@ -548,107 +461,120 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                     ),
                   ],
                 ),
-                child: SafeArea(
-                  top: false,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 40,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      // Handle bar
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        const SizedBox(height: 12),
+                      ),
+                      const SizedBox(height: 20),
 
-                        // Title + spots
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(widget.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall
-                                      ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87)),
+                      // Title + Spots
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.successGreen.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              child: Text(
-                                widget.spots,
-                                style: const TextStyle(
-                                    color: AppColors.successGreen,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.successGreen.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            child: Text(
+                              widget.spots,
+                              style: const TextStyle(
+                                  color: AppColors.successGreen,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ),
 
-                        // Info row
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InfoBox(title: "💰 Price/hour", value: widget.price),
-                            InfoBox(title: "⭐ Rating", value: widget.rating),
-                            InfoBox(title: "📍 Distance", value: widget.distance),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
+                      const SizedBox(height: 20),
 
-                        // Features
-                        SectionBox(title: "Features", children: const [
-                          FeatureItem(
+                      // Info Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InfoBox(title: "💰 Price/hour", value: widget.price),
+                          InfoBox(title: "⭐ Rating", value: widget.rating),
+                          InfoBox(title: "📍 Distance", value: widget.distance),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+
+                      // 🔥 Dynamic Features
+                      SectionBox(title: "Features", children: [
+                        if (widget.access24)
+                          const FeatureItem(
                               icon: Icons.lock_clock, text: "24/7 Access"),
-                          FeatureItem(
+
+                        if (widget.cctv)
+                          const FeatureItem(
                               icon: Icons.videocam_outlined,
                               text: "CCTV Security"),
-                          FeatureItem(
+
+                        if (widget.evCharging)
+                          const FeatureItem(
                               icon: Icons.ev_station_outlined,
                               text: "EV Charging"),
-                          FeatureItem(
-                              icon: Icons.local_parking_outlined,
-                              text: "Covered Parking"),
-                        ]),
-                        const SizedBox(height: 16),
 
-                        // About section
-                        SectionBox(title: "About", children: [
-                          Text(widget.description,
-                              style: const TextStyle(
-                                  color: Colors.black87,
-                                  height: 1.5,
-                                  fontSize: 15)),
-                        ]),
-                        const SizedBox(height: 100),
-                      ],
-                    ),
+                        if (widget.disabledAccess)
+                          const FeatureItem(
+                              icon: Icons.accessible,
+                              text: "Disabled Access"),
+                      ]),
+
+                      const SizedBox(height: 16),
+
+                      // About Section
+                      SectionBox(title: "About ", children: [
+                        Text(
+                          widget.description,
+                          style: const TextStyle(
+                              color: Colors.black87,
+                              height: 1.5,
+                              fontSize: 15),
+                        ),
+                      ]),
+
+                      const SizedBox(height: 120),
+                    ],
                   ),
                 ),
               );
             },
           ),
 
-          // ✅ Bottom reservation bar
+          // Bottom Reservation Bar
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 85,
-              padding:
-              const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -694,36 +620,12 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                       ),
                     ),
                   )
-
                 ],
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _showReservationSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SizedBox(
-          height: 250,
-          child: Center(
-            child: Text(
-              "Reservation feature coming soon!",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-        );
-      },
     );
   }
 }
