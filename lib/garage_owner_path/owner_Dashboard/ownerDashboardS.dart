@@ -39,7 +39,6 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               _modernActions(context),
               const SizedBox(height: 25),
 
-
               const Text(
                 "My Parking Lots",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -61,7 +60,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-          colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364),],
+          colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -84,22 +83,28 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Row(children: [
-            IconButton(
-              icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ChatScreen()),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+                onPressed:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ChatScreen()),
+                    ),
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.account_circle, color: Colors.white),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const OwnerProfileScreen()),
+              IconButton(
+                icon: const Icon(Icons.account_circle, color: Colors.white),
+                onPressed:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const OwnerProfileScreen(),
+                      ),
+                    ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ],
       ),
     );
@@ -108,11 +113,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   // -----------------------------------------------------------
   Widget _modernStats(String? userEmail) {
     return FutureBuilder<QuerySnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('owners')
-          .doc(userEmail)
-          .collection('Owners Parking')
-          .get(),
+      future:
+          FirebaseFirestore.instance
+              .collection('owners')
+              .doc(userEmail)
+              .collection('Owners Parking')
+              .get(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const SizedBox(height: 80);
@@ -124,15 +130,24 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         for (var doc in snapshot.data!.docs) {
           final data = doc.data() as Map<String, dynamic>;
 
-          totalCapacity += int.tryParse(data['Parking Capacity'].toString()) ?? 0;
+          totalCapacity +=
+              int.tryParse(data['Parking Capacity'].toString()) ?? 0;
           totalOccupied += int.tryParse(data['Occupied Spots'].toString()) ?? 0;
         }
 
         return Row(
           children: [
-            _statCard("Occupancy", "$totalOccupied / $totalCapacity", Icons.local_parking),
+            _statCard(
+              "Parking's Number",
+              "$totalCapacity",
+              Icons.local_parking,
+            ),
             const SizedBox(width: 12),
-            _statCard("Active Lots", snapshot.data!.docs.length.toString(), Icons.layers),
+            _statCard(
+              "Active Lots",
+              snapshot.data!.docs.length.toString(),
+              Icons.layers,
+            ),
           ],
         );
       },
@@ -178,23 +193,31 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           context,
           "Add Lot",
           Icons.add_circle,
-              () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const AddParkingLotScreen())),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddParkingLotScreen()),
+          ),
         ),
         const SizedBox(width: 15),
         _actionCard(
           context,
           "Earnings",
           Icons.payments,
-              () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const EarningsScreen())),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const EarningsScreen()),
+          ),
         ),
       ],
     );
   }
 
   Widget _actionCard(
-      BuildContext context, String title, IconData icon, VoidCallback onTap) {
+    BuildContext context,
+    String title,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -203,7 +226,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           padding: const EdgeInsets.symmetric(vertical: 22),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-                colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)]),
+              colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+            ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -219,8 +243,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               const SizedBox(height: 10),
               Text(
                 title,
-                style:
-                const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -231,20 +257,19 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
 
   // -----------------------------------------------------------
   Widget _modernLotsList(BuildContext context, String? userEmail) {
-    return FutureBuilder<QuerySnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('owners')
-          .doc(userEmail)
-          .collection('Owners Parking')
-          .get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream:
+          FirebaseFirestore.instance
+              .collection('owners')
+              .doc(userEmail)
+              .collection('Owners Parking')
+              .snapshots(), // 👈 REAL-TIME STREAM
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final docs = snapshot.data!.docs;
-
-        if (docs.isEmpty) {
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Padding(
             padding: EdgeInsets.all(20),
             child: Center(
@@ -256,11 +281,19 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           );
         }
 
+        final docs = snapshot.data!.docs;
+
         return Column(
-          children: docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return _lotCard(context: context, data: data, parkingId: doc.id,userEmail: userEmail);
-          }).toList(),
+          children:
+              docs.map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                return _lotCard(
+                  context: context,
+                  data: data,
+                  parkingId: doc.id,
+                  userEmail: userEmail,
+                );
+              }).toList(),
         );
       },
     );
@@ -271,8 +304,6 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     required Map<String, dynamic> data,
     required String parkingId,
     required String? userEmail, // add this
-
-
   }) {
     final imageUrl = data['image_url'] ?? "";
     final capacity =
@@ -284,7 +315,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
-          colors: [Colors.blue.shade50.withOpacity(0.5), Colors.blue.shade100.withOpacity(0.3)],
+          colors: [
+            Colors.blue.shade50.withOpacity(0.5),
+            Colors.blue.shade100.withOpacity(0.3),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -311,19 +345,24 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               ],
             ),
             child: ClipOval(
-              child: imageUrl.isNotEmpty
-                  ? Image.network(
-                imageUrl,
-                width: 70,
-                height: 70,
-                fit: BoxFit.cover,
-              )
-                  : Container(
-                width: 70,
-                height: 70,
-                color: Colors.grey.shade300,
-                child: const Icon(Icons.image_not_supported, size: 32, color: Colors.grey),
-              ),
+              child:
+                  imageUrl.isNotEmpty
+                      ? Image.network(
+                        imageUrl,
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
+                      )
+                      : Container(
+                        width: 70,
+                        height: 70,
+                        color: Colors.grey.shade300,
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          size: 32,
+                          color: Colors.grey,
+                        ),
+                      ),
             ),
           ),
           const SizedBox(width: 16),
@@ -364,17 +403,22 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 6),
-                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                        ),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => EditParkingScreen(
-                              parkingData: data,
-                              parkingId: parkingId,
-                            ),
+                          textStyle: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
+                        onPressed:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => EditParkingScreen(
+                                      parkingData: data,
+                                      parkingId: parkingId,
+                                    ),
+                              ),
+                            ),
                         child: const Text("Edit"),
                       ),
                     ),
@@ -388,12 +432,23 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 6),
-                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                          textStyle: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => ManageSpotsScreen()),
-                        ),
+                        onPressed:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => ManageSpotsScreen(
+                                      parkingId: parkingId,
+                                      parkingData: data,
+                                    ),
+                              ),
+                            ),
+
                         child: const Text("Manage"),
                       ),
                     ),
@@ -407,40 +462,57 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 6),
-                          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                          textStyle: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         onPressed: () async {
                           // Show confirmation dialog
                           final confirm = await showDialog<bool>(
                             context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Confirm Delete"),
-                              content: const Text("Are you sure you want to delete this parking lot?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(ctx).pop(false),
-                                  child: const Text("Cancel"),
+                            builder:
+                                (ctx) => AlertDialog(
+                                  title: const Text("Confirm Delete"),
+                                  content: const Text(
+                                    "Are you sure you want to delete this parking lot?",
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.of(ctx).pop(false),
+                                      child: const Text("Cancel"),
+                                    ),
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.of(ctx).pop(true),
+                                      child: const Text(
+                                        "Delete",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                TextButton(
-                                  onPressed: () => Navigator.of(ctx).pop(true),
-                                  child: const Text("Delete", style: TextStyle(color: Colors.red)),
-                                ),
-                              ],
-                            ),
                           );
 
                           if (confirm != null && confirm) {
                             try {
                               await FirebaseFirestore.instance
                                   .collection('owners')
-                                  .doc(userEmail) // Make sure userEmail is passed to _lotCard
+                                  .doc(
+                                    userEmail,
+                                  ) // Make sure userEmail is passed to _lotCard
                                   .collection('Owners Parking')
                                   .doc(parkingId)
                                   .delete();
 
                               // Optional: Show success message
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Parking lot deleted successfully!")),
+                                const SnackBar(
+                                  content: Text(
+                                    "Parking lot deleted successfully!",
+                                  ),
+                                ),
                               );
 
                               // Refresh UI
@@ -465,5 +537,4 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       ),
     );
   }
-
 }
