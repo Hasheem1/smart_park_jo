@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class ManageSpotsScreen extends StatefulWidget {
   final String parkingId;
   final Map<String, dynamic> parkingData;
@@ -23,7 +24,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
 
     int capacity = widget.parkingData['Parking Capacity'];
 
-    // Generate real spots based on capacity
+    // Generate spots based on capacity
     spots = List.generate(capacity, (index) {
       return {
         "id": "A${(index + 1).toString().padLeft(2, '0')}",
@@ -63,7 +64,8 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon:
+                      const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 8),
@@ -79,7 +81,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // ✅ REAL COUNTERS
+                // SUMMARY CARDS
                 Row(
                   children: [
                     _summaryCard("Available", availableCount),
@@ -89,6 +91,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 ),
                 const SizedBox(height: 20),
 
+                // FILTER BUTTONS
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -99,66 +102,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 ),
                 const SizedBox(height: 20),
 
-<<<<<<< Updated upstream
-                      return Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26.withOpacity(0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  spot["id"],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                Switch(
-                                  value: isAvailable,
-                                  onChanged: (_) {},
-                                  activeThumbColor: statusColor,
-                                  inactiveThumbColor: Colors.grey,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              spot["status"],
-                              style: TextStyle(
-                                color: statusColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            if (!isAvailable && spot["user"] != null) ...[
-                              const SizedBox(height: 6),
-                              Text(
-                                spot["user"],
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              Text(
-                                "Until ${spot["until"]}",
-                                style: const TextStyle(color: Colors.black54),
-                              ),
-                            ]
-                          ],
-                        ),
-                      );
-                    },
-=======
+                // SPOTS GRID
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -169,22 +113,22 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     childAspectRatio: 1.2,
->>>>>>> Stashed changes
                   ),
                   itemBuilder: (context, index) {
                     final spot = filteredSpots[index];
-                    final isAvailable = spot["status"] == "Available";
+                    final isAvailable =
+                        spot["status"] == "Available";
 
                     return Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withOpacity(0.95),
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
-                            color: Colors.black26.withOpacity(0.1),
+                            color: Colors.black12,
                             blurRadius: 8,
-                            offset: const Offset(0, 4),
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -206,8 +150,9 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                                 value: isAvailable,
                                 onChanged: (value) {
                                   setState(() {
-                                    spot["status"] =
-                                    value ? "Available" : "Occupied";
+                                    spot["status"] = value
+                                        ? "Available"
+                                        : "Occupied";
                                   });
                                 },
                               ),
@@ -218,8 +163,8 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                             spot["status"],
                             style: TextStyle(
                               color: isAvailable
-                                  ? const Color(0xFF42A5F5)
-                                  : const Color(0xFF1565C0),
+                                  ? const Color(0xFF2E7D32)
+                                  : const Color(0xFFC62828),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -279,6 +224,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
             colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
           )
               : null,
+          color: !isSelected ? Colors.white24 : null,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(

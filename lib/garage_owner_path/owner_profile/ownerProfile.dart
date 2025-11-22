@@ -394,26 +394,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   }
 }
 
-<<<<<<< Updated upstream
-// 🚫 Removes scroll glow
-// class _NoGlowScrollBehavior extends ScrollBehavior {
-//   @override
-//   Widget buildOverscrollIndicator(
-//     BuildContext context,
-//     Widget child,
-//     AxisDirection axisDirection,
-//   ) {
-//     return child;
-//   }
-//
-//   @override
-//   ScrollPhysics getScrollPhysics(BuildContext context) {
-//     return const BouncingScrollPhysics();
-//   }
-// }
-// 🚫 Removes scroll glow
-=======
->>>>>>> Stashed changes
+
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
