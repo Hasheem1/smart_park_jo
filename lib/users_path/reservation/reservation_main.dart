@@ -1,308 +1,294 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../active reservation/active_reservation.dart';
+import 'package:intl/intl.dart';
 
-class ReserveSpotScreen extends StatefulWidget {
-  const ReserveSpotScreen({super.key});
+class ReservationScreen extends StatefulWidget {
+  final String garageName;
+  final String imageUrl;
+  final String distance;
+
+  const ReservationScreen({
+    super.key,
+    required this.garageName,
+    required this.imageUrl,
+    required this.distance,
+  });
 
   @override
-  State<ReserveSpotScreen> createState() => _ReserveSpotScreenState();
+  State<ReservationScreen> createState() => _ReservationScreenState();
 }
 
-class _ReserveSpotScreenState extends State<ReserveSpotScreen>
-    with SingleTickerProviderStateMixin {
-  int duration = 2;
-  double pricePerHour = 2.5;
-  final TextEditingController plateController = TextEditingController();
+class _ReservationScreenState extends State<ReservationScreen> {
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay? selectedTime;
+  int durationHours = 2;
 
-  late AnimationController _animationController;
-  late Animation<double> _fadeInAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _fadeInAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    );
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    plateController.dispose();
-    super.dispose();
-  }
+  double pricePerHour = 1.5; // You can pass this later if needed
 
   @override
   Widget build(BuildContext context) {
-    double totalCost = duration * pricePerHour;
-
+    double totalPrice = pricePerHour * durationHours;
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F6FF),
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black87,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text(
           "Reserve Spot",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+          style: TextStyle(color: Colors.black),
         ),
       ),
-      body: FadeTransition(
-        opacity: _fadeInAnimation,
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    _modernCard(
-                      child: ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            CupertinoIcons.location_solid,
-                            color: Color(0xFF007BFF),
-                          ),
-                        ),
-                        title: const Text(
-                          "City Center Parking",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: const Text(
-                          "2.5 JOD / hour",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        trailing: const Icon(
-                          CupertinoIcons.map_pin_ellipse,
-                          color: Color(0xFF007BFF),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    _modernCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Select Duration",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _circleButton(
-                                icon: Icons.remove,
-                                onTap: () {
-                                  setState(() {
-                                    if (duration > 1) duration--;
-                                  });
-                                },
-                              ),
-                              const SizedBox(width: 20),
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade50,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(CupertinoIcons.time,
-                                        color: Colors.blue),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      "$duration hours",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              _circleButton(
-                                icon: Icons.add,
-                                onTap: () {
-                                  setState(() {
-                                    if (duration < 24) duration++;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 10,
-                            children: [1, 2, 3, 4, 5, 6, 7, 8].map((h) {
-                              bool selected = duration == h;
-                              return ChoiceChip(
-                                label: Text("${h}h"),
-                                selected: selected,
-                                onSelected: (_) {
-                                  setState(() => duration = h);
-                                },
-                                selectedColor: const Color(0xFF007BFF),
-                                backgroundColor: Colors.grey.shade200,
-                                labelStyle: TextStyle(
-                                  color: selected
-                                      ? Colors.white
-                                      : Colors.grey.shade700,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    _modernCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Car Plate Number",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
-                          ),
-                          const SizedBox(height: 10),
-                          TextField(
-                            controller: plateController,
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                  CupertinoIcons.car_detailed,
-                                  color: Colors.blue),
-                              hintText: "Enter plate number",
-                              filled: true,
-                              fillColor: const Color(0xFFF3F6FA),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    _modernCard(
-                      color: const Color(0xFF007BFF),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Total Cost",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            "${totalCost.toStringAsFixed(2)} JOD",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // --- GARAGE INFO CARD ---
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                  )
+                ],
               ),
-              const SizedBox(height: 10),
-              // Confirm Button (floating style)
-              ElevatedButton.icon(
-                onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveReservationScreen(),));
-                },
-                icon: const Icon(CupertinoIcons.checkmark_alt, size: 22),
-                label: const Text(
-                  "Confirm Reservation",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 55),
-                  backgroundColor: const Color(0xFF00B37A),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      widget.imageUrl,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  elevation: 6,
-                  shadowColor: Colors.greenAccent.withOpacity(0.4),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.garageName,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              size: 16, color: Colors.grey),
+                          const SizedBox(width: 5),
+                          Text(
+                            "${widget.distance} km",
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            // --- SELECT DATE ---
+            const Text(
+              "Select Date",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                dateButton("Today", DateTime.now()),
+                dateButton("Tomorrow", DateTime.now().add(const Duration(days: 1))),
+                dateButton(DateFormat("MMM d")
+                    .format(DateTime.now().add(const Duration(days: 2))), DateTime.now().add(const Duration(days: 2))),
+              ],
+            ),
+
+            const SizedBox(height: 25),
+
+            // --- SELECT TIME ---
+            const Text(
+              "Start Time",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () async {
+                TimeOfDay? time = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (time != null) setState(() => selectedTime = time);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: Text(
+                  selectedTime == null
+                      ? "Select Time"
+                      : selectedTime!.format(context),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+            ),
 
-  // ---- Reusable Widgets ----
+            const SizedBox(height: 25),
 
-  Widget _modernCard({required Widget child, Color? color}) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: color ?? Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: child,
-    );
-  }
+            // --- DURATION ---
+            const Text(
+              "Duration",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 10),
 
-  Widget _circleButton({required IconData icon, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 42,
-        height: 42,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          border: Border.all(color: Colors.blue, width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.blue.withOpacity(0.15),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      if (durationHours > 1) {
+                        setState(() => durationHours--);
+                      }
+                    },
+                    icon: const Icon(Icons.remove),
+                  ),
+                  Text(
+                    "$durationHours hours",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  IconButton(
+                    onPressed: () => setState(() => durationHours++),
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            // --- SUMMARY CARD ---
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Summary",
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const SizedBox(height: 10),
+                  summaryRow("Price per hour", "$pricePerHour JD"),
+                  summaryRow("Duration", "$durationHours hours"),
+                  const Divider(),
+                  summaryRow("Total", "$totalPrice JD",
+                      isBold: true, color: Colors.blue),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // --- CONTINUE BUTTON ---
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  "Continue to Payment",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
-        child: Icon(icon, color: Colors.blue),
+      ),
+    );
+  }
+
+  // --- DATE BUTTON WIDGET ---
+  Widget dateButton(String label, DateTime date) {
+    bool isSelected = DateFormat("yyyy-MM-dd").format(date) ==
+        DateFormat("yyyy-MM-dd").format(selectedDate);
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: GestureDetector(
+        onTap: () => setState(() => selectedDate = date),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.blue),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.blue,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- SUMMARY ROW ---
+  Widget summaryRow(String label, String value,
+      {bool isBold = false, Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(value,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+                color: color ?? Colors.black,
+              )),
+        ],
       ),
     );
   }
 }
+
+
+
