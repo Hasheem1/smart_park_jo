@@ -35,16 +35,18 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   final String? userEmail = FirebaseAuth.instance.currentUser?.email;
 
   Future<void> _pickImage() async {
-    final pickedFile =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
     if (pickedFile != null) setState(() => _image = File(pickedFile.path));
   }
 
   Future<String?> _uploadImage(File imageFile) async {
     try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child("owners/$userEmail/parking_images/${DateTime.now().millisecondsSinceEpoch}.jpg");
+      final ref = FirebaseStorage.instance.ref().child(
+        "owners/$userEmail/parking_images/${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
       await ref.putFile(imageFile);
       return await ref.getDownloadURL();
     } catch (e) {
@@ -57,10 +59,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     final selectedLocation = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => MapPickerScreen(
-          initialLocation: _pickedLocation,
-          initialPlaceName: _locationController.text,
-        ),
+        builder:
+            (_) => MapPickerScreen(
+              initialLocation: _pickedLocation,
+              initialPlaceName: _locationController.text,
+            ),
       ),
     );
 
@@ -68,7 +71,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       setState(() {
         _pickedLocation = selectedLocation;
         _locationController.text =
-        "Lat: ${selectedLocation.latitude}, Lng: ${selectedLocation.longitude}";
+            "Lat: ${selectedLocation.latitude}, Lng: ${selectedLocation.longitude}";
       });
     }
   }
@@ -78,15 +81,18 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         _capacityController.text.isEmpty ||
         _priceController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please fill all required fields")));
+        const SnackBar(content: Text("Please fill all required fields")),
+      );
       return;
     }
 
     String? imageUrl;
     if (_image != null) imageUrl = await _uploadImage(_image!);
 
-    final parkingCollection =
-    firestore.collection('owners').doc(userEmail).collection('Owners Parking');
+    final parkingCollection = firestore
+        .collection('owners')
+        .doc(userEmail)
+        .collection('Owners Parking');
 
     final parkingDoc = parkingCollection.doc();
 
@@ -100,16 +106,21 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       'EV Charging': evCharging,
       'Disabled Access': disabledAccess,
       'image_url': imageUrl,
-      'location': _pickedLocation != null
-          ? {'latitude': _pickedLocation!.latitude, 'longitude': _pickedLocation!.longitude}
-          : null,
+      'location':
+          _pickedLocation != null
+              ? {
+                'latitude': _pickedLocation!.latitude,
+                'longitude': _pickedLocation!.longitude,
+              }
+              : null,
       'created_at': DateTime.now(),
     };
 
     await parkingDoc.set(parkingData);
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Parking Added Successfully")));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Parking Added Successfully")));
 
     Navigator.pop(context, true);
   }
@@ -117,7 +128,9 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Parking Lot")),
+      appBar: AppBar(title: const Text("Add Parking Lot")
+      ,        centerTitle: true, // <-- This centers the title
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -130,34 +143,97 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(16),
-                  image: _image != null
-                      ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
-                      : null,
+                  image:
+                      _image != null
+                          ? DecorationImage(
+                            image: FileImage(_image!),
+                            fit: BoxFit.cover,
+                          )
+                          : null,
                 ),
-                child: _image == null
-                    ? const Center(
-                    child:
-                    Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
-                    : null,
+                child:
+                    _image == null
+                        ? const Center(
+                          child: Icon(
+                            Icons.add_a_photo_outlined,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                        )
+                        : null,
               ),
             ),
             const SizedBox(height: 20),
-            _buildTextField(_nameController, "Parking Name", Icons.local_parking_rounded),
-            _buildTextField(_descController, "Description", Icons.text_fields_outlined),
+            _buildTextField(
+              _nameController,
+              "Parking Name",
+              Icons.local_parking_rounded,
+            ),
+            _buildTextField(
+              _descController,
+              "Description",
+              Icons.text_fields_outlined,
+            ),
             _buildLocationField(), // Modern location picker with map preview
             const SizedBox(height: 16),
-            _buildTextField(_capacityController, "Capacity", Icons.people_outline,
-                inputType: TextInputType.number),
-            _buildTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
-                inputType: TextInputType.numberWithOptions(decimal: true)),
+            _buildTextField(
+              _capacityController,
+              "Capacity",
+              Icons.people_outline,
+              inputType: TextInputType.number,
+            ),
+            _buildTextField(
+              _priceController,
+              "Price per hour",
+              Icons.attach_money_outlined,
+              inputType: TextInputType.numberWithOptions(decimal: true),
+            ),
             const SizedBox(height: 20),
-            _buildCheckbox("24/7 Access", access24, (v) => setState(() => access24 = v!)),
+            _buildCheckbox(
+              "24/7 Access",
+              access24,
+              (v) => setState(() => access24 = v!),
+            ),
             _buildCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
-            _buildCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
-            _buildCheckbox("Disabled Access", disabledAccess,
-                    (v) => setState(() => disabledAccess = v!)),
+            _buildCheckbox(
+              "EV Charging",
+              evCharging,
+              (v) => setState(() => evCharging = v!),
+            ),
+            _buildCheckbox(
+              "Disabled Access",
+              disabledAccess,
+              (v) => setState(() => disabledAccess = v!),
+            ),
             const SizedBox(height: 25),
-            ElevatedButton(onPressed: addParking, child: const Text("Add Parking")),
+            ElevatedButton(
+              onPressed: addParking,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+                elevation: 8,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 26,
+                  vertical: 14,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add_location_alt_outlined),
+                  SizedBox(width: 8),
+                  Text("Add Parking"),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -166,8 +242,14 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
 
   // ---------------- Widgets ----------------
 
-  Widget _buildTextField(TextEditingController controller, String label, IconData icon,
-      {TextInputType inputType = TextInputType.text, bool readOnly = false, VoidCallback? onTap}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    TextInputType inputType = TextInputType.text,
+    bool readOnly = false,
+    VoidCallback? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
@@ -184,8 +266,16 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     );
   }
 
-  Widget _buildCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
-    return CheckboxListTile(title: Text(title), value: value, onChanged: onChanged);
+  Widget _buildCheckbox(
+    String title,
+    bool value,
+    ValueChanged<bool?> onChanged,
+  ) {
+    return CheckboxListTile(
+      title: Text(title),
+      value: value,
+      onChanged: onChanged,
+    );
   }
 
   Widget _buildLocationField() {
@@ -204,30 +294,37 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             const Icon(Icons.location_on, size: 36, color: Colors.blueAccent),
             const SizedBox(width: 12),
             Expanded(
-              child: _pickedLocation == null
-                  ? const Text(
-                "Pick parking location",
-                style: TextStyle(fontSize: 16, color: Colors.blueAccent),
-              )
-                  : ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SizedBox(
-                  height: 100,
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                        target: _pickedLocation!, zoom: 15),
-                    markers: {
-                      Marker(
-                          markerId: const MarkerId('picked'),
-                          position: _pickedLocation!)
-                    },
-                    zoomControlsEnabled: false,
-                    scrollGesturesEnabled: false,
-                    tiltGesturesEnabled: false,
-                    rotateGesturesEnabled: false,
-                  ),
-                ),
-              ),
+              child:
+                  _pickedLocation == null
+                      ? const Text(
+                        "Pick parking location",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueAccent,
+                        ),
+                      )
+                      : ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: SizedBox(
+                          height: 100,
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: _pickedLocation!,
+                              zoom: 15,
+                            ),
+                            markers: {
+                              Marker(
+                                markerId: const MarkerId('picked'),
+                                position: _pickedLocation!,
+                              ),
+                            },
+                            zoomControlsEnabled: false,
+                            scrollGesturesEnabled: false,
+                            tiltGesturesEnabled: false,
+                            rotateGesturesEnabled: false,
+                          ),
+                        ),
+                      ),
             ),
             const SizedBox(width: 8),
             Container(
@@ -238,9 +335,12 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: const Text(
                 "Pick",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

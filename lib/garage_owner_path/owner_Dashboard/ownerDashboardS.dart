@@ -112,13 +112,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
 
   // -----------------------------------------------------------
   Widget _modernStats(String? userEmail) {
-    return FutureBuilder<QuerySnapshot>(
-      future:
-          FirebaseFirestore.instance
-              .collection('owners')
-              .doc(userEmail)
-              .collection('Owners Parking')
-              .get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('owners')
+          .doc(userEmail)
+          .collection('Owners Parking')
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const SizedBox(height: 80);
@@ -131,15 +130,16 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           final data = doc.data() as Map<String, dynamic>;
 
           totalCapacity +=
-              int.tryParse(data['Parking Capacity'].toString()) ?? 0;
-          totalOccupied += int.tryParse(data['Occupied Spots'].toString()) ?? 0;
+              int.tryParse(data['Parking Capacity']?.toString() ?? '0') ?? 0;
+          totalOccupied +=
+              int.tryParse(data['Occupied Spots']?.toString() ?? '0') ?? 0;
         }
 
         return Row(
           children: [
             _statCard(
               "Parking's Number",
-              "$totalCapacity",
+              totalCapacity.toString(),
               Icons.local_parking,
             ),
             const SizedBox(width: 12),
@@ -174,16 +174,23 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           children: [
             Icon(icon, color: const Color(0xFF2C5364)),
             const SizedBox(height: 10),
-            Text(title, style: TextStyle(color: Colors.grey.shade600)),
+            Text(
+              title,
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
             Text(
               value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
 
   // -----------------------------------------------------------
   Widget _modernActions(BuildContext context) {
@@ -508,12 +515,33 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
 
                               // Optional: Show success message
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Parking lot deleted successfully!",
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: const Color(0xFF4CAF50), // modern green
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                                  elevation: 10,
+                                  duration: const Duration(seconds: 3),
+                                  content: Row(
+                                    children: const [
+                                      Icon(Icons.check_circle, color: Colors.white),
+                                      SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          "Parking lot deleted successfully!",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
+
 
                               // Refresh UI
                               setState(() {});
