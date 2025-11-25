@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ManageSpotsScreen extends StatefulWidget {
@@ -19,19 +21,12 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
   late List<Map<String, dynamic>> spots;
 
   @override
+  @override
   void initState() {
     super.initState();
-
-    int capacity = widget.parkingData['Parking Capacity'];
-
-    // Generate spots based on capacity
-    spots = List.generate(capacity, (index) {
-      return {
-        "id": "A${(index + 1).toString().padLeft(2, '0')}",
-        "status": "Available",
-      };
-    });
+    spots = List<Map<String, dynamic>>.from(widget.parkingData['spots'] ?? []);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,12 +145,13 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                                 value: isAvailable,
                                 onChanged: (value) {
                                   setState(() {
-                                    spot["status"] = value
-                                        ? "Available"
-                                        : "Occupied";
+                                    spot["status"] = value ? "Available" : "Occupied";
                                   });
+
+                                  _updateSpotsInFirebase(); // ✅ SAVE IN FIREBASE
                                 },
                               ),
+
                             ],
                           ),
                           const SizedBox(height: 6),
@@ -179,6 +175,20 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
         ),
       ),
     );
+  }
+  Future<void> _updateSpotsInFirebase() async {
+    final userEmail = FirebaseAuth.instance.currentUser!.email;
+
+    final firestore = FirebaseFirestore.instance;
+
+    await firestore
+        .collection('owners')
+        .doc(userEmail)
+        .collection('Owners Parking')
+        .doc(widget.parkingId)
+        .update({
+      'spots': spots,
+    });
   }
 
   Widget _summaryCard(String title, int value) {

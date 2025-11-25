@@ -215,6 +215,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             MaterialPageRoute(builder: (_) => const EarningsScreen()),
           ),
         ),
+
       ],
     );
   }

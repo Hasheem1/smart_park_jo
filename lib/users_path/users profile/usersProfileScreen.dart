@@ -1,37 +1,43 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
+import '../../garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'info/userDetails.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
 
   @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final String? userEmail = FirebaseAuth.instance.currentUser?.uid;
+  @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
-      colors: [Color(0xFF2F66F5), Color(0xFF4A90FF)],
+      colors: [Color(0xFF36D1DC),Color(0xFF5B86E5)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-    );
 
+
+    );
+    // final List<Color> appGradientColors = [
+    //   Color(0xFF0F2027),
+    //   Color(0xFF203A43),
+    //   Color(0xFF2C5364),
+    //   Color(0xFF36D1DC),
+    //   Color(0xFF5B86E5),
+    // ];
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F3F8),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black87),
-      ),
+      backgroundColor:    Colors.white70  ,
+
+
       body: SafeArea(
         child: ScrollConfiguration(
           behavior: _NoGlowScrollBehavior(),
@@ -41,59 +47,96 @@ class UserProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 // ✨ Blue Glassmorphic Profile Header
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: primaryGradient,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 12,
-                              offset: const Offset(0, 6))
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 32,
-                            backgroundColor: Colors.white24,
-                            child: Text(
-                              "MJ",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Mohammad Jamal",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                "mohammad.j@email.com",
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 14),
+                FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                      .get(),                  builder: (
+                      BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot> snapshot,
+                      ) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text(
+                          "Something went wrong",
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                      );
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.orange),
+                      );
+                    }
+
+                    if (!snapshot.hasData || !snapshot.data!.exists) {
+                      return const Center(
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      );
+                      // );
+                    }
+
+                    Map<String, dynamic> data =
+                    snapshot.data!.data() as Map<String, dynamic>;
+                    String trimEmail = data['phone number'].toString();
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            gradient: primaryGradient,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
                               ),
                             ],
                           ),
-                        ],
+                          child: Row(
+                            children: [
+                              CircleAvatar(backgroundColor: Colors.white,
+                                radius: 30,
+                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+
+                              ),
+                              const SizedBox(width: 18),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "+962 ${data['phone number'].toString()}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    data['password'].toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
 
@@ -102,7 +145,7 @@ class UserProfileScreen extends StatelessWidget {
                   icon: Icons.person_2_outlined,
                   title: "Personal Information",
                   subtitle: "Update business details",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -111,13 +154,29 @@ class UserProfileScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 15),
-                _buildGlassTile(
-                  icon: Icons.car_rental,
-                  title: "Vehicle Details",
-                  subtitle: "Plate: 22-27366",
-                  color: const Color(0xFF2F66F5),
 
+                _buildGlassTile(
+                  icon: Icons.credit_card,
+                  title: "Payment info",
+                  subtitle: "Update Payment info",
+                  color: const Color(0xFF36D1DC),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddPaymentMethodScreen(),
+                      ),
+                    );
+                  },
                 ),
+                // const SizedBox(height: 15),
+                // _buildGlassTile(
+                //   icon: Icons.car_rental,
+                //   title: "Vehicle Details",
+                //   subtitle: "Plate: 22-27366",
+                //   color: const Color(0xFF36D1DC),
+                //
+                // ),
                 const SizedBox(height: 25),
 
                 // ⚙️ Settings Section
@@ -128,19 +187,19 @@ class UserProfileScreen extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
+                        color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 15),
-
-                _buildGlassSwitch(
-                  icon: Icons.notifications_none,
-                  title: "Notifications",
-                  subtitle: "إشعارات",
-                  value: true,
-                  onChanged: (v) {},
-                  activeColor: const Color(0xFF2F66F5),
-                ),
+                // const SizedBox(height: 15),
+                //
+                // _buildGlassSwitch(
+                //   icon: Icons.notifications_none,
+                //   title: "Notifications",
+                //   subtitle: "إشعارات",
+                //   value: true,
+                //   onChanged: (v) {},
+                //   activeColor: const Color(0xFF36D1DC),
+                // ),
                 const SizedBox(height: 12),
                 // _buildGlassTile(
                 //   icon: Icons.language_outlined,
@@ -153,7 +212,7 @@ class UserProfileScreen extends StatelessWidget {
                   icon: Icons.lock_outline,
                   title: "Privacy & Security",
                   subtitle: "الخصوصية والأمان",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -171,7 +230,7 @@ class UserProfileScreen extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade800),
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -179,7 +238,7 @@ class UserProfileScreen extends StatelessWidget {
                   icon: Icons.help_outline,
                   title: "Help Center",
                   subtitle: "مركز المساعدة",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -243,7 +302,6 @@ class UserProfileScreen extends StatelessWidget {
   }
 
   // 🔹 Modern Glassmorphic Info Tile
-// 🔹 Modern Glassmorphic Info Tile
   Widget _buildGlassTile({
     required IconData icon,
     required String title,
@@ -274,7 +332,6 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 
-
   // 🔹 Glassmorphic Tile with Switch
   Widget _buildGlassSwitch({
     required IconData icon,
@@ -295,14 +352,14 @@ class UserProfileScreen extends StatelessWidget {
             border: Border.all(color: Colors.white.withOpacity(0.3)),
           ),
           child: ListTile(
-            leading: Icon(icon, color: const Color(0xFF2F66F5)),
+            leading: Icon(icon, color: const Color(0xFF36D1DC)),
             title: Text(title,
                 style: const TextStyle(fontWeight: FontWeight.w600)),
             subtitle: Text(subtitle),
             trailing: Switch(
               value: value,
               onChanged: onChanged,
-              activeThumbColor: activeColor ?? const Color(0xFF2F66F5),
+              activeThumbColor: activeColor ?? const Color(0xFF36D1DC),
             ),
           ),
         ),
@@ -311,21 +368,7 @@ class UserProfileScreen extends StatelessWidget {
   }
 }
 
-// // 🚫 Removes scroll glow
-// class _NoGlowScrollBehavior extends ScrollBehavior {
-//   @override
-//   Widget buildOverscrollIndicator(
-//       BuildContext context, Widget child,
-//       AxisDirection axisDirection) {
-//     return child;
-//   }
-//
-//   @override
-//   ScrollPhysics getScrollPhysics(BuildContext context) {
-//     return const BouncingScrollPhysics();
-//   }
-// }
-// 🚫 Removes scroll glow
+
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(

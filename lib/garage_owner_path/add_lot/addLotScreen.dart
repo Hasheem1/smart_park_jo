@@ -26,6 +26,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   bool cctv = false;
   bool evCharging = false;
   bool disabledAccess = false;
+  bool washCar = false;
+
 
   File? _image;
   final ImagePicker _picker = ImagePicker();
@@ -95,6 +97,14 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         .collection('Owners Parking');
 
     final parkingDoc = parkingCollection.doc();
+    int capacity = int.parse(_capacityController.text);
+
+    List<Map<String, dynamic>> spots = List.generate(capacity, (index) {
+      return {
+        "id": "A${(index + 1).toString().padLeft(2, '0')}",
+        "status": "Available",
+      };
+    });
 
     Map<String, dynamic> parkingData = {
       'Parking name': _nameController.text,
@@ -105,7 +115,9 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       'CCTV': cctv,
       'EV Charging': evCharging,
       'Disabled Access': disabledAccess,
+      'washCar':washCar,
       'image_url': imageUrl,
+      'spots': spots,
       'location':
           _pickedLocation != null
               ? {
@@ -203,7 +215,12 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             _buildCheckbox(
               "Disabled Access",
               disabledAccess,
-              (v) => setState(() => disabledAccess = v!),
+                  (v) => setState(() => disabledAccess = v!),
+            ),
+            _buildCheckbox(
+              "Car Washing",
+              washCar,
+                  (v) => setState(() => washCar = v!),
             ),
             const SizedBox(height: 25),
             ElevatedButton(

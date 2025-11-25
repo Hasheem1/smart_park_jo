@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -193,17 +195,76 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               ],
                             ),
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  final user = FirebaseAuth.instance.currentUser;
+
+                                  if (user == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("No user logged in!"),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  final userDocRef =
+                                  FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+                                  // Get the current user data
+                                  final snapshot = await userDocRef.get();
+                                  Map<String, dynamic>? data =
+                                      snapshot.data() as Map<String, dynamic>? ?? {};
+
+                                  // Check if a card already exists
+                                  if (data.containsKey('card') && data['card'] != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("You already have a card! Remove it first to add a new one."),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  // Store the card data
+                                  Map<String, dynamic> cardData = {
+                                    'type': selectedPayment,
+                                    'name': nameController.text.trim(),
+                                    'number': cardNumberController.text.trim(),
+                                    'expiry': expiryController.text.trim(),
+                                    'cvv': cvvController.text.trim(),
+                                  };
+
+                                  // Add money only if adding a card for the first time
+                                  double currentMoney = (data['money'] ?? 0).toDouble();
+                                  double moneyToAdd = 10.0;
+
+                                  await userDocRef.set({
+                                    'card': cardData,
+                                    'money': currentMoney + moneyToAdd,
+                                  }, SetOptions(merge: true));
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          "$selectedPayment added successfully!"),
+                                          "$selectedPayment added successfully! Balance: ${(currentMoney + moneyToAdd).toStringAsFixed(2)} JD"),
                                       backgroundColor: Colors.green,
                                     ),
                                   );
+
+                                  // Clear the form
+                                  nameController.clear();
+                                  cardNumberController.clear();
+                                  expiryController.clear();
+                                  cvvController.clear();
                                 }
                               },
+
+
+
+
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
@@ -220,6 +281,28 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               ),
                             ),
                           ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final user = FirebaseAuth.instance.currentUser;
+                              if (user == null) return;
+
+                              final userDocRef =
+                              FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+                              await userDocRef.set({
+                                'card': null,
+                              }, SetOptions(merge: true));
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Card removed. You can add a new one now."),
+                                  backgroundColor: Colors.orange,
+                                ),
+                              );
+                            },
+                            child: const Text("Remove Card"),
+                          )
+
                         ],
                       ),
                     ),

@@ -29,9 +29,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
-  static const Color primaryBlue = Color(0xFF2196F3);
-  static const Color accentGreen = Color(0xFF2196F3);
-  static const Color background = Color(0xFFF8FAFC);
+  static const Color primaryBlue =    Color(0xFF0F2027);
+  static const Color accentGreen = Color(0xFF203A43);
+  static const Color background = Color(0xFF0F2027);
 
   @override
   void initState() {
@@ -65,32 +65,31 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               child: Column(
                 children: [
                   // Top row
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                            color: Colors.white),
-                        onPressed: () => Navigator.maybePop(context),
-                      ),
-                      const SizedBox(width: 6),
-                      const Expanded(
-                        child: Text(
-                          'My Bookings',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      // small action (example)
-                      IconButton(
-                        icon: const Icon(Icons.filter_list, color: Colors.white),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     // IconButton(
+                  //     //   icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                  //     //       color: Colors.white),
+                  //     //   onPressed: () => Navigator.maybePop(context),
+                  //     // ),
+                  //     // const SizedBox(width: 6),
+                  //     // const Expanded(
+                  //     //   child: Text(
+                  //     //     'My Bookings',
+                  //     //     style: TextStyle(
+                  //     //         color: Colors.white,
+                  //     //         fontSize: 20,
+                  //     //         fontWeight: FontWeight.w700),
+                  //     //   ),
+                  //     // ),
+                  //     // small action (example)
+                  //     IconButton(
+                  //       icon: const Icon(Icons.filter_list, color: Colors.white),
+                  //       onPressed: () {},
+                  //     ),
+                  //   ],
+                  // ),
 
-                  const SizedBox(height: 10),
 
                   // Tab pill
                   Container(

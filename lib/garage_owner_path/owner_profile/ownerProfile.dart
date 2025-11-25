@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
+import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
 
@@ -157,6 +158,21 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 15),
+                _buildGlassTile(
+                  icon: Icons.credit_card,
+                  title: "Payment info",
+                  subtitle: "Update Payment info",
+                  color: const Color(0xFF2F66F5),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddPaymentMethodScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 15),
 
                 Align(
                   alignment: Alignment.centerLeft,
@@ -171,12 +187,12 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 ),
                 const SizedBox(height: 15),
 
-                // _buildGlassTile(
-                //   icon: Icons.language_outlined,
-                //   title: "Language",
-                //   subtitle: "English",
-                //   color: const Color(0xFF2F66F5),
-                // ),
+                _buildGlassTile(
+                  icon: Icons.language_outlined,
+                  title: "Language",
+                  subtitle: "English",
+                  color: const Color(0xFF2F66F5),
+                ),
                 const SizedBox(height: 12),
                 _buildGlassTile(
                   icon: Icons.lock_outline,

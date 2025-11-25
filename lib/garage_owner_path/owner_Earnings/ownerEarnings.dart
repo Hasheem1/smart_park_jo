@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EarningsScreen extends StatefulWidget {
   const EarningsScreen({super.key});
@@ -9,177 +10,156 @@ class EarningsScreen extends StatefulWidget {
 }
 
 class _EarningsScreenState extends State<EarningsScreen> {
-  String selectedTab = "Daily";
+  double todayTotal = 0.0;
+  double weekTotal = 0.0;
+  double monthTotal = 0.0;
 
-  final Map<String, List<double>> chartData = {
-    "Daily": [300, 320, 310, 500],
-    "Weekly": [1500, 2200, 1800],
-    "Monthly": [9200, 9750,],
-  };
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEarnings();
+  }
+
+  Future<void> _loadEarnings() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final String email = user.email!;
+
+    double today = 0;
+    double week = 0;
+    double month = 0;
+
+    final now = DateTime.now();
+
+    final weekStart = DateTime(
+      now.year,
+      now.month,
+      now.day - (now.weekday - 1),
+    );
+
+    try {
+      final parkingSnapshot = await FirebaseFirestore.instance
+          .collection('owners')
+          .doc(email)
+          .collection('Owners Parking')
+          .get();
+
+      for (var parkingDoc in parkingSnapshot.docs) {
+
+        // CHANGE THIS PATH IF YOUR RESERVATIONS ARE STORED ELSEWHERE
+        final reservationsSnapshot = await parkingDoc.reference
+            .collection('reservations')
+            .get();
+
+        for (var res in reservationsSnapshot.docs) {
+          final data = res.data();
+
+          final double price =
+          (data['totalPrice'] ?? 0).toDouble();
+
+          final Timestamp ts =
+              data['startDate'] ?? data['createdAt'];
+
+          final DateTime date = ts.toDate();
+
+          if (DateUtils.isSameDay(date, now)) {
+            today += price;
+          }
+
+          if (date.isAfter(weekStart) || DateUtils.isSameDay(date, weekStart)) {
+            week += price;
+          }
+
+          if (date.month == now.month && date.year == now.year) {
+            month += price;
+          }
+        }
+      }
+
+      setState(() {
+        todayTotal = today;
+        weekTotal = week;
+        monthTotal = month;
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint("Earnings error: $e");
+      setState(() => isLoading = false);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE8F5E9),
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
         title: const Text(
-          "Earnings",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-            fontSize: 20,
-          ),
+          'Earnings',
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true, // <-- This centers the title
       ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Total This Month Card
+
+            // ===== Monthly Total Card =====
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF43A047), Color(0xFF66BB6A)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  colors: [Colors.blue, Colors.blueAccent],
                 ),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.green.shade200.withOpacity(0.4),
+                    color: Colors.blue.withOpacity(0.3),
                     blurRadius: 15,
                     offset: const Offset(0, 8),
-                  ),
+                  )
                 ],
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Total This Month", style: TextStyle(color: Colors.white70, fontSize: 16)),
-                  SizedBox(height: 8),
-                  Text("9750 JD", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text("+12% from last month", style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  const Text(
+                    "Total This Month",
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "${monthTotal.toStringAsFixed(2)} JD",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
+
             const SizedBox(height: 20),
 
-            // Today & This Week Summary
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildStatCard("Today", "450 JD", Colors.orangeAccent),
-                _buildStatCard("This Week", "2900 JD", Colors.lightBlueAccent),
+                Expanded(child: _statCard("Today", todayTotal)),
+                const SizedBox(width: 12),
+                Expanded(child: _statCard("This Week", weekTotal)),
               ],
-            ),
-            const SizedBox(height: 25),
-
-            // Tabs
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: ["Daily", "Weekly", "Monthly"].map((tab) {
-                  final isSelected = selectedTab == tab;
-                  return GestureDetector(
-                    onTap: () => setState(() => selectedTab = tab),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
-                      decoration: BoxDecoration(
-                        color: isSelected ? Colors.green.shade50 : Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: isSelected
-                            ? [
-                          BoxShadow(
-                            color: Colors.green.withOpacity(0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]
-                            : [],
-                      ),
-                      child: Text(
-                        tab,
-                        style: TextStyle(
-                          color: isSelected ? Colors.green.shade800 : Colors.grey.shade600,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 25),
-
-            // Chart Label
-            Text(
-              "$selectedTab Earnings",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
-            ),
-            const SizedBox(height: 12),
-
-            // Bar Chart
-            Expanded(
-              child: BarChart(
-                BarChartData(
-                  borderData: FlBorderData(show: false),
-                  gridData: FlGridData(show: false),
-                  titlesData: FlTitlesData(
-                    leftTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: true, reservedSize: 40),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          List<String> labels;
-                          if (selectedTab == "Daily") {
-                            labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-                          } else if (selectedTab == "Weekly") {
-                            labels = ["W1", "W2", "W3", "W4"];
-                          } else {
-                            labels = ["Jun", "Jul", "Aug", "Sep", "Oct"];
-                          }
-                          if (value.toInt() < labels.length) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Text(
-                                labels[value.toInt()],
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  ),
-                  barGroups: _generateBars(),
-                ),
-              ),
             ),
           ],
         ),
@@ -187,54 +167,38 @@ class _EarningsScreenState extends State<EarningsScreen> {
     );
   }
 
-  // Generate Bar Data
-  List<BarChartGroupData> _generateBars() {
-    final data = chartData[selectedTab]!;
-    return List.generate(
-      data.length,
-          (index) => BarChartGroupData(
-        x: index,
-        barRods: [
-          BarChartRodData(
-            toY: data[index],
-            gradient: const LinearGradient(
-              colors: [Color(0xFF66BB6A), Color(0xFF43A047)],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-            width: 22,
-            borderRadius: BorderRadius.circular(6),
+  Widget _statCard(String title, double value) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
-    );
-  }
-
-
-  // Stat Card
-  Widget _buildStatCard(String title, String value, Color color) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 6),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
             ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Text(title, style: const TextStyle(color: Colors.black54, fontSize: 15)),
-            const SizedBox(height: 8),
-            Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87)),
-          ],
-        ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "${value.toStringAsFixed(2)} JD",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
