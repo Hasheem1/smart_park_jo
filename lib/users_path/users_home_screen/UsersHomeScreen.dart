@@ -240,13 +240,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
+
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => ParkingDetailsScreen(
                             imageUrl: data['image_url'] ?? '',
                             title: data['Parking name'] ?? '',
-                            price: "${data['Parking Pricing (per hour)'] ?? 0} JD",
+                            price: "${data['Parking Pricing (per hour)'] ?? 0}",
                             rating: "4.5",
                             distance: distanceKm != null
                                 ? "${distanceKm.toStringAsFixed(2)} km"
@@ -257,8 +258,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             cctv: data['CCTV'] ?? false,
                             evCharging: data['EV Charging'] ?? false,
                             disabledAccess: data['Disabled Access'] ?? false,
+                            owneremail:data['owner email']??"hahsha@gm.com",
+                            parkinguid: data['parking uid'] ,
+
+
                           ),
+
                         ),
+
                       );
                     },
                     child: Padding(

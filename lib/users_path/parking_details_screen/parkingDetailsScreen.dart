@@ -16,6 +16,8 @@ class ParkingDetailsScreen extends StatefulWidget {
   final String distance;
   final String spots;
   final String description;
+  final String owneremail;
+  final String parkinguid;
 
   final bool access24;
   final bool cctv;
@@ -35,6 +37,8 @@ class ParkingDetailsScreen extends StatefulWidget {
     required this.cctv,
     required this.evCharging,
     required this.disabledAccess,
+    required this.owneremail,
+    required this.parkinguid
   });
 
   @override
@@ -279,6 +283,12 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                             garageName: widget.title,
                             imageUrl: widget.imageUrl,
                             distance: widget.distance,
+                            owneremail: widget.owneremail,
+                            parkinguid: widget.parkinguid,
+                            parkingPrice: widget.price,
+
+
+
                           ),
                         ),
                       );

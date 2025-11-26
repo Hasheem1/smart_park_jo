@@ -29,10 +29,13 @@ class InfoBox extends StatelessWidget {
             Text(title,
                 style: const TextStyle(color: Colors.grey, fontSize: 13)),
             const SizedBox(height: 5),
-            Text(value,
+            title=="💰 Price/hour"? Text("$value JD",
                 style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 15)),
-          ],
+                    fontWeight: FontWeight.bold, fontSize: 15)
+            ):Text("$value ",
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 15),
+            )],
         ),
       ),
     );

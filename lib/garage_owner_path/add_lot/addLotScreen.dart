@@ -107,6 +107,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
     });
 
     Map<String, dynamic> parkingData = {
+      'parking uid':parkingDoc.id,
+      'owner email':userEmail,
       'Parking name': _nameController.text,
       'Parking Description': _descController.text,
       'Parking Capacity': int.parse(_capacityController.text),
