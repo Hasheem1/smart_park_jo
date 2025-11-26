@@ -38,266 +38,310 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       backgroundColor:    Colors.white70  ,
 
 
-      body: SafeArea(
-        child: ScrollConfiguration(
-          behavior: _NoGlowScrollBehavior(),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                // ✨ Blue Glassmorphic Profile Header
-                FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                      .get(),                  builder: (
-                      BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot,
-                      ) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text(
-                          "Something went wrong",
-                          style: TextStyle(color: Colors.red, fontSize: 18),
-                        ),
-                      );
-                    }
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Back arrow row
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context); // Go back
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      "Profile",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(color: Colors.orange),
-                      );
-                    }
+              // The rest of your scrollable content
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: _NoGlowScrollBehavior(),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        // ✨ Blue Glassmorphic Profile Header
+                        FutureBuilder<DocumentSnapshot>(
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                              .get(),                  builder: (
+                            BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot,
+                            ) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text(
+                                "Something went wrong",
+                                style: TextStyle(color: Colors.red, fontSize: 18),
+                              ),
+                            );
+                          }
 
-                    if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return const Center(
-                        child: Text(
-                          "No data found",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      );
-                      // );
-                    }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(color: Colors.orange),
+                            );
+                          }
 
-                    Map<String, dynamic> data =
-                    snapshot.data!.data() as Map<String, dynamic>;
-                    String trimEmail = data['phone number'].toString();
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: primaryGradient,
+                          if (!snapshot.hasData || !snapshot.data!.exists) {
+                            return const Center(
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(color: Colors.white, fontSize: 18),
+                              ),
+                            );
+                            // );
+                          }
+
+                          Map<String, dynamic> data =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                          String trimEmail = data['phone number'].toString();
+                          return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 12,
-                                offset: const Offset(0, 6),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  gradient: primaryGradient,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(backgroundColor: Colors.white,
+                                      radius: 30,
+                                      child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+
+                                    ),
+                                    const SizedBox(width: 18),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "+962 ${data['phone number'].toString()}",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          data['password'].toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
+                            ),
+                          );
+                        },
+                        ),
+                        const SizedBox(height: 25),
+
+                        // 🏢 Business Info + Payment Methods
+                        _buildGlassTile(
+                          icon: Icons.person_2_outlined,
+                          title: "Personal Information",
+                          subtitle: "Update business details",
+                          color: const Color(0xFF36D1DC),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const Userdetails()),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 15),
+
+                        _buildGlassTile(
+                          icon: Icons.credit_card,
+                          title: "Payment info",
+                          subtitle: "Update Payment info",
+                          color: const Color(0xFF36D1DC),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const AddPaymentMethodScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        // const SizedBox(height: 15),
+                        // _buildGlassTile(
+                        //   icon: Icons.car_rental,
+                        //   title: "Vehicle Details",
+                        //   subtitle: "Plate: 22-27366",
+                        //   color: const Color(0xFF36D1DC),
+                        //
+                        // ),
+                        const SizedBox(height: 25),
+
+                        // ⚙️ Settings Section
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Settings",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
-                          child: Row(
-                            children: [
-                              CircleAvatar(backgroundColor: Colors.white,
-                                radius: 30,
-                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+                        ),
+                        // const SizedBox(height: 15),
+                        //
+                        // _buildGlassSwitch(
+                        //   icon: Icons.notifications_none,
+                        //   title: "Notifications",
+                        //   subtitle: "إشعارات",
+                        //   value: true,
+                        //   onChanged: (v) {},
+                        //   activeColor: const Color(0xFF36D1DC),
+                        // ),
+                        const SizedBox(height: 12),
+                        // _buildGlassTile(
+                        //   icon: Icons.language_outlined,
+                        //   title: "Language",
+                        //   subtitle: "English",
+                        //   color: const Color(0xFF2F66F5),
+                        // ),
+                        const SizedBox(height: 12),
+                        _buildGlassTile(
+                          icon: Icons.lock_outline,
+                          title: "Privacy & Security",
+                          subtitle: "الخصوصية والأمان",
+                          color: const Color(0xFF36D1DC),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const PrivacySecurityScreen()),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 25),
 
-                              ),
-                              const SizedBox(width: 18),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "+962 ${data['phone number'].toString()}",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                        // 🆘 Support Section
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Support",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        _buildGlassTile(
+                          icon: Icons.help_outline,
+                          title: "Help Center",
+                          subtitle: "مركز المساعدة",
+                          color: const Color(0xFF36D1DC),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const HelpCenterScreen()),
+                            );
+                          },
+                        ),
 
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    data['password'].toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 14,
-                                    ),
-                                  ),
+                        const SizedBox(height: 35),
+
+                        // 🚪 Log Out Button with gradient
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Logged out successfully"),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                            ),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: primaryGradient,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 6))
                                 ],
                               ),
-                            ],
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 56,
+                                child: const Text(
+                                  "Log Out",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 25),
-
-                // 🏢 Business Info + Payment Methods
-                _buildGlassTile(
-                  icon: Icons.person_2_outlined,
-                  title: "Personal Information",
-                  subtitle: "Update business details",
-                  color: const Color(0xFF36D1DC),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const Userdetails()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 15),
-
-                _buildGlassTile(
-                  icon: Icons.credit_card,
-                  title: "Payment info",
-                  subtitle: "Update Payment info",
-                  color: const Color(0xFF36D1DC),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AddPaymentMethodScreen(),
-                      ),
-                    );
-                  },
-                ),
-                // const SizedBox(height: 15),
-                // _buildGlassTile(
-                //   icon: Icons.car_rental,
-                //   title: "Vehicle Details",
-                //   subtitle: "Plate: 22-27366",
-                //   color: const Color(0xFF36D1DC),
-                //
-                // ),
-                const SizedBox(height: 25),
-
-                // ⚙️ Settings Section
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Settings",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-                // const SizedBox(height: 15),
-                //
-                // _buildGlassSwitch(
-                //   icon: Icons.notifications_none,
-                //   title: "Notifications",
-                //   subtitle: "إشعارات",
-                //   value: true,
-                //   onChanged: (v) {},
-                //   activeColor: const Color(0xFF36D1DC),
-                // ),
-                const SizedBox(height: 12),
-                // _buildGlassTile(
-                //   icon: Icons.language_outlined,
-                //   title: "Language",
-                //   subtitle: "English",
-                //   color: const Color(0xFF2F66F5),
-                // ),
-                const SizedBox(height: 12),
-                _buildGlassTile(
-                  icon: Icons.lock_outline,
-                  title: "Privacy & Security",
-                  subtitle: "الخصوصية والأمان",
-                  color: const Color(0xFF36D1DC),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const PrivacySecurityScreen()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 25),
-
-                // 🆘 Support Section
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Support",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                _buildGlassTile(
-                  icon: Icons.help_outline,
-                  title: "Help Center",
-                  subtitle: "مركز المساعدة",
-                  color: const Color(0xFF36D1DC),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const HelpCenterScreen()),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 35),
-
-                // 🚪 Log Out Button with gradient
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Logged out successfully"),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                    ),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        gradient: primaryGradient,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 12,
-                              offset: const Offset(0, 6))
-                        ],
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 56,
-                        child: const Text(
-                          "Log Out",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
+                        const SizedBox(height: 40),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+
     );
   }
 

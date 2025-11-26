@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Bookings',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
-        useMaterial3: true,
-      ),
-      home: const MyBookingsScreen(),
-    );
-  }
-}
 
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
@@ -63,33 +47,35 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               padding:
               const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top row
-                  // Row(
-                  //   children: [
-                  //     // IconButton(
-                  //     //   icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                  //     //       color: Colors.white),
-                  //     //   onPressed: () => Navigator.maybePop(context),
-                  //     // ),
-                  //     // const SizedBox(width: 6),
-                  //     // const Expanded(
-                  //     //   child: Text(
-                  //     //     'My Bookings',
-                  //     //     style: TextStyle(
-                  //     //         color: Colors.white,
-                  //     //         fontSize: 20,
-                  //     //         fontWeight: FontWeight.w700),
-                  //     //   ),
-                  //     // ),
-                  //     // small action (example)
-                  //     IconButton(
-                  //       icon: const Icon(Icons.filter_list, color: Colors.white),
-                  //       onPressed: () {},
-                  //     ),
-                  //   ],
-                  // ),
+                  // Top row with back button and optional filter
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                        onPressed: () => Navigator.maybePop(context),
+                      ),
+                      const SizedBox(width: 6),
+                      const Expanded(
+                        child: Text(
+                          'My Bookings',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      // Optional small action
+                      IconButton(
+                        icon: const Icon(Icons.filter_list, color: Colors.white),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
 
+                  const SizedBox(height: 8), // spacing before tab pill
 
                   // Tab pill
                   Container(
@@ -108,12 +94,18 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                       labelColor: Colors.white,
                       unselectedLabelColor: Colors.white70,
                       labelStyle: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                      tabs: const [Tab(text: 'Upcoming'), Tab(text: 'Past')],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      tabs: const [
+                        Tab(text: 'Upcoming'),
+                        Tab(text: 'Past'),
+                      ],
                     ),
                   ),
                 ],
               ),
+
             ),
           ),
         ),

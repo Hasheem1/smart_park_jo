@@ -309,7 +309,7 @@ class _ChatScreenState extends State<ChatScreen>
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFF2F66F5), Color(0xFF5B8DFB)],
+                          colors: [Color(0xFF2F66F5), Color(0xFF36D1DC)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),

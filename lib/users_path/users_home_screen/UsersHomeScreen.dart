@@ -1,14 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../bookings/bookingsScreen.dart';
-import '../parking_details_screen/parkingDetailsScreen.dart';
-import '../users profile/usersProfileScreen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:smart_park_jo/users_path/bookings/bookingsScreen.dart';
+import 'package:smart_park_jo/users_path/parking_details_screen/parkingDetailsScreen.dart';
+import 'package:smart_park_jo/users_path/users%20profile/usersProfileScreen.dart';
+import 'package:smart_park_jo/users_path/users_home_screen/UsersHomeScreen.dart';
+import '../../ai_chat_bot/chatBot.dart';
+import 'letsPark.dart';
 
 class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({super.key});
@@ -20,21 +20,13 @@ class DriverHomeScreen extends StatefulWidget {
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
   final Color primaryBlue = const Color(0xFF007BFF);
   final Color background = const Color(0xFFF9FAFB);
-  final List<Color> appGradientColors = [
-    Color(0xFF0F2027),
-    Color(0xFF203A43),
-    // Color(0xFF2C5364),
-    // Color(0xFF36D1DC),
-    // Color(0xFF5B86E5),
-  ];
-
   int _selectedIndex = 0;
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
 
   GoogleMapController? _mapController;
   LatLng? _userLocation;
-  bool _cameraMoved = false; // New flag to prevent controller errors
+  bool _cameraMoved = false;
 
   @override
   void initState() {
@@ -42,7 +34,6 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     _getUserLocation();
   }
 
-  // Get user's current location
   void _getUserLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return;
@@ -62,58 +53,197 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     });
   }
 
-  // Calculate distance in km between two LatLng points
   double _calculateDistanceKm(LatLng start, LatLng end) {
     return Geolocator.distanceBetween(
         start.latitude, start.longitude, end.latitude, end.longitude) /
-        1000; // meters to km
+        1000;
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // just switch tabs, no navigation
+      _selectedIndex = index;
     });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _mapController?.dispose(); // Dispose map controller safely
+    _mapController?.dispose();
     super.dispose();
   }
 
-  // Build the Home tab content
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 🌟 Modern Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: _modernHeader(context),
+            ),
+
+            // 🌟 Map and Home Tab
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: background,
+                ),
+                child: _buildHomeTab(),
+              ),
+            ),
+
+            // 🌟 Bottom Actions
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: _modernActions(context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 🌟 Modern header with gradient & shadow
+  Widget _modernHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Park with a Smile 😄",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ChatScreen()),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.account_circle, color: Colors.white),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const UserProfileScreen()),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🌟 Bottom action buttons
+  Widget _modernActions(BuildContext context) {
+    return Row(
+      children: [
+        _actionCard(
+          context,
+          "Let’s Park!",
+          Icons.car_crash_outlined,
+              () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const letspark()),
+          ),
+        ),
+        const SizedBox(width: 15),
+        _actionCard(
+          context,
+          "My Reservation",
+          Icons.calendar_month,
+              () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const MyBookingsScreen()),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // 🌟 Action card style
+  Widget _actionCard(
+      BuildContext context, String title, IconData icon, VoidCallback onTap) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(25),
+          onTap: onTap,
+          child: Container(
+            height: 80,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white, size: 28),
+                const SizedBox(height: 6),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 🌟 Home tab with map
   Widget _buildHomeTab() {
     return Column(
       children: [
-        // Search Bar
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search by location or name...',
-              prefixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
-              ),
-            ),
-            onChanged: (value) {
-              setState(() {
-                searchQuery = value.toLowerCase();
-              });
-            },
-          ),
-        ),
-
-        // Google Map with real-time updates
+        // Google Map
         Expanded(
-          flex: 1,
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collectionGroup('Owners Parking').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collectionGroup('Owners Parking')
+                .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
@@ -147,7 +277,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 circles.add(Circle(
                   circleId: CircleId(doc.id),
                   center: position,
-                  radius: 50,
+                  radius: 60,
                   fillColor: Colors.red.withOpacity(0.25),
                   strokeColor: Colors.redAccent,
                   strokeWidth: 2,
@@ -157,7 +287,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               if (_mapController != null && center != null && !_cameraMoved) {
                 try {
                   _mapController!.animateCamera(
-                    CameraUpdate.newLatLngZoom(center, 15.5), // slightly zoomed out
+                    CameraUpdate.newLatLngZoom(center, 15.5),
                   );
                   _cameraMoved = true;
                 } catch (e) {
@@ -175,300 +305,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 myLocationEnabled: true,
                 myLocationButtonEnabled: true,
                 onMapCreated: (controller) => _mapController = controller,
-                gestureRecognizers: {
-                  Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer())
-                },
               );
             },
           ),
         ),
-
-// Parking List sorted by distance
-        Expanded(
-          flex: 2,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collectionGroup('Owners Parking').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              List<Map<String, dynamic>> parkingList = [];
-              for (var doc in snapshot.data!.docs) {
-                final data = doc.data() as Map<String, dynamic>;
-                final locationMap = data['location'] as Map<String, dynamic>?;
-                if (locationMap == null) continue;
-
-                double distanceKm = 0;
-                if (_userLocation != null) {
-                  distanceKm = _calculateDistanceKm(
-                    _userLocation!,
-                    LatLng(
-                      (locationMap['latitude'] ?? 0).toDouble(),
-                      (locationMap['longitude'] ?? 0).toDouble(),
-                    ),
-                  );
-                }
-
-                final name = (data['Parking name'] ?? '').toString().toLowerCase();
-                if (!name.contains(searchQuery)) continue;
-
-                parkingList.add({
-                  'doc': doc,
-                  'data': data,
-                  'distanceKm': distanceKm,
-                });
-              }
-
-              parkingList.sort((a, b) => a['distanceKm'].compareTo(b['distanceKm']));
-
-              if (parkingList.isEmpty) {
-                return const Center(
-                  child: Text(
-                    "No parking lots found",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                itemCount: parkingList.length,
-                itemBuilder: (context, index) {
-                  final data = parkingList[index]['data'] as Map<String, dynamic>;
-                  final distanceKm = parkingList[index]['distanceKm'] as double?;
-
-                  return GestureDetector(
-                    onTap: () {
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ParkingDetailsScreen(
-                            imageUrl: data['image_url'] ?? '',
-                            title: data['Parking name'] ?? '',
-                            price: "${data['Parking Pricing (per hour)'] ?? 0}",
-                            rating: "4.5",
-                            distance: distanceKm != null
-                                ? "${distanceKm.toStringAsFixed(2)} km"
-                                : "N/A",
-                            spots: "${data['Parking Capacity'] ?? 0} spots",
-                            description: data['Parking Description'] ?? '',
-                            access24: data['Access'] ?? false,
-                            cctv: data['CCTV'] ?? false,
-                            evCharging: data['EV Charging'] ?? false,
-                            disabledAccess: data['Disabled Access'] ?? false,
-                            owneremail:data['owner email']??"hahsha@gm.com",
-                            parkinguid: data['parking uid'] ,
-
-
-                          ),
-
-                        ),
-
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: ParkingCard(
-                        imageUrl: data['image_url'] ?? '',
-                        title: data['Parking name'] ?? '',
-                        price: "${data['Parking Pricing (per hour)'] ?? 0} JD",
-                        spots: "${data['Parking Capacity'] ?? 0} spots",
-                        distanceKm: distanceKm,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-
       ],
-    );
-  }
-
-  // Screens for each tab
-  Widget _getScreen() {
-    switch (_selectedIndex) {
-      case 0:
-        return _buildHomeTab();
-      case 1:
-        return const MyBookingsScreen();
-      case 2:
-        return const UserProfileScreen();
-      default:
-        return _buildHomeTab();
-    }
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(backgroundColor:Colors.white70 ,
-      // Remove backgroundColor and use a gradient container
-      body: Container(
-        decoration: BoxDecoration(color: Colors.white10,
-          // gradient: LinearGradient(
-          //   colors: Colors.white70,
-          //   begin: Alignment.topLeft,
-          //   end: Alignment.bottomRight,
-          // ),
-        ),
-        child: Column(
-          children: [
-            // Custom AppBar with gradient
-            AppBar(
-              elevation: 0,
-              backgroundColor:  Color(0xFF36D1DC),
-              title: Text(
-                _selectedIndex == 0
-                    ? "Parking is waiting for you"
-                    : _selectedIndex == 1
-                    ? "My Bookings"
-                    : "Profile",
-                style: const TextStyle(
-                    fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
-              ),
-              flexibleSpace: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: appGradientColors,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-              ),
-              actions: [
-                StreamBuilder<DocumentSnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    double money = 0.0;
-
-                    if (snapshot.hasData && snapshot.data!.exists) {
-                      // Convert snapshot to map safely
-                      Map<String, dynamic>? data =
-                      snapshot.data!.data() as Map<String, dynamic>?;
-
-                      if (data != null && data.containsKey('money')) {
-                        money = (data['money'] ?? 0).toDouble();
-                      }
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            const Icon(Icons.account_balance_wallet, color: Colors.white),
-                            const SizedBox(width: 6),
-                            Text(
-                              "${money.toStringAsFixed(2)} JD",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16,color:Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-
-
-              ],
-            ),
-
-            // Display the correct screen
-            Expanded(child: _getScreen()),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: Colors.white70,
-          gradient: LinearGradient(
-            colors: appGradientColors, // same as Scaffold/AppBar
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(0)),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 8,
-              offset: Offset(0, -3),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent, // transparent to show gradient
-          currentIndex: _selectedIndex,
-          selectedItemColor:Color(0xFF36D1DC),
-          unselectedItemColor: Colors.white,
-
-          onTap: _onItemTapped,
-          elevation: 0,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          ],
-        ),
-      ),
-
-    );
-  }
-
-}
-
-// Parking Card Widget
-class ParkingCard extends StatelessWidget {
-  final String imageUrl, title, price, spots;
-  final double? distanceKm;
-
-  const ParkingCard({
-    super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.price,
-    required this.spots,
-    this.distanceKm,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(14)),
-            child: Image.network(imageUrl,
-                height: 120, width: double.infinity, fit: BoxFit.cover),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 6),
-                Text(
-                    "$price • $spots • ${distanceKm != null ? distanceKm!.toStringAsFixed(2) + ' km' : '...'}"),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
