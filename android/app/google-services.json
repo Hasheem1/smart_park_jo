@@ -16,6 +16,31 @@
       "api_key": [
         {
           "current_key": "AIzaSyAvi-1qCA4rbM7E6PIozb8mEbOK1iOLMz8"
+        },
+        {
+          "current_key": "AIzaSyAIY6BBYhXh5VB-8l7Q1wC7GiWcsfA7yOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927521008993:android:6f73b01bd189b7f57a2920",
+        "android_client_info": {
+          "package_name": "com.example.smart_park_qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvi-1qCA4rbM7E6PIozb8mEbOK1iOLMz8"
+        },
+        {
+          "current_key": "AIzaSyAIY6BBYhXh5VB-8l7Q1wC7GiWcsfA7yOI"
         }
       ],
       "services": {
