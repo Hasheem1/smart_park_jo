@@ -290,11 +290,19 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   }
 
   // Screens for each tab
-  late final List<Widget> _screens = [
-    _buildHomeTab(),
-    const MyBookingsScreen(),
-    const UserProfileScreen(),
-  ];
+  Widget _getScreen() {
+    switch (_selectedIndex) {
+      case 0:
+        return _buildHomeTab();
+      case 1:
+        return const MyBookingsScreen();
+      case 2:
+        return const UserProfileScreen();
+      default:
+        return _buildHomeTab();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +383,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             ),
 
             // Display the correct screen
-            Expanded(child: _screens[_selectedIndex]),
+            Expanded(child: _getScreen()),
           ],
         ),
       ),
