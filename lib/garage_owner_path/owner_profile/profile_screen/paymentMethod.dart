@@ -32,7 +32,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+                colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -111,10 +111,10 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                     style: TextStyle(
                                         color: isSelected
                                             ? Colors.white
-                                            : Colors.blueAccent,
+                                            : Color(0xFF36D1DC),
                                         fontWeight: FontWeight.w600)),
                                 selected: isSelected,
-                                selectedColor: const Color(0xFF1565C0),
+                                selectedColor: const Color(0xFF36D1DC),
                                 backgroundColor: Colors.blue.shade50,
                                 onSelected: (_) {
                                   setState(() {
@@ -181,10 +181,10 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                             height: 55,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                              gradient: LinearGradient(
+                                colors: [ Color(0xFF36D1DC),Colors.grey,],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
                               boxShadow: [
                                 BoxShadow(
@@ -301,6 +301,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               );
                             },
                             child: const Text("Remove Card"),
+
                           )
 
                         ],
@@ -333,7 +334,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
         validator: (value) =>
         (value == null || value.isEmpty) ? "Please enter $label" : null,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF1565C0)),
+          prefixIcon: Icon(icon, color: const Color(0xFF36D1DC)),
           labelText: label,
           labelStyle: const TextStyle(color: Colors.black54),
           filled: true,
@@ -341,12 +342,12 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide:
-            const BorderSide(color: Colors.blueAccent, width: 1.2),
+            const BorderSide(color: Color(0xFF36D1DC), width: 1.2),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide:
-            const BorderSide(color: Color(0xFF1565C0), width: 1.5),
+            const BorderSide(color: Color(0xFF36D1DC), width: 1.5),
           ),
         ),
       ),

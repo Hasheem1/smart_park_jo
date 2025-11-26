@@ -72,7 +72,7 @@ class _UserdetailsState extends State<Userdetails> {
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+                    colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -192,7 +192,7 @@ class _UserdetailsState extends State<Userdetails> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xFF2F66F5), width: 2),
+        border: Border.all(color: Color(0xFF36D1DC), width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -201,7 +201,7 @@ class _UserdetailsState extends State<Userdetails> {
             child: Text(
               "$label :",
               style: TextStyle(
-                color: Color(0xFF2F66F5),
+                color: Colors.grey,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -210,7 +210,7 @@ class _UserdetailsState extends State<Userdetails> {
           Expanded(
             child: Text(
               "$value ",
-              style: const TextStyle(color: Color(0xFF2F66F5), fontSize: 20),
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
               textAlign: TextAlign.right,
             ),
           ),

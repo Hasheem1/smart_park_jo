@@ -23,7 +23,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -81,7 +81,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF1565C0),
+                              color: Color(0xFF36D1DC),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -100,12 +100,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                               labelText: "Your Message",
                               labelStyle: const TextStyle(color: Colors.black54),
                               alignLabelWithHint: true,
-                              prefixIcon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF1565C0)),
+                              prefixIcon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF36D1DC)),
                               filled: true,
                               fillColor: Colors.white,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: const BorderSide(color: Colors.blueAccent, width: 1.2),
+                                borderSide: const BorderSide(color: Color(0xFF36D1DC), width: 1.2),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
@@ -143,10 +143,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                               ),
                               child: Ink(
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
+                                  gradient: LinearGradient(
+                                    colors: [ Color(0xFF36D1DC),Colors.grey,],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
                                   ),
                                   borderRadius: BorderRadius.circular(14),
                                 ),

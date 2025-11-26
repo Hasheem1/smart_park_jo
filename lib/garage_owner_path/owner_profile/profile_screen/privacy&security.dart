@@ -10,7 +10,7 @@ class PrivacySecurityScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -68,7 +68,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1565C0),
+                            color: Color(0xFF36D1DC),
                           ),
                         ),
                         SizedBox(height: 16),
@@ -87,7 +87,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1565C0),
+                            color: Color(0xFF36D1DC)
                           ),
                         ),
                         SizedBox(height: 12),
@@ -108,7 +108,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1565C0),
+                            color: Color(0xFF36D1DC),
                           ),
                         ),
                         SizedBox(height: 12),
