@@ -261,7 +261,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
       "distance": widget.distance,
       "pricePerHour": widget.parkingPrice,
       "totalPrice": double.parse(widget.parkingPrice) * durationHours,
-      "durationHours": durationHours,
       "createdAt": Timestamp.now(),
       "status": "pending",
     });
