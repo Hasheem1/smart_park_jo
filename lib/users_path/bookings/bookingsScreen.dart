@@ -1,17 +1,15 @@
-
-
 import 'package:flutter/material.dart';
 
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
-
   @override
   State<MyBookingsScreen> createState() => _MyBookingsScreenState();
 }
 
 class _MyBookingsScreenState extends State<MyBookingsScreen> {
-  int _selectedTab = 0; // 0 for Upcoming, 1 for Past
-
+  int selectedTab = 0;
+  // 0 for Upcoming,
+  // 1 for Past
   // Sample data for bookings
   final List<Map<String, dynamic>> _upcomingBookings = [
     {
@@ -22,7 +20,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
       'spot': 'A15',
       'price': '4 JD',
       'status': 'Confirmed',
-      'imageUrl': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
     },
     {
       'location': 'Rainbow Street Parking',
@@ -32,16 +31,26 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
       'spot': 'B08',
       'price': '3 JD',
       'status': 'Confirmed',
-      'imageUrl': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
     },
   ];
-
-  final List<Map<String, dynamic>> _pastBookings = [];
-
+  final List<Map<String, dynamic>> _pastBookings = [
+    {
+      'location': 'City Center Mall',
+      'date': 'Today',
+      'time': '14:00 - 16:00',
+      'duration': '2 hours',
+      'spot': 'A15',
+      'price': '4 JD',
+      'status': 'Confirmed',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
+    },
+  ];
   @override
   Widget build(BuildContext context) {
-    final bookings = _selectedTab == 0 ? _upcomingBookings : _pastBookings;
-
+    final bookings = selectedTab == 0 ? _upcomingBookings : _pastBookings;
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -63,7 +72,6 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
       ),
       body: Column(
         children: [
-          // Segmented Control
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
@@ -72,49 +80,45 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: _buildTabButton('Upcoming', 0),
-                ),
-                Expanded(
-                  child: _buildTabButton('Past', 1),
-                ),
+                Expanded(child: _buildTabButton('Upcoming', 0)),
+                Expanded(child: _buildTabButton('Past', 1)),
               ],
             ),
           ),
-          // Bookings List
           Expanded(
-            child: bookings.isEmpty
-                ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.event_busy,
-                    size: 64,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No ${_selectedTab == 0 ? 'upcoming' : 'past'} bookings',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
+            child:
+                bookings.isEmpty
+                    ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.event_busy,
+                            size: 64,
+                            color: Colors.grey[400],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No ${selectedTab == 0 ? 'upcoming' : 'past'} bookings',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: bookings.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: BookingCard(booking: bookings[index],isSelected: selectedTab,),
+                        );
+                      },
                     ),
-                  ),
-                ],
-              ),
-            )
-                : ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: bookings.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: BookingCard(booking: bookings[index]),
-                );
-              },
-            ),
           ),
         ],
       ),
@@ -122,17 +126,23 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
   }
 
   Widget _buildTabButton(String label, int index) {
-    final isSelected = _selectedTab == index;
+    final isSelected = selectedTab == index;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedTab = index;
+          selectedTab = index;
         });
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected ? Colors.blue : Colors.transparent,
+          gradient:
+              isSelected
+                  ? LinearGradient(
+                    colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+                  )
+                  : LinearGradient(colors: [Colors.transparent]),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
@@ -151,9 +161,13 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
 
 class BookingCard extends StatelessWidget {
   final Map<String, dynamic> booking;
+  final int isSelected;
+  const BookingCard({
+    super.key,
+    required this.booking,
+    required this.isSelected
 
-  const BookingCard({super.key, required this.booking});
-
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -171,18 +185,15 @@ class BookingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Status Badge
           Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Thumbnail and Info
                 Expanded(
                   child: Row(
                     children: [
-                      // Thumbnail
                       Container(
                         width: 80,
                         height: 80,
@@ -209,7 +220,6 @@ class BookingCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      // Location and Details
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +278,6 @@ class BookingCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Status Badge and Price
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -304,30 +313,46 @@ class BookingCard extends StatelessWidget {
               ],
             ),
           ),
-          // QR Code Button
           Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
             width: double.infinity,
             margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: ElevatedButton.icon(
               onPressed: () {
-                // Handle QR code display
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Showing QR Code for ${booking['location'] as String}'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
+                if (isSelected == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Showing QR Code for ${booking['location']}',
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Rated accept'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
-              icon: const Icon(Icons.qr_code, size: 20),
-              label: const Text(
+
+              icon: isSelected==0? Icon(Icons.qr_code, size: 20):Icon(Icons.star_rate_sharp, size: 20),
+              label: isSelected==0? Text(
                 'Show QR Code',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ):Text(
+                'Rate This Parking',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.transparent,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
@@ -342,4 +367,3 @@ class BookingCard extends StatelessWidget {
     );
   }
 }
-

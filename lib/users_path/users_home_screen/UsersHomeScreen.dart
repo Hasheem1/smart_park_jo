@@ -284,16 +284,26 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 ));
               }
 
-              if (_mapController != null && center != null && !_cameraMoved) {
-                try {
+              // make the map center is parking
+              // if (_mapController != null && center != null && !_cameraMoved) {
+              //   _mapController!.animateCamera(
+              //     CameraUpdate.newLatLngZoom(center, 15.5),
+              //   );
+              //   _cameraMoved = true;
+              // }
+
+              // make the map center is user location
+              if (_mapController != null && !_cameraMoved) {
+                final target = _userLocation ?? center;
+
+                if (target != null) {
                   _mapController!.animateCamera(
-                    CameraUpdate.newLatLngZoom(center, 15.5),
+                    CameraUpdate.newLatLngZoom(target, 15.5),
                   );
                   _cameraMoved = true;
-                } catch (e) {
-                  debugPrint('Map controller disposed: $e');
                 }
               }
+
 
               return GoogleMap(
                 initialCameraPosition: CameraPosition(
