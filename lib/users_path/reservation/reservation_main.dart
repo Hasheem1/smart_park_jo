@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../garage_owner_path/manage_spots/availableSpotsScreen.dart';
 import '../active reservation/active_reservation.dart';
 
 class ReservationScreen extends StatefulWidget {
@@ -235,8 +233,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   // ---------- SAVE TO FIRESTORE FUNCTION ----------
   Future<void> saveReservation() async {
-
-
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -245,33 +241,45 @@ class _ReservationScreenState extends State<ReservationScreen> {
       return;
     }
 
-    final DateTime fullDateTime = DateTime(
-      selectedDate.year,
-      selectedDate.month,
-      selectedDate.day,
-    );
+    if (selectedSpotId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select a parking spot!")),
+      );
+      return;
+    }
 
-    double totalPrice = double.parse(widget.parkingPrice) * durationHours;
-
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
+    // Create reservation in global collection
+    final reservationRef = await FirebaseFirestore.instance
         .collection("reservations")
         .add({
-      "parking lot":selectedSpotId,
-      "garageName": widget.garageName,
+      "userId": user.uid,
+      "ownerId": widget.owneremail,     // owner
+      "parkingId": widget.parkinguid,   // garage inside owner
+      "parkingName": widget.garageName,
+      "spotId": selectedSpotId,
+      "imageUrl": widget.imageUrl,
       "distance": widget.distance,
-      "totalPrice": totalPrice,
+      "pricePerHour": widget.parkingPrice,
+      "totalPrice": double.parse(widget.parkingPrice) * durationHours,
+      "durationHours": durationHours,
       "createdAt": Timestamp.now(),
-      "imageUrl":widget.imageUrl
-
+      "status": "pending",
     });
 
+    // Get reservationId for QR code
+    String reservationId = reservationRef.id;
+
+    // Navigate to QR screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ActiveReservationScreen()),
+      MaterialPageRoute(
+        builder: (context) => ActiveReservationScreen(
+          reservationId: reservationId,
+        ),
+      ),
     );
   }
+
 
   // ---------- DATE BUTTON WIDGET ----------
   Widget dateButton(String label, DateTime date) {
