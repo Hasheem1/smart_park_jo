@@ -97,6 +97,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     return '$h:$m:$s';
   }
 
+
   @override
   Widget build(BuildContext context) {
     if (loading) {
@@ -107,7 +108,10 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
 
     if (reservationData == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text("Active Reservation")),
+        appBar: AppBar(
+          title: const Text("Active Reservation"),
+          backgroundColor: Colors.green,
+        ),
         body: const Center(
           child: Text("No reservation found.",
               style: TextStyle(fontSize: 18, color: Colors.black54)),
@@ -117,156 +121,240 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
 
     final status = reservationData!["status"];
     final garageName = reservationData!["parkingName"] ?? "Unknown Garage";
-    final imageUrl = reservationData!["imageUrl"] as String?;
+    final imageUrl = reservationData!["imageUrl"];
     final distance = reservationData!["distance"] ?? "";
     final totalPrice = reservationData!["totalPrice"]?.toString() ?? "0";
-    final durationTime=reservationData!["durationFormatted"]?.toString()??0;
+    final durationTime = reservationData!["durationFormatted"].toString();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffF5F7FA),
       appBar: AppBar(
         backgroundColor: Colors.green.shade600,
-        elevation: 0,
         centerTitle: true,
+        elevation: 0,
         title: const Text(
           "Active Reservation",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
       ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            if (status == "active") _buildTimerCard(),
+
             const SizedBox(height: 20),
 
-            // -------------------------------
-            // TIMER
-            // -------------------------------
-            if (status == "active") ...[
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.green.withOpacity(0.3)),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 5)
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Time Elapsed",
-                      style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      timeFormatted,
-                      style: const TextStyle(
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
+            _buildQRCard(status),
 
-            // QR CODE BOX
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withOpacity(0.12)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.04), blurRadius: 6)
-                ],
-              ),
-              child: Column(
-                children: [
-                  QrImageView(
-                    data: widget.reservationId,
-                    size: 220,
-                    version: QrVersions.auto,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    status == "completed"
-                        ? "Reservation completed"
-                        : "Show this QR at the parking entrance",
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 25),
+
+            _buildDetailsCard(
+              garageName: garageName,
+              imageUrl: imageUrl,
+              distance: distance.toString(),
+              totalPrice: totalPrice,
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 25),
 
-            // -------------------------------
-            // RESERVATION DETAILS
-            // -------------------------------
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withOpacity(0.12)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
-                    blurRadius: 6,
-                  )
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: _buildReservationImage(imageUrl),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(garageName,
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700)),
-                            const SizedBox(height: 6),
-                            Text(distance.toString(),
-                                style: const TextStyle(color: Colors.black54)),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text("Price: $totalPrice JOD",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green.shade700)),
-                ],
-              ),
-            ),
+            _buildBillCard(durationTime,totalPrice),
 
-            //bill
-            Text("your bill is $durationTime")
           ],
         ),
       ),
     );
   }
+  Widget _buildTimerCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          const Text(
+            "Time Elapsed",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            timeFormatted,
+            style: const TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+              letterSpacing: 2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildQRCard(String status) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          QrImageView(
+            data: widget.reservationId,
+            size: 220,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            status == "completed"
+                ? "Reservation Completed"
+                : "Show this QR at the parking entrance",
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildDetailsCard({
+    required String garageName,
+    required String imageUrl,
+    required String distance,
+    required String totalPrice,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.05),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: _buildReservationImage(imageUrl),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  garageName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  distance,
+                  style: const TextStyle(color: Colors.black54),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "Price/hour: $totalPrice JOD",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green.shade700,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildBillCard(String durationTime, String totalPrice) {
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.green.shade50,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.green.shade200),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.timelapse_sharp, color: Colors.green, size: 30),
+          const SizedBox(width: 12),
+
+          // TEXTS STACKED VERTICALLY
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Your duration: $durationTime",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.green.shade800,
+                ),
+
+              ),
+              const SizedBox(height: 6),
+              Text(
+                "Your total Price: $totalPrice",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.green.shade800,
+
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+
+
+
 
   Widget _buildReservationImage(String? imageUrl) {
     const size = 80.0;
