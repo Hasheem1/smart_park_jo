@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../active reservation/active_reservation.dart';
+import 'package:intl/intl.dart';
+
 
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
@@ -31,6 +33,27 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
   // ----------------------------
 
   Widget buildReservationCard(Map<String, dynamic> r) {
+    // Decide which timestamp to show based on status
+    Timestamp? selectedTime;
+    String timeLabel = "";
+
+    if (r["status"] == "pending") {
+      selectedTime = r["createdAt"];
+      timeLabel = "Created at:";
+    } else if (r["status"] == "active") {
+      selectedTime = r["startTime"];
+      timeLabel = "Started at:";
+    } else if (r["status"] == "completed") {
+      selectedTime = r["endTime"];
+      timeLabel = "Ended at:";
+    }
+
+    String formattedTime = "";
+    if (selectedTime != null) {
+      formattedTime =
+          DateFormat('EEE, MMM d • h:mm a').format(selectedTime.toDate());
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       padding: const EdgeInsets.all(12),
@@ -90,27 +113,36 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               ),
 
               // STATUS BADGE
+              // STATUS BADGE
               Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: (() {
+                    if (r["status"] == "active") return Colors.green.shade50;
+                    if (r["status"] == "completed") return Colors.red.shade50;
+                    return Colors.blue.shade50; // pending
+                  })(),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   r["status"] ?? "Confirmed",
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: (() {
+                      if (r["status"] == "active") return Colors.green;
+                      if (r["status"] == "completed") return Colors.red;
+                      return Colors.blue; // pending
+                    })(),
                   ),
                 ),
               ),
+
             ],
           ),
 
           const SizedBox(height: 10),
 
-          // Duration + Price
+          // TIME + PRICE
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -118,15 +150,17 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                 children: [
                   const Icon(Icons.access_time, size: 18, color: Colors.grey),
                   const SizedBox(width: 4),
+
+                  // THE NEW LABEL + TIME
                   Text(
-                    r["duration"] ?? "",
+                    "$timeLabel $formattedTime",
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
 
               Text(
-                "${r["price"] ?? "0"} JD",
+                "${r["pricePerHour"] ?? "0"} JD",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -138,7 +172,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
           // Spot number
           Text(
-            "Spot: ${r["spot"] ?? "-"}",
+            "Spot: ${r["spotId"] ?? "-"}",
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
@@ -156,7 +190,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                   context,
                   MaterialPageRoute(
                     builder: (_) => ActiveReservationScreen(
-                      reservationId: r["reservationId"],  // PASS THE ID
+                      reservationId: r["reservationId"],
                     ),
                   ),
                 );
@@ -177,6 +211,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       ),
     );
   }
+
 
   // ----------------------------
   // 🔥 Upcoming or Past Query
@@ -241,7 +276,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                // UPCOMING
+
+
+                //------------------UPCOMING--------------------
                 StreamBuilder(
                   stream: reservationQuery(),
                   builder: (context, snapshot) {
@@ -261,6 +298,19 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
                       return status == "pending" || status == "active";
                     }).toList();
+
+                    // Sort: active first, pending later
+                    upcoming.sort((a, b) {
+                      final statusA = (a.data() as Map<String, dynamic>)["status"];
+                      final statusB = (b.data() as Map<String, dynamic>)["status"];
+
+                      // "active" should be above "pending"
+                      if (statusA == "active" && statusB != "active") return -1;
+                      if (statusA != "active" && statusB == "active") return 1;
+
+                      return 0; // keep same order otherwise
+                    });
+
 
 
 
@@ -302,6 +352,23 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
                       return status == "completed";
                     }).toList();
+                    // 🔥 Sort completed by endTime DESC (latest completed on top)
+                    past.sort((a, b) {
+                      final dataA = a.data() as Map<String, dynamic>;
+                      final dataB = b.data() as Map<String, dynamic>;
+
+                      final endA = dataA["endTime"] as Timestamp?;
+                      final endB = dataB["endTime"] as Timestamp?;
+
+                      // Null safety
+                      if (endA == null && endB == null) return 0;
+                      if (endA == null) return 1;   // put nulls at bottom
+                      if (endB == null) return -1;
+
+                      // DESCENDING → newest first
+                      return endB.toDate().compareTo(endA.toDate());
+                    });
+
 
 
                     if (past.isEmpty) {
