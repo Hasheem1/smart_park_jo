@@ -21,7 +21,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
-      colors: [Color(0xFF2F66F5), Color(0xFF4A90FF)],
+      colors: [Colors.grey, Color(0xFF36D1DC)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );
@@ -106,7 +106,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                             children: [
                               CircleAvatar(backgroundColor: Colors.white,
                                 radius: 30,
-                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF36D1DC)),),
                                 // backgroundImage: NetworkImage(
                                 //   "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png",
                                 // ),
@@ -147,7 +147,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   icon: Icons.person_2_outlined,
                   title: "Parking Owner Information",
                   subtitle: "Update Parking Owner details",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -158,21 +158,21 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 15),
-                _buildGlassTile(
-                  icon: Icons.credit_card,
-                  title: "Payment info",
-                  subtitle: "Update Payment info",
-                  color: const Color(0xFF2F66F5),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AddPaymentMethodScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 15),
+                // _buildGlassTile(
+                //   icon: Icons.credit_card,
+                //   title: "Payment info",
+                //   subtitle: "Update Payment info",
+                //   color: const Color(0xFF2F66F5),
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (_) => const AddPaymentMethodScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
+                // const SizedBox(height: 15),
 
                 Align(
                   alignment: Alignment.centerLeft,
@@ -187,18 +187,18 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 ),
                 const SizedBox(height: 15),
 
-                _buildGlassTile(
-                  icon: Icons.language_outlined,
-                  title: "Language",
-                  subtitle: "English",
-                  color: const Color(0xFF2F66F5),
-                ),
-                const SizedBox(height: 12),
+                // _buildGlassTile(
+                //   icon: Icons.language_outlined,
+                //   title: "Language",
+                //   subtitle: "English",
+                //   color: const Color(0xFF2F66F5),
+                // ),
+                // const SizedBox(height: 12),
                 _buildGlassTile(
                   icon: Icons.lock_outline,
                   title: "Privacy & Security",
                   subtitle: "الخصوصية والأمان",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -227,7 +227,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   icon: Icons.help_outline,
                   title: "Help Center",
                   subtitle: "مركز المساعدة",
-                  color: const Color(0xFF2F66F5),
+                  color: const Color(0xFF36D1DC),
                   onTap: () {
                     Navigator.push(
                       context,

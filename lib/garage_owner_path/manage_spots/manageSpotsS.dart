@@ -41,136 +41,144 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
     }).toList();
 
     return Scaffold(
+
       backgroundColor: Colors.transparent,
-      body: Container(
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+      body: Container(decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+
+            Colors.grey, Color(0xFF36D1DC),Colors.grey
+          ],
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon:
-                      const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      "Manage Spots",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
 
-                // SUMMARY CARDS
-                Row(
-                  children: [
-                    _summaryCard("Available", availableCount),
-                    const SizedBox(width: 12),
-                    _summaryCard("Occupied", occupiedCount),
-                  ],
-                ),
-                const SizedBox(height: 20),
 
-                // FILTER BUTTONS
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _filterButton("All"),
-                    _filterButton("Available"),
-                    _filterButton("Occupied"),
-                  ],
-                ),
-                const SizedBox(height: 20),
+      ),
 
-                // SPOTS GRID
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: filteredSpots.length,
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1.2,
+        height: double.infinity,
+
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  IconButton(
+                    icon:
+                    const Icon(Icons.arrow_back_ios_new_rounded,
+                         color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  itemBuilder: (context, index) {
-                    final spot = filteredSpots[index];
-                    final isAvailable =
-                        spot["status"] == "Available";
+                  const SizedBox(width: 20),
+                  const Text(
+                    "Manage Spots",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
 
-                    return Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.95),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                spot["id"],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Switch(
-                                value: isAvailable,
-                                onChanged: (value) {
-                                  setState(() {
-                                    spot["status"] = value ? "Available" : "Occupied";
-                                  });
+              // SUMMARY CARDS
+              Row(
+                children: [
+                  _summaryCard("Available", availableCount),
+                  const SizedBox(width: 12),
+                  _summaryCard("Occupied", occupiedCount),
+                ],
+              ),
+              const SizedBox(height: 20),
 
-                                  _updateSpotsInFirebase(); // ✅ SAVE IN FIREBASE
-                                },
-                              ),
+              // FILTER BUTTONS
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _filterButton("All"),
+                  _filterButton("Available"),
+                  _filterButton("Occupied"),
+                ],
+              ),
+              const SizedBox(height: 20),
 
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            spot["status"],
-                            style: TextStyle(
-                              color: isAvailable
-                                  ? const Color(0xFF2E7D32)
-                                  : const Color(0xFFC62828),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+              // SPOTS GRID
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: filteredSpots.length,
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 1.2,
                 ),
-              ],
-            ),
+                itemBuilder: (context, index) {
+                  final spot = filteredSpots[index];
+                  final isAvailable =
+                      spot["status"] == "Available";
+
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.95),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              spot["id"],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Switch(focusColor: Color(0xFF36D1DC),
+                              activeColor: Color(0xFF36D1DC),
+                              value: isAvailable,
+                              onChanged: (value) {
+                                setState(() {
+                                  spot["status"] = value ? "Available" : "Occupied";
+                                });
+
+                                _updateSpotsInFirebase(); // ✅ SAVE IN FIREBASE
+                              },
+                            ),
+
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          spot["status"],
+                          style: TextStyle(
+                            color: isAvailable
+                                ? const Color(0xFF2E7D32)
+                                : const Color(0xFFC62828),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -231,7 +239,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
         decoration: BoxDecoration(
           gradient: isSelected
               ? const LinearGradient(
-            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+            colors: [Color(0xFF36D1DC), Color(0xFF36D1DC)],
           )
               : null,
           color: !isSelected ? Colors.white24 : null,

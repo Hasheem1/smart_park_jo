@@ -236,12 +236,29 @@ class _ChatScreenState extends State<ChatScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          "AI Chat Bot",
-          style: TextStyle(
-            color: Color(0xFF2F66F5),
-            fontWeight: FontWeight.bold,
-          ),
+        title: Container(decoration: BoxDecoration(
+
+        ),
+
+          child: ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              colors: [
+                Colors.grey,
+                Color(0xFF36D1DC),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ).createShader(bounds),
+            child: const Text(
+              "AI Chat Bot",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          )
+
         ),
         centerTitle: true,
       ),
@@ -309,7 +326,8 @@ class _ChatScreenState extends State<ChatScreen>
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFF2F66F5), Color(0xFF36D1DC)],
+                          colors: [Colors.grey, Color(0xFF36D1DC),
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),

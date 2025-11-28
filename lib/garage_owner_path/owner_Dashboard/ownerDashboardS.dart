@@ -234,7 +234,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           padding: const EdgeInsets.symmetric(vertical: 22),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+              colors: [Colors.grey, Color(0xFF36D1DC)],
             ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
@@ -477,31 +477,98 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         ),
                         onPressed: () async {
                           // Show confirmation dialog
-                          final confirm = await showDialog<bool>(
+                          final confirm = await showDialog(
                             context: context,
-                            builder:
-                                (ctx) => AlertDialog(
-                                  title: const Text("Confirm Delete"),
-                                  content: const Text(
-                                    "Are you sure you want to delete this parking lot?",
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.of(ctx).pop(false),
-                                      child: const Text("Cancel"),
-                                    ),
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.of(ctx).pop(true),
-                                      child: const Text(
-                                        "Delete",
-                                        style: TextStyle(color: Colors.red),
+                            builder: (ctx) => Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 5,
+                              backgroundColor: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Icon on top
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [Colors.grey,Color(0xFF36D1DC),],
+                                        ),
                                       ),
+                                      child: const Icon(
+                                        Icons.delete_forever,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+
+                                    const Text(
+                                      "Confirm Delete",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      "Are you sure you want to delete this parking lot?",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: OutlinedButton(
+                                            onPressed: () => Navigator.of(ctx).pop(false),
+                                            style: OutlinedButton.styleFrom(
+                                              side: BorderSide(color: Colors.grey.shade300),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              padding: const EdgeInsets.symmetric(vertical: 14),
+                                            ),
+                                            child: const Text(
+                                              "Cancel",
+                                              style: TextStyle(color: Colors.black87, fontSize: 16),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () => Navigator.of(ctx).pop(true),
+                                            style: ElevatedButton.styleFrom(
+                                              padding: const EdgeInsets.symmetric(vertical: 14),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              backgroundColor: Colors.redAccent,
+                                              elevation: 0,
+                                            ),
+                                            child: const Text(
+                                              "Delete",
+                                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white70),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                              ),
+                            ),
                           );
+
 
                           if (confirm != null && confirm) {
                             try {

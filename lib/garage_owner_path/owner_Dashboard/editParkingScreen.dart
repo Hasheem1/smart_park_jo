@@ -155,73 +155,231 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Parking")),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: Container(
-                height: 180,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(16),
-                  image: _image != null
-                      ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
-                      : widget.parkingData['image_url'] != null
-                      ? DecorationImage(
-                      image: NetworkImage(widget.parkingData['image_url']),
-                      fit: BoxFit.cover)
-                      : null,
-                ),
-                child: _image == null && widget.parkingData['image_url'] == null
-                    ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
-                    : null,
-              ),
+      // appBar: AppBar(title: const Text("Edit Parking",style: TextStyle(fontWeight: FontWeight.bold
+      // ),
+      // ),
+      //     centerTitle: true,
+      // ),
+      body: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.grey,
+              Color(0xFF36D1DC),
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Container(decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+
+              colors: [
+                Colors.grey, Color(0xFF36D1DC),
+              ],
             ),
-            const SizedBox(height: 20),
-            _buildTextField(_nameController, "Parking Name", Icons.local_parking_rounded),
-            _buildTextField(_descController, "Description", Icons.text_fields_outlined),
-            _buildTextField(_locationController, "Location", Icons.location_on_outlined,
-                readOnly: true, onTap: _pickLocationOnMap),
-            _buildTextField(_capacityController, "Capacity", Icons.people_outline,
-                inputType: TextInputType.number),
-            _buildTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
-                inputType: TextInputType.numberWithOptions(decimal: true)),
-            const SizedBox(height: 20),
-            _buildCheckbox("24/7 Access", access24, (v) => setState(() => access24 = v!)),
-            _buildCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
-            _buildCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
-            _buildCheckbox("Disabled Access", disabledAccess, (v) => setState(() => disabledAccess = v!)),
-            const SizedBox(height: 25),
-            ElevatedButton(onPressed: updateParking, child: const Text("Save Changes")),
+
+          ),
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                Row(
+                  children: [
+                    IconButton(
+                      icon:
+                      const Icon(Icons.arrow_back_ios_new_rounded,
+                          color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 20),
+                    const Text(
+                      "Edit Parking",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    height: 180,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(16),
+                      image: _image != null
+                          ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
+                          : widget.parkingData['image_url'] != null
+                          ? DecorationImage(
+                          image: NetworkImage(widget.parkingData['image_url']),
+                          fit: BoxFit.cover)
+                          : null,
+                    ),
+                    child: _image == null && widget.parkingData['image_url'] == null
+                        ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 50, color: Colors.white))
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildModernTextField(_nameController, "Parking Name", Icons.local_parking_rounded),
+                _buildModernTextField(_descController, "Description", Icons.text_fields_outlined),
+                _buildModernTextField(_locationController, "Location", Icons.location_on_outlined,
+                    readOnly: true, onTap: _pickLocationOnMap),
+                _buildModernTextField(_capacityController, "Capacity", Icons.people_outline,
+                    inputType: TextInputType.number),
+                _buildModernTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
+                    inputType: TextInputType.numberWithOptions(decimal: true)),
+                const SizedBox(height: 20),
+                _buildModernCheckbox("24/7 Access", access24, (v) => setState(() => access24 = v!)),
+                _buildModernCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
+                _buildModernCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
+                _buildModernCheckbox("Disabled Access", disabledAccess, (v) => setState(() => disabledAccess = v!)),
+                const SizedBox(height: 25),
+
+
+            Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),
+              color: Color(0xFF36D1DC),
+
+            ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.grey, Color(0xFF36D1DC),
+                    ],
+                  ),
+
+                ),
+                child: ElevatedButton(
+                  onPressed: updateParking,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.white,
+                    elevation: 8,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 26,
+                      vertical: 14,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.add_location_alt_outlined),
+                      SizedBox(width: 8),
+                      Text("Save Changes"),
+                    ],
+                  ),
+                ),
+              )
+            ) ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  /// Modern TextField
+  Widget _buildModernTextField(
+      TextEditingController controller,
+      String label,
+      IconData icon, {
+        TextInputType inputType = TextInputType.text,
+        bool readOnly = false,
+        VoidCallback? onTap,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Material(
+        elevation: 3,
+        shadowColor: Colors.black.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        child: TextField(
+          controller: controller,
+          keyboardType: inputType,
+          readOnly: readOnly,
+          onTap: onTap,
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
+          decoration: InputDecoration(
+            prefixIcon: Container(
+              padding: const EdgeInsets.all(12),
+              child: Icon(icon, color: Color(0xFF36D1DC), size: 24),
+            ),
+            labelText: label,
+            labelStyle: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(color: Color(0xFF36D1DC), width: 2),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Modern Checkbox
+  Widget _buildModernCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label, IconData icon,
-      {TextInputType inputType = TextInputType.text, bool readOnly = false, VoidCallback? onTap}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: TextField(
-        controller: controller,
-        keyboardType: inputType,
-        readOnly: readOnly,
-        onTap: onTap,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.blueAccent),
-          labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        child: CheckboxListTile(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          value: value,
+          onChanged: onChanged,
+          activeColor: Color(0xFF36D1DC),
+          checkColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
     );
-  }
+  }}
 
-  Widget _buildCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
-    return CheckboxListTile(title: Text(title), value: value, onChanged: onChanged);
-  }
-}

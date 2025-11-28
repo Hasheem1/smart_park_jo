@@ -142,8 +142,9 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Parking Lot")
-      ,        centerTitle: true, // <-- This centers the title
+      appBar: AppBar(title: const Text("Add Parking Lot",style: TextStyle(fontWeight: FontWeight.bold),),
+
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -155,6 +156,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 height: 180,
                 width: double.infinity,
                 decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.grey, Color(0xFF36D1DC)],
+                  ),
+
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(16),
                   image:
@@ -225,32 +230,38 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                   (v) => setState(() => washCar = v!),
             ),
             const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: addParking,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-                elevation: 8,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 26,
-                  vertical: 14,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                ),
+            Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),
+              gradient: const LinearGradient(
+                colors: [Colors.grey, Color(0xFF36D1DC)],
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add_location_alt_outlined),
-                  SizedBox(width: 8),
-                  Text("Add Parking"),
-                ],
+            ),
+              child: ElevatedButton(
+                onPressed: addParking,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  elevation: 8,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 26,
+                    vertical: 14,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.add_location_alt_outlined),
+                    SizedBox(width: 8),
+                    Text("Add Parking"),
+                  ],
+                ),
               ),
             ),
           ],
@@ -277,7 +288,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         readOnly: readOnly,
         onTap: onTap,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.blueAccent),
+          prefixIcon: Icon(icon, color: Color(0xFF36D1DC)),
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
@@ -306,11 +317,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         decoration: BoxDecoration(
           color: Colors.blueAccent.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.blueAccent, width: 1.5),
+          border: Border.all(color: Color(0xFF36D1DC), width: 1.5),
         ),
         child: Row(
           children: [
-            const Icon(Icons.location_on, size: 36, color: Colors.blueAccent),
+            const Icon(Icons.location_on, size: 36, color: Color(0xFF36D1DC)),
             const SizedBox(width: 12),
             Expanded(
               child:
@@ -319,7 +330,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                         "Pick parking location",
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.blueAccent,
+                          color: Color(0xFF36D1DC),
                         ),
                       )
                       : ClipRRect(
@@ -348,8 +359,9 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             const SizedBox(width: 8),
             Container(
               decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(12),
+                gradient: const LinearGradient(
+                  colors: [Colors.grey, Color(0xFF36D1DC)],
+                ),                borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: const Text(

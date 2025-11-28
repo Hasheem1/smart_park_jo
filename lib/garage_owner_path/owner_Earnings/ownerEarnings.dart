@@ -99,7 +99,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
       appBar: AppBar(
         title: const Text(
           'Earnings',
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.bold,),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -118,7 +118,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Colors.blue, Colors.blueAccent],
+                  colors: [Colors.grey, Color(0xFF36D1DC)],
                 ),
                 borderRadius: BorderRadius.circular(22),
                 boxShadow: [
