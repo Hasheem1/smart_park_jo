@@ -121,7 +121,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                           Map<String, dynamic> data =
                           snapshot.data!.data() as Map<String, dynamic>;
-                          String trimEmail = data['phone number'].toString();
+                          String trimEmail = data['phoneNumber'].toString();
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: BackdropFilter(
@@ -152,7 +152,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "+962 ${data['phone number'].toString()}",
+                                          "+962 ${data['phoneNumber'].toString()}",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,

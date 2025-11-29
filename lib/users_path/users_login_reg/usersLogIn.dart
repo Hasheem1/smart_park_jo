@@ -44,6 +44,8 @@ class _UsersLogInState extends State<UsersLogIn> {
   Future<void> registerUser() async {
     final phone = phoneController.text.trim();
     final password = passwordController.text.trim();
+    double money=0;
+
 
     try {
       // 1️⃣ Create user in Firebase Auth
@@ -61,6 +63,7 @@ class _UsersLogInState extends State<UsersLogIn> {
         'password': password,
         'uid': uid,
         'createdAt': FieldValue.serverTimestamp(),
+        'money':money
       });
 
       // 4️⃣ Navigate to home screen

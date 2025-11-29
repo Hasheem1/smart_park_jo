@@ -248,27 +248,75 @@ class _ReservationScreenState extends State<ReservationScreen> {
       return;
     }
 
-    // Create reservation in global collection
-    final reservationRef = await FirebaseFirestore.instance
-        .collection("reservations")
-        .add({
+    // Calculate total price
+    double pricePerHour = double.parse(widget.parkingPrice);
+    double moneyToSubtract = pricePerHour * durationHours;
+
+    // Subtract user money
+    final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final userSnapshot = await userDocRef.get();
+    final userData = userSnapshot.data() ?? {};
+    double currentMoney = (userData['money'] ?? 0).toDouble();
+
+    await userDocRef.set({
+      'money': currentMoney - moneyToSubtract,
+    }, SetOptions(merge: true));
+
+    // Create reservation
+    final reservationRef = await FirebaseFirestore.instance.collection("reservations").add({
       "userId": user.uid,
-      "ownerId": widget.owneremail,     // owner
-      "parkingId": widget.parkinguid,   // garage inside owner
+      "ownerId": widget.owneremail,
+      "parkingId": widget.parkinguid,
       "parkingName": widget.garageName,
       "spotId": selectedSpotId,
       "imageUrl": widget.imageUrl,
       "distance": widget.distance,
-      "pricePerHour": widget.parkingPrice,
-      "totalPrice": double.parse(widget.parkingPrice) * durationHours,
+      "pricePerHour": pricePerHour,
+      "totalPrice": moneyToSubtract,
       "createdAt": Timestamp.now(),
       "status": "pending",
     });
 
-    // Get reservationId for QR code
-    String reservationId = reservationRef.id;
+    // ───────────────
+    // Earnings logic
+    // ───────────────
+    final earningRef = FirebaseFirestore.instance.collection("earnings").doc(widget.garageName);
+    final earningSnapshot = await earningRef.get();
+    final earningData = earningSnapshot.data() ?? {};
+
+    double total = (earningData["totalEarnings"] ?? 0).toDouble();
+    double today = (earningData["todayEarnings"] ?? 0).toDouble();
+    double week = (earningData["weekEarnings"] ?? 0).toDouble();
+    double month = (earningData["monthEarnings"] ?? 0).toDouble();
+
+    Timestamp lastUpdatedTs = earningData["lastUpdated"] ?? Timestamp.now();
+    DateTime last = lastUpdatedTs.toDate();
+    DateTime now = DateTime.now();
+
+    // Reset logic
+    if (now.year != last.year || now.month != last.month || now.day != last.day) {
+      today = 0;
+    }
+    if (now.weekday == 1 && last.weekday != 1) {
+      week = 0;
+    }
+    if (now.month != last.month || now.year != last.year) {
+      month = 0;
+    }
+
+    // Update earnings
+    await earningRef.set({
+      "parkingId": widget.parkinguid,
+      "parkingName": widget.garageName,
+      "totalEarnings": total + moneyToSubtract,
+      "todayEarnings": today + moneyToSubtract,
+      "weekEarnings": week + moneyToSubtract,
+      "monthEarnings": month + moneyToSubtract,
+      "lastUpdated": Timestamp.now(),
+    }, SetOptions(merge: true));
 
     // Navigate to QR screen
+    String reservationId = reservationRef.id;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -278,6 +326,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       ),
     );
   }
+
 
 
   // ---------- DATE BUTTON WIDGET ----------

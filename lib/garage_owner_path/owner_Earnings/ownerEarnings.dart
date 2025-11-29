@@ -28,54 +28,33 @@ class _EarningsScreenState extends State<EarningsScreen> {
 
     final String email = user.email!;
 
-    double today = 0;
-    double week = 0;
-    double month = 0;
-
-    final now = DateTime.now();
-
-    final weekStart = DateTime(
-      now.year,
-      now.month,
-      now.day - (now.weekday - 1),
-    );
-
     try {
+      // Fetch all garages owned by this owner
       final parkingSnapshot = await FirebaseFirestore.instance
           .collection('owners')
           .doc(email)
           .collection('Owners Parking')
           .get();
 
-      for (var parkingDoc in parkingSnapshot.docs) {
+      double today = 0;
+      double week = 0;
+      double month = 0;
 
-        // CHANGE THIS PATH IF YOUR RESERVATIONS ARE STORED ELSEWHERE
-        final reservationsSnapshot = await parkingDoc.reference
-            .collection('reservations')
+      for (var parkingDoc in parkingSnapshot.docs) {
+        String garageName = parkingDoc['Parking name'];
+
+        // Get Earnings Document FROM earnings collection
+        final earningDoc = await FirebaseFirestore.instance
+            .collection("earnings")
+            .doc(garageName)
             .get();
 
-        for (var res in reservationsSnapshot.docs) {
-          final data = res.data();
+        if (earningDoc.exists) {
+          final data = earningDoc.data()!;
 
-          final double price =
-          (data['totalPrice'] ?? 0).toDouble();
-
-          final Timestamp ts =
-              data['startDate'] ?? data['createdAt'];
-
-          final DateTime date = ts.toDate();
-
-          if (DateUtils.isSameDay(date, now)) {
-            today += price;
-          }
-
-          if (date.isAfter(weekStart) || DateUtils.isSameDay(date, weekStart)) {
-            week += price;
-          }
-
-          if (date.month == now.month && date.year == now.year) {
-            month += price;
-          }
+          today += (data['todayEarnings'] ?? 0).toDouble();
+          week += (data['weekEarnings'] ?? 0).toDouble();
+          month += (data['monthEarnings'] ?? 0).toDouble();
         }
       }
 
@@ -85,12 +64,12 @@ class _EarningsScreenState extends State<EarningsScreen> {
         monthTotal = month;
         isLoading = false;
       });
+
     } catch (e) {
-      debugPrint("Earnings error: $e");
+      debugPrint("Error loading earnings: $e");
       setState(() => isLoading = false);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +78,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
       appBar: AppBar(
         title: const Text(
           'Earnings',
-          style: TextStyle(fontWeight: FontWeight.bold,),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -111,7 +90,6 @@ class _EarningsScreenState extends State<EarningsScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-
             // ===== Monthly Total Card =====
             Container(
               width: double.infinity,
@@ -135,8 +113,8 @@ class _EarningsScreenState extends State<EarningsScreen> {
                   const Text(
                     "Total This Month",
                     style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14
+                      color: Colors.white70,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 8),
