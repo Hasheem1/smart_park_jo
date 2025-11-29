@@ -15,6 +15,8 @@ class ReservationScreen extends StatefulWidget {
 
 
 
+
+
   const ReservationScreen({
     super.key,
     required this.garageName,
@@ -22,7 +24,7 @@ class ReservationScreen extends StatefulWidget {
     required this.distance,
     required this.owneremail,
     required this.parkinguid,
-    required this.parkingPrice
+    required this.parkingPrice,
   });
 
   @override
@@ -33,7 +35,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   DateTime selectedDate = DateTime.now();
   int durationHours = 1;
 
-  double pricePerHour = 1.5;
+  int pricePerHour = 1;
   String? selectedSpotId;
 
 
@@ -43,7 +45,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
 // final String email=widget.owneremail;
 //   }
   Widget build(BuildContext context) {
-    double totalPrice = double.parse(widget.parkingPrice) * durationHours;
+    double pricePerHour = double.parse(widget.parkingPrice);
+    double totalPrice = pricePerHour * durationHours;
     final firestore = FirebaseFirestore.instance;
 
     return Scaffold(
@@ -137,7 +140,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   const SizedBox(height: 10),
                   summaryRow("Price per hour", "${widget.parkingPrice} JD"),
                   const Divider(),
-                  summaryRow("Total", "$totalPrice JD",
+                  summaryRow("Total","${totalPrice.toStringAsFixed(2)} JD",
                       isBold: true, color: Colors.blue),
                 ],
               ),
@@ -251,12 +254,46 @@ class _ReservationScreenState extends State<ReservationScreen> {
     // Calculate total price
     double pricePerHour = double.parse(widget.parkingPrice);
     double moneyToSubtract = pricePerHour * durationHours;
-
-    // Subtract user money
+    // Get user's current money
     final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
     final userSnapshot = await userDocRef.get();
     final userData = userSnapshot.data() ?? {};
-    double currentMoney = (userData['money'] ?? 0).toDouble();
+    double currentMoney = (userData['money'] ?? 0.0);
+
+    // Check if user has enough money
+    if (currentMoney < moneyToSubtract) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating, // modern floating style
+          margin: const EdgeInsets.all(16),   // floating with space around
+          backgroundColor: Colors.black87,    // dark, modern look
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // super rounded corners
+          ),
+          elevation: 6,
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: const [
+              Icon(Icons.error_outline, color: Colors.redAccent),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "You don't have enough money to make a reservation!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+        ),
+      );
+
+      return; // Stop execution if not enough money
+    }
+
 
     await userDocRef.set({
       'money': currentMoney - moneyToSubtract,
@@ -276,6 +313,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
       "createdAt": Timestamp.now(),
       "status": "pending",
     });
+    // final data = snapshot.data!.data() as Map<String, dynamic>;
+    // final List spots = data['spots'] ?? [];
+
+    // spot State
+
+
+    occupySpot(selectedSpotId!);
 
     // ───────────────
     // Earnings logic
@@ -405,4 +449,45 @@ class _ReservationScreenState extends State<ReservationScreen> {
       ),
     );
   }
+  Future<void> occupySpot(String spotId) async {
+    final firestore = FirebaseFirestore.instance;
+
+    try {
+      // Reference to the parking document
+      final parkingDocRef = firestore
+          .collection('owners')
+          .doc(widget.owneremail)
+          .collection('Owners Parking')
+          .doc(widget.parkinguid);
+
+      // Get the current data of the document
+      final docSnapshot = await parkingDocRef.get();
+      if (!docSnapshot.exists) return;
+
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      List spots = List.from(data['spots'] ?? []);
+
+      // Update the specific spot
+      for (int i = 0; i < spots.length; i++) {
+        if (spots[i]['id'] == spotId) {
+          spots[i]['status'] = 'Occupied';
+          break;
+        }
+      }
+
+      // Save the updated spots back to Firestore
+      await parkingDocRef.update({'spots': spots});
+
+      // Optional: show confirmation
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Spot $spotId is now Occupied ✅")),
+      );
+    } catch (e) {
+      print("Error updating spot: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to occupy spot $spotId ❌")),
+      );
+    }
+  }
+
 }

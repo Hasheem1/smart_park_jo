@@ -123,7 +123,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     final garageName = reservationData!["parkingName"] ?? "Unknown Garage";
     final imageUrl = reservationData!["imageUrl"];
     final distance = reservationData!["distance"] ?? "";
-    final totalPrice = reservationData!["totalPrice"]?.toString() ?? "0";
+    final totalPrice = (reservationData!["totalPrice"] ?? 0).toDouble();
     final durationTime = reservationData!["durationFormatted"].toString();
 
     return Scaffold(
@@ -248,7 +248,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     required String garageName,
     required String imageUrl,
     required String distance,
-    required String totalPrice,
+    required double totalPrice,
   }) {
     return Container(
       padding: const EdgeInsets.all(18),
@@ -303,7 +303,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
       ),
     );
   }
-  Widget _buildBillCard(String durationTime, String totalPrice) {
+  Widget _buildBillCard(String durationTime, double totalPrice) {
 
     return Container(
       width: double.infinity,

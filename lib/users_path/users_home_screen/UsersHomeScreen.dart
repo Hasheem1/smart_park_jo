@@ -140,7 +140,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
         Map<String, dynamic> data =
         snapshot.data!.data() as Map<String, dynamic>;
-        double money = data['money']??0;
+        double money = data['money']??0.0;
 
         return Container(
           padding: const EdgeInsets.all(20),

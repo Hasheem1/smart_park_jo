@@ -37,55 +37,63 @@ class _AvailableSpotsScreenState extends State<AvailableSpotsScreen> {
                 .doc(widget.parkingId)
                 .snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
+              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
               final List spots = data['spots'] ?? [];
 
-              final availableSpots = spots
-                  .where((spot) => spot['status'] == 'Available')
-                  .toList();
+              // Available spots
+              final availableSpots = spots.where((s) => s['status'] == 'Available').toList();
 
-              if (availableSpots.isEmpty) {
-                return const Center(
-                  child: Text("No available spots 😔"),
-                );
-              }
+              // Build items: always include selectedSpotId if it exists, mark as disabled if occupied
+              final List<DropdownMenuItem<String>> items = [
+                for (var spot in spots)
+                  DropdownMenuItem<String>(
+                    value: spot['id'],
+                    child: Text(
+                      spot['id'] + (spot['status'] != 'Available' ? ' (Occupied)' : ''),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: spot['status'] != 'Available' ? Colors.red : Colors.black,
+                      ),
+                    ),
+                  ),
+              ];
 
               return DropdownButtonFormField<String>(
                 value: selectedSpotId,
                 hint: const Text("Select a parking spot"),
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   filled: true,
                   fillColor: Colors.green.shade50,
                 ),
-                items: availableSpots.map<DropdownMenuItem<String>>((spot) {
-                  return DropdownMenuItem<String>(
-                    value: spot['id'],
-                    child: Text(
-                      spot['id'],
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                items: items,
                 onChanged: (value) {
+                  if (value == null) return;
+
+                  // Only allow selection of available spots
+                  final spot = spots.firstWhere((s) => s['id'] == value);
+                  if (spot['status'] != 'Available') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Spot ${spot['id']} is already occupied ❌")),
+                    );
+                    return;
+                  }
+
                   setState(() {
                     selectedSpotId = value;
                   });
-                  _selectSpot(context, value!); // same function you already use
+                  _selectSpot(context, value);
                 },
               );
-
             },
-          ),
+          )
+
+
+
+
         ],
       ),
     );

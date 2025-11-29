@@ -112,7 +112,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       'Parking name': _nameController.text,
       'Parking Description': _descController.text,
       'Parking Capacity': int.parse(_capacityController.text),
-      'Parking Pricing (per hour)': double.parse(_priceController.text),
+      'Parking Pricing (per hour)': double.parse(_priceController.text).toStringAsFixed(2),
       'Access': access24,
       'CCTV': cctv,
       'EV Charging': evCharging,
