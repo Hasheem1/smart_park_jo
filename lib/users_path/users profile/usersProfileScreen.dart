@@ -6,6 +6,7 @@ import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/hel
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 
 import '../../garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
+import '../../role_selection_screen/roleSelectionScreen.dart';
 import 'info/userDetails.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   final String? userEmail = FirebaseAuth.instance.currentUser?.uid;
+  final String? phoneNumber = FirebaseAuth.instance.currentUser?.uid;
   @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
@@ -27,13 +29,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
 
     );
-    // final List<Color> appGradientColors = [
-    //   Color(0xFF0F2027),
-    //   Color(0xFF203A43),
-    //   Color(0xFF2C5364),
-    //   Color(0xFF36D1DC),
-    //   Color(0xFF5B86E5),
-    // ];
     return Scaffold(
       backgroundColor:    Colors.white70  ,
 
@@ -152,7 +147,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "+962 ${data['phoneNumber'].toString()}",
+                                          data['phoneNumber'].toString(),
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
@@ -208,14 +203,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             );
                           },
                         ),
-                        // const SizedBox(height: 15),
-                        // _buildGlassTile(
-                        //   icon: Icons.car_rental,
-                        //   title: "Vehicle Details",
-                        //   subtitle: "Plate: 22-27366",
-                        //   color: const Color(0xFF36D1DC),
-                        //
-                        // ),
+
                         const SizedBox(height: 25),
 
                         // ⚙️ Settings Section
@@ -229,23 +217,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 color: Colors.white),
                           ),
                         ),
-                        // const SizedBox(height: 15),
-                        //
-                        // _buildGlassSwitch(
-                        //   icon: Icons.notifications_none,
-                        //   title: "Notifications",
-                        //   subtitle: "إشعارات",
-                        //   value: true,
-                        //   onChanged: (v) {},
-                        //   activeColor: const Color(0xFF36D1DC),
-                        // ),
+
                         const SizedBox(height: 12),
-                        // _buildGlassTile(
-                        //   icon: Icons.language_outlined,
-                        //   title: "Language",
-                        //   subtitle: "English",
-                        //   color: const Color(0xFF2F66F5),
-                        // ),
+
                         const SizedBox(height: 12),
                         _buildGlassTile(
                           icon: Icons.lock_outline,
@@ -293,18 +267,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Logged out successfully"),
-                                ),
-                              );
+                              logout();
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
                             ),
                             child: Ink(
                               decoration: BoxDecoration(
@@ -312,20 +283,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 6))
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 6),
+                                  ),
                                 ],
                               ),
+
                               child: Container(
                                 alignment: Alignment.center,
                                 height: 56,
                                 child: const Text(
                                   "Log Out",
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -409,6 +383,54 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
       ),
     );
+  }
+
+  void logout() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => RoleSelectionScreen()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.red[400],
+            title: Text(
+              "Log out of your account",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Text(
+              "Are you sure you want to log out?",
+              style: TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RoleSelectionScreen(),
+                    ),
+                  );
+                },
+                child: const Text("OK", style: TextStyle(color: Colors.white)),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
 

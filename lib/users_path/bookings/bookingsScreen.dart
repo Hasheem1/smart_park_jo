@@ -254,11 +254,22 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
             ),
             child: TabBar(
               controller: _tabController,
+              indicatorColor: Colors.transparent,
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
               indicator: BoxDecoration(
-                color: Colors.white,
+                color: Colors.blue,
                 borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
-              labelColor: Colors.black,
+              labelColor: Colors.white,
               unselectedLabelColor: Colors.grey,
               tabs: const [
                 Tab(text: "Upcoming"),
@@ -266,6 +277,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               ],
             ),
           ),
+
 
           const SizedBox(height: 10),
 

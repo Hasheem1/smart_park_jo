@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_park_jo/users_path/bookings/bookingsScreen.dart';
-import 'package:smart_park_jo/users_path/parking_details_screen/parkingDetailsScreen.dart';
 import 'package:smart_park_jo/users_path/users%20profile/usersProfileScreen.dart';
-import 'package:smart_park_jo/users_path/users_home_screen/UsersHomeScreen.dart';
 import '../../ai_chat_bot/chatBot.dart';
 import 'letsPark.dart';
 
@@ -146,10 +144,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            gradient: const LinearGradient(
-              colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF2193B0),
+                Color(0xFF6DD5ED),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
             boxShadow: [
               BoxShadow(

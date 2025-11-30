@@ -69,12 +69,17 @@ class _letsparkState extends State<letspark> {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
+                colors: [
+                  Color(0xFF2193B0),
+                  Color(0xFF6DD5ED),
+                ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
-          ),
+          )
+          ,
+
           SafeArea(
             child: Column(
               children: [
@@ -134,98 +139,109 @@ class _letsparkState extends State<letspark> {
 
                 // Map
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: SizedBox(
-                      height: 300,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collectionGroup('Owners Parking')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-
-                          Set<Marker> markers = {};
-                          Set<Circle> circles = {};
-                          LatLng? center;
-
-                          for (var doc in snapshot.data!.docs) {
-                            final data = doc.data() as Map<String, dynamic>;
-                            final locationMap =
-                            data['location'] as Map<String, dynamic>?;
-                            if (locationMap == null) continue;
-
-                            final lat =
-                            (locationMap['latitude'] ?? 0.0).toDouble();
-                            final lng =
-                            (locationMap['longitude'] ?? 0.0).toDouble();
-                            if (lat == 0.0 && lng == 0.0) continue;
-
-                            final position = LatLng(lat, lng);
-                            center ??= position;
-
-                            markers.add(Marker(
-                              markerId: MarkerId(doc.id),
-                              position: position,
-                              infoWindow: InfoWindow(
-                                title: data['Parking name'] ?? 'Parking',
-                                snippet:
-                                "${data['Parking Capacity'] ?? 0} spots",
-                              ),
-                            ));
-
-                            circles.add(Circle(
-                              circleId: CircleId(doc.id),
-                              center: position,
-                              radius: 60,
-                              fillColor: Colors.red.withOpacity(0.25),
-                              strokeColor: Colors.redAccent,
-                              strokeWidth: 2,
-                            ));
-                          }
-
-                          // make the map center is parking
-                          // if (_mapController != null && center != null && !_cameraMoved) {
-                          //   _mapController!.animateCamera(
-                          //     CameraUpdate.newLatLngZoom(center, 15.5),
-                          //   );
-                          //   _cameraMoved = true;
-                          // }
-
-                          // make the map center is user location
-                          if (_mapController != null && !_cameraMoved) {
-                            final target = _userLocation ?? center;
-
-                            if (target != null) {
-                              _mapController!.animateCamera(
-                                CameraUpdate.newLatLngZoom(target, 15.5),
-                              );
-                              _cameraMoved = true;
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Color(0xFF36D1DC), // <--- Change this color if you want
+                        width: 3,
+                      ),
+                      // Optional glow effect:
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Color(0xFF36D1DC).withOpacity(0.3),
+                      //     blurRadius: 12,
+                      //     offset: Offset(0, 4),
+                      //   ),
+                      // ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: SizedBox(
+                        height: 300,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collectionGroup('Owners Parking')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
                             }
-                          }
 
-                          return GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: _userLocation ?? LatLng(0, 0),
-                              zoom: 15.5,
-                            ),
-                            markers: markers,
-                            circles: circles,
-                            myLocationEnabled: true,
-                            myLocationButtonEnabled: true,
-                            onMapCreated: (controller) =>
-                            _mapController = controller,
-                          );
-                        },
+                            Set<Marker> markers = {};
+                            Set<Circle> circles = {};
+                            LatLng? center;
+
+                            for (var doc in snapshot.data!.docs) {
+                              final data = doc.data() as Map<String, dynamic>;
+                              final locationMap =
+                              data['location'] as Map<String, dynamic>?;
+
+                              if (locationMap == null) continue;
+
+                              final lat = (locationMap['latitude'] ?? 0.0).toDouble();
+                              final lng = (locationMap['longitude'] ?? 0.0).toDouble();
+
+                              if (lat == 0.0 && lng == 0.0) continue;
+
+                              final position = LatLng(lat, lng);
+                              center ??= position;
+
+                              // Marker
+                              markers.add(
+                                Marker(
+                                  markerId: MarkerId(doc.id),
+                                  position: position,
+                                  infoWindow: InfoWindow(
+                                    title: data['Parking name'] ?? 'Parking',
+                                    snippet: "${data['Parking Capacity'] ?? 0} spots",
+                                  ),
+                                ),
+                              );
+
+                              // Circle highlight
+                              circles.add(
+                                Circle(
+                                  circleId: CircleId(doc.id),
+                                  center: position,
+                                  radius: 60,
+                                  fillColor: Colors.red.withOpacity(0.25),
+                                  strokeColor: Colors.redAccent,
+                                  strokeWidth: 2,
+                                ),
+                              );
+                            }
+
+                            // Move camera to user location or first parking
+                            if (_mapController != null && !_cameraMoved) {
+                              final target = _userLocation ?? center;
+                              if (target != null) {
+                                _mapController!.animateCamera(
+                                  CameraUpdate.newLatLngZoom(target, 15.5),
+                                );
+                                _cameraMoved = true;
+                              }
+                            }
+
+                            return GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: _userLocation ?? LatLng(0, 0),
+                                zoom: 15.5,
+                              ),
+                              markers: markers,
+                              circles: circles,
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              onMapCreated: (controller) => _mapController = controller,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ),
+
 
                 // Parking list
                 Expanded(
@@ -309,16 +325,19 @@ class _letsparkState extends State<letspark> {
                                 ),
                               );
                             },
+
+                            //parking card information
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: Colors.grey.shade100),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 5),
+                                    color: Colors.black.withOpacity(0.08),
+                                    blurRadius: 18,
+                                    offset: const Offset(0, 6),
                                   ),
                                 ],
                               ),
@@ -332,19 +351,20 @@ class _letsparkState extends State<letspark> {
                                     ),
                                     child: Image.network(
                                       data['image_url'] ?? '',
-                                      width: 100,
-                                      height: 100,
+                                      width: 110,
+                                      height: 110,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          Container(
-                                            color: Colors.grey[200],
-                                            width: 100,
-                                            height: 100,
-                                            child: const Icon(Icons.local_parking, color: Colors.grey),
-                                          ),
+                                      errorBuilder: (context, error, stackTrace) => Container(
+                                        color: Colors.grey[200],
+                                        width: 110,
+                                        height: 110,
+                                        child: const Icon(Icons.local_parking, color: Colors.grey),
+                                      ),
                                     ),
                                   ),
+
                                   const SizedBox(width: 12),
+
                                   // Parking Info
                                   Expanded(
                                     child: Padding(
@@ -359,30 +379,55 @@ class _letsparkState extends State<letspark> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            "${data['Parking Capacity'] ?? 0} spots • ${distanceKm?.toStringAsFixed(2) ?? 'N/A'} km away",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
-                                            ),
+
+                                          const SizedBox(height: 6),
+
+                                          Row(
+                                            children: [
+                                              Icon(Icons.directions_car, size: 16, color: Colors.grey),
+                                              const SizedBox(width: 1),
+                                              Text("${data['Parking Capacity']} spots",
+                                                  style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+
+                                              const SizedBox(width: 12),
+
+                                              Icon(Icons.place, size: 16, color: Colors.grey),
+                                              const SizedBox(width: 1),
+                                              Text("${distanceKm?.toStringAsFixed(2)} km",
+                                                  style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+                                            ],
                                           ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            "${data['Parking Pricing (per hour)'] ?? 0} JD / hour",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.blueAccent,
-                                            ),
+
+                                          const SizedBox(height: 6),
+
+                                          Row(
+                                            children: [
+                                              Icon(Icons.attach_money, size: 16, color: Colors.blueAccent),
+                                              const SizedBox(width: 1),
+                                              Text(
+                                                "${data['Parking Pricing (per hour)']} JD / hour",
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueAccent,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: Icon(Icons.arrow_forward_ios,
+                                        size: 16, color: Colors.grey[500]),
+                                  )
                                 ],
                               ),
                             ),
+
                           );
                         },
                       );
