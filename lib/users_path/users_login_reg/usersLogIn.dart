@@ -44,7 +44,7 @@ class _UsersLogInState extends State<UsersLogIn> {
   Future<void> registerUser() async {
     final phone = phoneController.text.trim();
     final password = passwordController.text.trim();
-    double money=0;
+    double money=0.0;
 
 
     try {

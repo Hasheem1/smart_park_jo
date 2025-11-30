@@ -281,7 +281,16 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 20,),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+
                             onPressed: () async {
                               final user = FirebaseAuth.instance.currentUser;
                               if (user == null) return;
@@ -300,7 +309,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                 ),
                               );
                             },
-                            child: const Text("Remove Card"),
+                            child: const Text("Remove Card",style: TextStyle(color: Colors.white),),
 
                           )
 

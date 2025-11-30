@@ -138,13 +138,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 10),
-                  summaryRow("Price per hour", "${widget.parkingPrice} JD"),
+                summaryRow(
+                  "Price per hour",
+                  "${double.tryParse(widget.parkingPrice)?.toStringAsFixed(2) ?? '0.00'} JD",
+                ),
                   const Divider(),
                   summaryRow("Total","${totalPrice.toStringAsFixed(2)} JD",
                       isBold: true, color: Colors.blue),
                 ],
               ),
             ),
+
+            SizedBox(height: 20,),
             Column(
               children: [
                 StreamBuilder<DocumentSnapshot>(
@@ -174,33 +179,86 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                     return DropdownButtonFormField<String>(
                       value: selectedSpotId,
-                      hint: const Text("Select a parking spot"),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      hint: const Text(
+                        "Select parking spot",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
                         ),
+                      ),
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.green.shade50,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
-                      items: availableSpots.map<DropdownMenuItem<String>>((spot) {
+
+                      dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+
+                      menuMaxHeight: 350,
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 28),
+                      iconEnabledColor: Colors.green,
+
+                      items: spots.map<DropdownMenuItem<String>>((spot) {
+                        final String id = spot['id'];
+                        final String status = spot['status'];
+
+                        final bool available = status == "Available";
+
                         return DropdownMenuItem<String>(
-                          value: spot['id'],
-                          child: Text(
-                            spot['id'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          value: id,
+                          enabled: available,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.local_parking,
+                                color: available ? Colors.green : Colors.red,
+                                size: 22,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                "$id • $status",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  color: available ? Colors.black87 : Colors.red.shade400,
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }).toList(),
+
                       onChanged: (value) {
+                        if (value == null) return;
+
+                        final spot = spots.firstWhere((s) => s['id'] == value);
+
+                        if (spot['status'] != "Available") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Spot ${spot['id']} is already occupied ❌"),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          );
+                          return;
+                        }
+
                         setState(() {
                           selectedSpotId = value;
                         });
-                        _selectSpot(context, value!); // same function you already use
+
+                        _selectSpot(context, value);
                       },
                     );
+
+
 
                   },
                 ),
