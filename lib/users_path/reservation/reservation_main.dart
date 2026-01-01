@@ -484,29 +484,162 @@ class _ReservationScreenState extends State<ReservationScreen> {
   void _selectSpot(BuildContext context, String spotId) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Confirm Spot"),
-        content: Text("Do you want to choose spot $spotId ?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+      barrierColor: Colors.black.withOpacity(0.35),
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Spot $spotId selected ✅")),
-              );
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon
+                Container(
+                  height: 64,
+                  width: 64,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.local_parking_rounded,
+                    size: 32,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
 
-              // Later we can convert this to REAL RESERVATION
-            },
-            child: const Text("Confirm"),
+                const SizedBox(height: 20),
+
+                // Title
+                const Text(
+                  "Confirm Parking Spot",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 8),
+
+                // Subtitle
+                Text(
+                  "You’re about to reserve\nspot $spotId",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+
+                const SizedBox(height: 28),
+
+                // Confirm Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          margin: const EdgeInsets.all(16),
+                          content: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.08),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                // Icon bubble
+                                Container(
+                                  height: 36,
+                                  width: 36,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.15),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.check_circle_rounded,
+                                    size: 22,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+
+                                const SizedBox(width: 12),
+
+                                // Text
+                                Expanded(
+                                  child: Text(
+                                    "Spot $spotId selected",
+                                    style: const TextStyle(
+
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 8),
+
+                                // Emoji / subtle accent
+                                const Text("🚗", style: TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+
+                    },
+                    child: const Text(
+                      "Confirm Spot",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // Cancel Button
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: Colors.grey.shade600),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
+
   Future<void> occupySpot(String spotId) async {
     final firestore = FirebaseFirestore.instance;
 
@@ -538,8 +671,64 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
       // Optional: show confirmation
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Spot $spotId is now Occupied ✅")),
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          margin: const EdgeInsets.all(16),
+          content: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                // Icon bubble (occupied)
+                Container(
+                  height: 36,
+                  width: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.car_rental_rounded,
+                    size: 22,
+                    color: Colors.orange,
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                // Text
+                Expanded(
+                  child: Text(
+                    "Spot $spotId is now occupied",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 8),
+
+                const Text("✅", style: TextStyle(fontSize: 18)),
+              ],
+            ),
+          ),
+        ),
       );
+
     } catch (e) {
       print("Error updating spot: $e");
       ScaffoldMessenger.of(context).showSnackBar(

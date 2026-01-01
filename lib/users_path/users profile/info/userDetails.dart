@@ -142,7 +142,7 @@ class _UserdetailsState extends State<Userdetails> {
                                   buildInfoTile(
                                     context,
                                     "phone number",
-                                    data['phone number']?.toString() ?? '',
+                                    data['phoneNumber']?.toString() ?? '',
                                     userEmail!,
                                   ),
                                   buildInfoTile(

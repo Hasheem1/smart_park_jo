@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
@@ -22,4 +23,30 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//guefuse fgsofghsi gfisfuhsui fggsfgoshifgh sfgosighfsiuhfs ffgsuihfsgh
+
+// class EntrystateMain extends StatelessWidget {
+//   const EntrystateMain({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         // Checking the auth state
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return const Scaffold(
+//             body: Center(child: CircularProgressIndicator()),
+//           );
+//         }
+//
+//         if (snapshot.hasData) {
+//           // User is signed in
+//           return const Homescreen(); // <-- Your home screen
+//         } else {
+//           // User is NOT signed in
+//           return  RoleSelectionScreen(); // <-- Your login screen
+//         }
+//       },
+//     );
+//   }
+// }
