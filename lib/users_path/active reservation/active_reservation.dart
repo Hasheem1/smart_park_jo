@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../users_home_screen/UsersHomeScreen.dart';
+
 class ActiveReservationScreen extends StatefulWidget {
   final String reservationId;
 
@@ -128,17 +130,27 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FA),
       appBar: AppBar(
-        backgroundColor: Colors.green.shade600,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+            );
+          },
+        ),
+        backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
         title: const Text(
           "Active Reservation",
           style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
       ),
+
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),

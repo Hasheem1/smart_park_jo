@@ -215,7 +215,7 @@ class _UserdetailsState extends State<Userdetails> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.mode_edit, color: Color(0xFF2F66F5)),
+            icon: Icon(Icons.mode_edit, color: Color(0xFF36D1DC)),
             onPressed: () {
               showEditDialogInfo(context, label, value, documentId);
             },

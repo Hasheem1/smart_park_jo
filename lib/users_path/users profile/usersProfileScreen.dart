@@ -23,20 +23,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
-      colors: [Color(0xFF36D1DC),Color(0xFF5B86E5)],
+      colors: [Colors.grey, Color(0xFF36D1DC)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-
-
     );
     return Scaffold(
-      backgroundColor:    Colors.white70  ,
-
+      backgroundColor: Colors.white70,
 
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
+            colors: [Colors.grey, Color(0xFF36D1DC), Colors.grey],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -46,12 +43,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             children: [
               // Back arrow row
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context); // Go back
+                        Navigator.pop(context);
                       },
                       child: const Icon(
                         Icons.arrow_back,
@@ -63,9 +63,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     const Text(
                       "Profile",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -82,95 +83,118 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       children: [
                         // ✨ Blue Glassmorphic Profile Header
                         FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(FirebaseAuth.instance.currentUser?.uid)
-                              .get(),                  builder: (
+                          future:
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                                  .get(),
+                          builder: (
                             BuildContext context,
                             AsyncSnapshot<DocumentSnapshot> snapshot,
-                            ) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text(
-                                "Something went wrong",
-                                style: TextStyle(color: Colors.red, fontSize: 18),
-                              ),
-                            );
-                          }
-
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(color: Colors.orange),
-                            );
-                          }
-
-                          if (!snapshot.hasData || !snapshot.data!.exists) {
-                            return const Center(
-                              child: Text(
-                                "No data found",
-                                style: TextStyle(color: Colors.white, fontSize: 18),
-                              ),
-                            );
-                            // );
-                          }
-
-                          Map<String, dynamic> data =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                          String trimEmail = data['phoneNumber'].toString();
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                              child: Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  gradient: primaryGradient,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 6),
-                                    ),
-                                  ],
+                          ) {
+                            if (snapshot.hasError) {
+                              return const Center(
+                                child: Text(
+                                  "Something went wrong",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(backgroundColor: Colors.white,
-                                      radius: 30,
-                                      child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF4A90FF)),),
+                              );
+                            }
 
-                                    ),
-                                    const SizedBox(width: 18),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data['phoneNumber'].toString(),
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.orange,
+                                ),
+                              );
+                            }
+
+                            if (!snapshot.hasData || !snapshot.data!.exists) {
+                              return const Center(
+                                child: Text(
+                                  "No data found",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                              // );
+                            }
+
+                            Map<String, dynamic> data =
+                                snapshot.data!.data() as Map<String, dynamic>;
+                            String trimEmail = data['phoneNumber'].toString();
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 15,
+                                  sigmaY: 15,
+                                ),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    gradient: primaryGradient,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 6),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 30,
+                                        child: Text(
+                                          trimEmail
+                                              .substring(0, 2)
+                                              .toUpperCase(),
                                           style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                            fontSize: 30,
+                                            color: Color(0xFF36D1DC),
                                           ),
                                         ),
+                                      ),
+                                      const SizedBox(width: 18),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data['phoneNumber'].toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
 
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          data['password'].toString(),
-                                          style: const TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 14,
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            data['password'].toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
                         ),
                         const SizedBox(height: 25),
 
@@ -183,7 +207,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const Userdetails()),
+                              MaterialPageRoute(
+                                builder: (_) => const Userdetails(),
+                              ),
                             );
                           },
                         ),
@@ -212,9 +238,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: Text(
                             "Settings",
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
 
@@ -229,7 +256,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const PrivacySecurityScreen()),
+                              MaterialPageRoute(
+                                builder: (_) => const PrivacySecurityScreen(),
+                              ),
                             );
                           },
                         ),
@@ -241,9 +270,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: Text(
                             "Support",
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -255,7 +285,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const HelpCenterScreen()),
+                              MaterialPageRoute(
+                                builder: (_) => const HelpCenterScreen(),
+                              ),
                             );
                           },
                         ),
@@ -315,7 +347,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ),
       ),
-
     );
   }
 
@@ -339,8 +370,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           child: ListTile(
             leading: Icon(icon, color: color),
-            title: Text(title,
-                style: const TextStyle(fontWeight: FontWeight.w600)),
+            title: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             subtitle: Text(subtitle),
             trailing: const Icon(Icons.arrow_forward_ios, size: 18),
             onTap: onTap, // 👈 call custom onTap action
@@ -371,8 +404,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           child: ListTile(
             leading: Icon(icon, color: const Color(0xFF36D1DC)),
-            title: Text(title,
-                style: const TextStyle(fontWeight: FontWeight.w600)),
+            title: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
             subtitle: Text(subtitle),
             trailing: Switch(
               value: value,
@@ -434,14 +469,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 }
 
-
 class _NoGlowScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
-      BuildContext context,
-      Widget child,
-      ScrollableDetails details,
-      ) {
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
     return child;
   }
 
@@ -450,4 +484,3 @@ class _NoGlowScrollBehavior extends ScrollBehavior {
     return const BouncingScrollPhysics();
   }
 }
-

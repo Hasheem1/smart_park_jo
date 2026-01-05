@@ -129,9 +129,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: (() {
-                      if (r["status"] == "active") return Colors.green;
-                      if (r["status"] == "completed") return Colors.red;
-                      return Colors.blue; // pending
+                      if (r["status"] == "active") return Colors.red;
+                      if (r["status"] == "completed") return Colors.green;
+                      return Color(0xFF36D1DC); // pending
                     })(),
                   ),
                 ),
@@ -184,29 +184,41 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
           // BUTTON
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ActiveReservationScreen(
-                      reservationId: r["reservationId"],
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.grey, Color(0xFF36D1DC)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ActiveReservationScreen(
+                        reservationId: r["reservationId"],
+                      ),
                     ),
+                  );
+                },
+                icon: const Icon(Icons.qr_code),
+                label: const Text("Show QR Code"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent, // required for gradient
+                  shadowColor: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                );
-              },
-              icon: const Icon(Icons.qr_code),
-              label: const Text("Show QR Code"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
           ),
+
         ],
       ),
     );
@@ -232,11 +244,55 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Bookings"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         elevation: 0,
+        automaticallyImplyLeading: false, // remove default back button
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child:ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [
+                    Colors.grey,
+                    Color(0xFF36D1DC),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ).createShader(bounds),
+                child:                const Icon(
+                   Icons.arrow_back,
+                   color: Colors.white,
+                   size: 28,
+                 ),
+              )
+
+            ),
+            const SizedBox(width: 10),
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  Colors.grey,
+                  Color(0xFF36D1DC),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds),
+              child: const Text(
+                "Profile",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
+
+
 
       body: Column(
         children: [
@@ -259,7 +315,11 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle: const TextStyle(fontWeight: FontWeight.w600),
               indicator: BoxDecoration(
-                color: Colors.blue,
+                gradient: LinearGradient(
+                  colors: [Colors.grey, Color(0xFF36D1DC) ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
