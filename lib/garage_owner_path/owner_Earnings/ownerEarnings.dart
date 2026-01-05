@@ -95,9 +95,10 @@ class _EarningsScreenState extends State<EarningsScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.grey, Color(0xFF36D1DC)],
-                ),
+                // gradient: const LinearGradient(
+                //   colors: [Colors.grey, Color(0xFF36D1DC)],
+                // ),
+                color: Color(0xFF2F66F5),
                 borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(

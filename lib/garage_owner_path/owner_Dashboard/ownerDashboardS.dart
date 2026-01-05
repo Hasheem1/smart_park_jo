@@ -25,7 +25,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     final userEmail = FirebaseAuth.instance.currentUser?.email;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor:  Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -159,7 +159,15 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade50.withOpacity(0.5),
+              Colors.blue.shade100.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -233,9 +241,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 22),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Colors.grey, Color(0xFF36D1DC)],
-            ),
+            // gradient: const LinearGradient(
+            //   colors: [Colors.grey, Color(0xFF36D1DC)],
+            // ),
+            color: Color(0xFF2F66F5),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -405,7 +414,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF36D1DC),
+                          backgroundColor: Color(0xFF2F66F5),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -434,7 +443,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF36D1DC),
+                          backgroundColor: Color(0xFF2F66F5),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -464,7 +473,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF36D1DC),
+                          backgroundColor: Color(0xFF2F66F5),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -495,9 +504,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                       padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        gradient: LinearGradient(
-                                          colors: [Colors.grey,Color(0xFF36D1DC),],
-                                        ),
+                                        // gradient: LinearGradient(
+                                        //   colors: [Colors.grey,Color(0xFF36D1DC),],
+                                        // ),
+                                        color: Color(0xFF2F66F5)
                                       ),
                                       child: const Icon(
                                         Icons.delete_forever,

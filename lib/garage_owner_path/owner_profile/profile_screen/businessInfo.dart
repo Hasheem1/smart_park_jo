@@ -71,11 +71,12 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                       // 🔵 Fullscreen gradient background
                       Container(
                         decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.grey, Color(0xFF36D1DC) ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
+                          // gradient: LinearGradient(
+                          //   colors: [Colors.grey, Color(0xFF36D1DC) ],
+                          //   begin: Alignment.topCenter,
+                          //   end: Alignment.bottomCenter,
+                          // ),
+                          color: Colors.white
                         ),
                       ),
 
@@ -100,15 +101,15 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                     IconButton(
                                       icon: const Icon(
                                         Icons.arrow_back_ios_new_rounded,
-                                        color: Colors.white,
+                                        color: Colors.black,
                                       ),
                                       onPressed: () => Navigator.pop(context),
                                     ),
                                     const SizedBox(width: 4),
                                     const Text(
-                                      "Parking Owner Information",
+                                      "My Information",
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -124,7 +125,15 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                   Container(
                                     padding: const EdgeInsets.all(20),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.95),
+                                      color: Colors.white,
+                                      // gradient: LinearGradient(
+                                      //   colors: [
+                                      //     Colors.blue.shade50.withOpacity(0.5),
+                                      //     Colors.blue.shade100.withOpacity(0.3),
+                                      //   ],
+                                      //   begin: Alignment.topLeft,
+                                      //   end: Alignment.bottomRight,
+                                      // ),
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
@@ -204,7 +213,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xFF36D1DC), width: 2),
+        border: Border.all(color: Color(0xFF2F66F5), width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -213,7 +222,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
             child: Text(
               "$label :",
               style: TextStyle(
-                color: Color(0xFF36D1DC),
+                color: Color(0xFF2F66F5),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -227,7 +236,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.mode_edit, color: Color(0xFF36D1DC)),
+            icon: Icon(Icons.mode_edit, color: Color(0xFF2F66F5)),
             onPressed: () {
               showEditDialogInfo(context, label, value, documentId);
             },

@@ -32,6 +32,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+
         title: const Text(
           "Profile",
           style: TextStyle(
@@ -92,7 +93,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            gradient: primaryGradient,
+                            // gradient: primaryGradient,
+                            color: Color(0xFF2F66F5),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
@@ -106,7 +108,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                             children: [
                               CircleAvatar(backgroundColor: Colors.white,
                                 radius: 30,
-                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF36D1DC)),),
+                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF2F66F5)),),
                                 // backgroundImage: NetworkImage(
                                 //   "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png",
                                 // ),
@@ -147,7 +149,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   icon: Icons.person_2_outlined,
                   title: "Parking Owner Information",
                   subtitle: "Update Parking Owner details",
-                  color: const Color(0xFF36D1DC),
+                  color: const Color(0xFF2F66F5),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -198,7 +200,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   icon: Icons.lock_outline,
                   title: "Privacy & Security",
                   subtitle: "الخصوصية والأمان",
-                  color: const Color(0xFF36D1DC),
+                  color: const Color(0xFF2F66F5),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -227,7 +229,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                   icon: Icons.help_outline,
                   title: "Help Center",
                   subtitle: "مركز المساعدة",
-                  color: const Color(0xFF36D1DC),
+                  color: const Color(0xFF2F66F5),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -256,7 +258,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     ),
                     child: Ink(
                       decoration: BoxDecoration(
-                        gradient: primaryGradient,
+                        // gradient: primaryGradient,
+                        color: Color(0xFF2F66F5),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(

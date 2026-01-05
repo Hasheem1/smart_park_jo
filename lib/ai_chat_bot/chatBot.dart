@@ -244,8 +244,7 @@ class _ChatScreenState extends State<ChatScreen>
             shaderCallback: (bounds) => const LinearGradient(
               colors: [
                 Colors.grey,
-                Color(0xFF36D1DC),
-              ],
+                Color(0xFF2F66F5)              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ).createShader(bounds),
@@ -326,7 +325,7 @@ class _ChatScreenState extends State<ChatScreen>
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Colors.grey, Color(0xFF36D1DC),
+                          colors: [Colors.grey, Color(0xFF2F66F5),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,

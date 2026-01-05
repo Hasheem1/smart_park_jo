@@ -9,11 +9,12 @@ class PrivacySecurityScreen extends StatelessWidget {
       // 🌈 Gradient Background
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          // gradient: LinearGradient(
+          //   colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
+          color: Colors.white
         ),
         child: SafeArea(
           child: Column(
@@ -26,14 +27,14 @@ class PrivacySecurityScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                          color: Colors.white),
+                          color: Colors.black),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 4),
                     const Text(
                       "Privacy & Security",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -50,8 +51,15 @@ class PrivacySecurityScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.92),
-                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      // gradient: LinearGradient(
+                      //   colors: [
+                      //     Colors.blue.shade50.withOpacity(0.5),
+                      //     Colors.blue.shade100.withOpacity(0.3),
+                      //   ],
+                      //   begin: Alignment.topLeft,
+                      //   end: Alignment.bottomRight,
+                      // ),                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26.withOpacity(0.1),
@@ -68,7 +76,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF36D1DC),
+                            color: Color(0xFF2F66F5),
                           ),
                         ),
                         SizedBox(height: 16),
@@ -87,7 +95,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF36D1DC)
+                            color: Color(0xFF2F66F5)
                           ),
                         ),
                         SizedBox(height: 12),
@@ -108,7 +116,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF36D1DC),
+                            color: Color(0xFF2F66F5),
                           ),
                         ),
                         SizedBox(height: 12),
