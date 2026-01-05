@@ -164,26 +164,28 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.grey,
-              Color(0xFF36D1DC),
-            ],
-          ),
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [
+          //     Colors.grey,
+          //     Color(0xFF36D1DC),
+          //   ],
+          // ),
+          color: Colors.white
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Container(decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-
-              colors: [
-                Colors.grey, Color(0xFF36D1DC),
-              ],
-            ),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //
+            //   colors: [
+            //     Colors.grey, Color(0xFF36D1DC),
+            //   ],
+            // ),
+            color: Colors.white
 
           ),
             child: Column(
@@ -194,7 +196,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                     IconButton(
                       icon:
                       const Icon(Icons.arrow_back_ios_new_rounded,
-                          color: Colors.white),
+                          color: Colors.black),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 20),
@@ -203,7 +205,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -248,19 +250,21 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
 
 
             Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),
-              color: Color(0xFF36D1DC),
+              color: Color(0xFF2F66F5),
 
             ),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.grey, Color(0xFF36D1DC),
-                    ],
-                  ),
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  //   colors: [
+                  //     Colors.grey, Color(0xFF36D1DC),
+                  //   ],
+                  // ),
+                  color: Color(0xFF2F66F5)
+
 
                 ),
                 child: ElevatedButton(
@@ -325,7 +329,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
           decoration: InputDecoration(
             prefixIcon: Container(
               padding: const EdgeInsets.all(12),
-              child: Icon(icon, color: Color(0xFF36D1DC), size: 24),
+              child: Icon(icon, color: Color(0xFF2F66F5), size: 24),
             ),
             labelText: label,
             labelStyle: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.w500),
@@ -338,7 +342,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(color: Color(0xFF36D1DC), width: 2),
+              borderSide: const BorderSide(color: Color(0xFF2F66F5), width: 2),
             ),
           ),
         ),
@@ -374,7 +378,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
           ),
           value: value,
           onChanged: onChanged,
-          activeColor: Color(0xFF36D1DC),
+          activeColor: Color(0xFF2F66F5),
           checkColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

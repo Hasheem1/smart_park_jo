@@ -22,11 +22,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       // 🌈 Gradient background
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          // gradient: LinearGradient(
+          //   colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
+          color: Colors.white
         ),
         child: SafeArea(
           child: Column(
@@ -37,14 +38,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 4),
                     const Text(
                       "Help Center",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -81,7 +82,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF36D1DC),
+                              color: Color(0xFF2F66F5),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -100,12 +101,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                               labelText: "Your Message",
                               labelStyle: const TextStyle(color: Colors.black54),
                               alignLabelWithHint: true,
-                              prefixIcon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF36D1DC)),
+                              prefixIcon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF2F66F5)),
                               filled: true,
                               fillColor: Colors.white,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: const BorderSide(color: Color(0xFF36D1DC), width: 1.2),
+                                borderSide: const BorderSide(color: Color(0xFF2F66F5), width: 1.2),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
@@ -143,11 +144,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                               ),
                               child: Ink(
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [ Color(0xFF36D1DC),Colors.grey,],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
+                                  // gradient: LinearGradient(
+                                  //   colors: [ Color(0xFF36D1DC),Colors.grey,],
+                                  //   begin: Alignment.topCenter,
+                                  //   end: Alignment.bottomCenter,
+                                  // ),
+                                  color: Color(0xFF2F66F5),
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Container(

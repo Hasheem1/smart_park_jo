@@ -156,9 +156,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 height: 180,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Colors.grey, Color(0xFF36D1DC)],
-                  ),
+                  // gradient: const LinearGradient(
+                  //   colors: [Colors.grey, Color(0xFF36D1DC)],
+                  // ),
+
 
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(16),
@@ -224,16 +225,17 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
               disabledAccess,
                   (v) => setState(() => disabledAccess = v!),
             ),
-            _buildCheckbox(
-              "Car Washing",
-              washCar,
-                  (v) => setState(() => washCar = v!),
-            ),
+            // _buildCheckbox(
+            //   "Car Washing",
+            //   washCar,
+            //       (v) => setState(() => washCar = v!),
+            // ),
             const SizedBox(height: 25),
             Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),
-              gradient: const LinearGradient(
-                colors: [Colors.grey, Color(0xFF36D1DC)],
-              ),
+              // gradient: const LinearGradient(
+              //   colors: [Colors.grey, Color(0xFF36D1DC)],
+              // ),
+              color: Color(0xFF2F66F5)
             ),
               child: ElevatedButton(
                 onPressed: addParking,
@@ -288,7 +290,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         readOnly: readOnly,
         onTap: onTap,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Color(0xFF36D1DC)),
+          prefixIcon: Icon(icon, color: Color(0xFF2F66F5)),
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
@@ -297,16 +299,28 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   }
 
   Widget _buildCheckbox(
-    String title,
-    bool value,
-    ValueChanged<bool?> onChanged,
-  ) {
+      String title,
+      bool value,
+      ValueChanged<bool?> onChanged,
+      ) {
     return CheckboxListTile(
-      title: Text(title),
+      contentPadding: const EdgeInsets.only(left: 12, right: 16), // 👈 spacing
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: value ? FontWeight.w600 : FontWeight.normal,
+        ),
+      ),
       value: value,
       onChanged: onChanged,
+      activeColor: const Color(0xFF2F66F5),
+      checkColor: Colors.white,
+      controlAffinity: ListTileControlAffinity.leading,
     );
   }
+
+
 
   Widget _buildLocationField() {
     return GestureDetector(
@@ -317,11 +331,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
         decoration: BoxDecoration(
           color: Colors.blueAccent.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Color(0xFF36D1DC), width: 1.5),
+          border: Border.all(color: Color(0xFF2F66F5), width: 1.5),
         ),
         child: Row(
           children: [
-            const Icon(Icons.location_on, size: 36, color: Color(0xFF36D1DC)),
+            const Icon(Icons.location_on, size: 36, color: Color(0xFF2F66F5)),
             const SizedBox(width: 12),
             Expanded(
               child:
@@ -330,7 +344,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                         "Pick parking location",
                         style: TextStyle(
                           fontSize: 16,
-                          color: Color(0xFF36D1DC),
+                          color: Color(0xFF2F66F5),
                         ),
                       )
                       : ClipRRect(
@@ -359,9 +373,11 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             const SizedBox(width: 8),
             Container(
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.grey, Color(0xFF36D1DC)],
-                ),                borderRadius: BorderRadius.circular(12),
+                // gradient: const LinearGradient(
+                //   colors: [Colors.grey, Color(0xFF36D1DC)],
+                // ),
+                color: Color(0xFF2F66F5),
+                borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: const Text(
