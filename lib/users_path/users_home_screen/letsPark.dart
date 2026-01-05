@@ -62,20 +62,22 @@ class _letsparkState extends State<letspark> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           // Gradient background
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF2193B0),
-                  Color(0xFF6DD5ED),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              // gradient: LinearGradient(
+              //   colors: [
+              //     Color(0xFF2193B0),
+              //     Color(0xFF6DD5ED),
+              //   ],
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              // ),
+              color:  Colors.white,
+
             ),
           )
           ,
@@ -91,14 +93,14 @@ class _letsparkState extends State<letspark> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                            color: Colors.white),
+                            color: Colors.black),
                         onPressed: () => Navigator.pop(context),
                       ),
                       const SizedBox(width: 4),
                       const Text(
                         "Let’s Park!",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -109,33 +111,46 @@ class _letsparkState extends State<letspark> {
 
                 // Floating search bar
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Material(
                     elevation: 5,
                     borderRadius: BorderRadius.circular(20),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search by location or name...',
-                        prefixIcon: const Icon(Icons.search),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.blue.shade50.withOpacity(0.5),
+                            Colors.blue.shade100.withOpacity(0.3),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 16),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value.toLowerCase();
-                        });
-                      },
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search by location or name...',
+                          prefixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.transparent, // IMPORTANT
+                          contentPadding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value.toLowerCase();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),
+
 
                 // Map
                 Padding(
@@ -144,7 +159,7 @@ class _letsparkState extends State<letspark> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Color(0xFF36D1DC), // <--- Change this color if you want
+                        color: Color(0XFF2F66F5), // <--- Change this color if you want
                         width: 3,
                       ),
                       // Optional glow effect:
@@ -330,7 +345,14 @@ class _letsparkState extends State<letspark> {
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.blue.shade50.withOpacity(0.5),
+                                    Colors.blue.shade100.withOpacity(0.3),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(color: Colors.grey.shade100),
                                 boxShadow: [

@@ -58,6 +58,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
+
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
@@ -131,7 +132,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                     color: (() {
                       if (r["status"] == "active") return Colors.red;
                       if (r["status"] == "completed") return Colors.green;
-                      return Color(0xFF36D1DC); // pending
+                      return Color(0XFF2F66F5)
+                      ; // pending
                     })(),
                   ),
                 ),
@@ -186,11 +188,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
             width: double.infinity,
             child: Container(
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.grey, Color(0xFF36D1DC)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+                color:  Color(0XFF2F66F5),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ElevatedButton.icon(
@@ -255,8 +253,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               child:ShaderMask(
                 shaderCallback: (bounds) => const LinearGradient(
                   colors: [
-                    Colors.grey,
-                    Color(0xFF36D1DC),
+                    Color(0XFF2F66F5),
+                    Color(0XFF2F66F5),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -273,8 +271,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
             ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
                 colors: [
-                  Colors.grey,
-                  Color(0xFF36D1DC),
+                  Color(0XFF2F66F5),
+                  Color(0XFF2F66F5),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -315,11 +313,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle: const TextStyle(fontWeight: FontWeight.w600),
               indicator: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.grey, Color(0xFF36D1DC) ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+                 //---------------------------------------
+                 color:  Color(0XFF2F66F5),
+                // ---------------------------------------
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
@@ -333,7 +329,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               unselectedLabelColor: Colors.grey,
               tabs: const [
                 Tab(text: "Upcoming"),
-                Tab(text: "Past"),
+                Tab(text: "Past",),
               ],
             ),
           ),

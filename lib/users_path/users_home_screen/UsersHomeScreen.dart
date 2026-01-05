@@ -16,7 +16,7 @@ class DriverHomeScreen extends StatefulWidget {
 }
 
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
-  final Color primaryBlue = const Color(0xFF007BFF);
+  final Color primaryBlue = const Color(0XFF2F66F5);
   final Color background = const Color(0xFFF9FAFB);
   int _selectedIndex = 0;
   final TextEditingController _searchController = TextEditingController();
@@ -144,14 +144,16 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF2193B0),
-                Color(0xFF6DD5ED),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     Color(0xFF2193B0),
+            //     Color(0xFF6DD5ED),
+            //   ],
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            // ),
+            color: Color(0XFF2F66F5),
+            
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -244,11 +246,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             height: 80,
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              // gradient: const LinearGradient(
+              //   colors: [Color(0xFF36D1DC), Color(0xFF5B86E5)],
+              //   begin: Alignment.topLeft,
+              //   end: Alignment.bottomRight,
+              // ),
+                color: Color(0XFF2F66F5),
               borderRadius: BorderRadius.circular(25),
               boxShadow: [
                 BoxShadow(

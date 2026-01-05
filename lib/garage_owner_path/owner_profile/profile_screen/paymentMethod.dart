@@ -30,13 +30,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
         children: [
           // 🔵 Fullscreen gradient background
           Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+            color: Colors.white,
           ),
 
           // 🌫️ Scrollable content
@@ -54,14 +48,15 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                              color: Colors.white, size: 28),
+                              color: Colors.black, size: 28),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 8),
                         const Text(
                           "Add Payment Method",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
+
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
@@ -110,12 +105,14 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                 label: Text(type,
                                     style: TextStyle(
                                         color: isSelected
-                                            ? Colors.white
-                                            : Color(0xFF36D1DC),
+                                            ?Colors.white
+
+                                        : Colors.black,
                                         fontWeight: FontWeight.w600)),
                                 selected: isSelected,
-                                selectedColor: const Color(0xFF36D1DC),
-                                backgroundColor: Colors.blue.shade50,
+                                selectedColor: const Color(0XFF2F66F5),
+                                backgroundColor:Colors.white,
+
                                 onSelected: (_) {
                                   setState(() {
                                     selectedPayment = type;
@@ -182,9 +179,8 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
                               gradient: LinearGradient(
-                                colors: [ Color(0xFF36D1DC),Colors.grey,],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
+                                colors: [ Color(0XFF2F66F5),Color(0XFF2F66F5)],
+
                               ),
                               boxShadow: [
                                 BoxShadow(
@@ -343,7 +339,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
         validator: (value) =>
         (value == null || value.isEmpty) ? "Please enter $label" : null,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF36D1DC)),
+          prefixIcon: Icon(icon, color: const Color(0XFF2F66F5)),
           labelText: label,
           labelStyle: const TextStyle(color: Colors.black54),
           filled: true,
@@ -351,12 +347,12 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide:
-            const BorderSide(color: Color(0xFF36D1DC), width: 1.2),
+            const BorderSide(color: Color(0XFF2F66F5), width: 1.2),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide:
-            const BorderSide(color: Color(0xFF36D1DC), width: 1.5),
+            const BorderSide(color: Color(0XFF2F66F5), width: 1.5),
           ),
         ),
       ),

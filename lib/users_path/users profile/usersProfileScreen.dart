@@ -23,20 +23,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
-      colors: [Colors.grey, Color(0xFF36D1DC)],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
+      colors: [Color(0XFF2F66F5),Color(0XFF2F66F5),
+
+      ],
+
     );
     return Scaffold(
       backgroundColor: Colors.white70,
 
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.grey, Color(0xFF36D1DC), Colors.grey],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          // gradient: LinearGradient(
+          //     colors: [Colors.white,Colors.white]
+          // ),
+          color: Colors.white
         ),
         child: SafeArea(
           child: Column(
@@ -55,7 +55,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       },
                       child: const Icon(
                         Icons.arrow_back,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 28,
                       ),
                     ),
@@ -63,7 +63,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     const Text(
                       "Profile",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -150,6 +150,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       ),
                                     ],
                                   ),
+
                                   child: Row(
                                     children: [
                                       CircleAvatar(
@@ -161,7 +162,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                               .toUpperCase(),
                                           style: TextStyle(
                                             fontSize: 30,
-                                            color: Color(0xFF36D1DC),
+                                            color:Color(0XFF2F66F5),
+
                                           ),
                                         ),
                                       ),
@@ -203,7 +205,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           icon: Icons.person_2_outlined,
                           title: "Personal Information",
                           subtitle: "Update business details",
-                          color: const Color(0xFF36D1DC),
+                          color: const Color(0XFF2F66F5),
+
                           onTap: () {
                             Navigator.push(
                               context,
@@ -219,7 +222,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           icon: Icons.credit_card,
                           title: "Payment info",
                           subtitle: "Update Payment info",
-                          color: const Color(0xFF36D1DC),
+                          color: const Color(0XFF2F66F5),
+
+
                           onTap: () {
                             Navigator.push(
                               context,
@@ -240,7 +245,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -251,8 +256,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         _buildGlassTile(
                           icon: Icons.lock_outline,
                           title: "Privacy & Security",
-                          subtitle: "الخصوصية والأمان",
-                          color: const Color(0xFF36D1DC),
+                          subtitle: "",
+                          color: const  Color(0XFF2F66F5),
+
                           onTap: () {
                             Navigator.push(
                               context,
@@ -272,7 +278,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -280,8 +286,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         _buildGlassTile(
                           icon: Icons.help_outline,
                           title: "Help Center",
-                          subtitle: "مركز المساعدة",
-                          color: const Color(0xFF36D1DC),
+                          subtitle: "",
+                          color: const Color(0XFF2F66F5),
+
                           onTap: () {
                             Navigator.push(
                               context,
@@ -364,9 +371,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.75),
+            color: Colors.white12,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            border: Border.all(color: Color(0XFF2F66F5)),
           ),
           child: ListTile(
             leading: Icon(icon, color: color),
@@ -398,7 +405,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.75),
+            color: Colors.white12,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: Colors.white.withOpacity(0.3)),
           ),

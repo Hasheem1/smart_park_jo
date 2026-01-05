@@ -296,7 +296,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
 
 
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
+                      backgroundColor:  Color(0XFF2F66F5),
                       minimumSize: const Size(160, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -307,6 +307,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   )

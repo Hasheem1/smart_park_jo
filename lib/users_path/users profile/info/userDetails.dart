@@ -71,11 +71,7 @@ class _UserdetailsState extends State<Userdetails> {
               // 🔵 Fullscreen gradient background
               Container(
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.grey, Color(0xFF36D1DC),Colors.grey,],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Colors.white,
                 ),
               ),
 
@@ -100,7 +96,7 @@ class _UserdetailsState extends State<Userdetails> {
                             IconButton(
                               icon: const Icon(
                                 Icons.arrow_back_ios_new_rounded,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                               onPressed: () => Navigator.pop(context),
                             ),
@@ -108,7 +104,7 @@ class _UserdetailsState extends State<Userdetails> {
                             const Text(
                               "User Information",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -192,7 +188,7 @@ class _UserdetailsState extends State<Userdetails> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xFF36D1DC), width: 2),
+        border: Border.all(color: Color(0XFF2F66F5), width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -215,7 +211,7 @@ class _UserdetailsState extends State<Userdetails> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.mode_edit, color: Color(0xFF36D1DC)),
+            icon: Icon(Icons.mode_edit, color: Color(0XFF2F66F5)),
             onPressed: () {
               showEditDialogInfo(context, label, value, documentId);
             },
@@ -239,38 +235,74 @@ class _UserdetailsState extends State<Userdetails> {
       context: context,
       builder:
           (context) => AlertDialog(
-        title: Text("Update $field"),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: "Enter new $field",
-            border: const OutlineInputBorder(),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              "Update $field",
+              style: const TextStyle(
+                color: Color(0XFF2F66F5),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: TextField(
+              controller: controller,
+              cursorColor: const Color(0XFF2F66F5),
+              decoration: InputDecoration(
+                labelText: "Enter new $field",
+                labelStyle: const TextStyle(
+                  color: Color(0XFF2F66F5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(
+                    color: Color(0XFF2F66F5),
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: const Color(0XFF2F66F5).withOpacity(0.5),
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  String newValue = controller.text.trim();
+                  if (newValue.isNotEmpty) {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(documentId)
+                        .update({
+                      field.toLowerCase(): _castValue(field, newValue),
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0XFF2F66F5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text("Update"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0XFF2F66F5),
+                ),
+                child: const Text("Cancel"),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              String newValue = controller.text.trim();
-              if (newValue.isNotEmpty) {
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(documentId)
-                    .update({
-                  field.toLowerCase(): _castValue(field, newValue),
-                });
-                setState(() {
-                  Navigator.pop(context);
-                });
-              }
-            },
-            child: const Text("Update"),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-        ],
-      ),
+
     );
   }
 

@@ -73,7 +73,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                gradient: LinearGradient( colors: [ Colors.blue.shade50.withOpacity(0.5),
+                  Colors.blue.shade100.withOpacity(0.3),
+                ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -109,11 +114,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       Row(
                         children: [
                           const Icon(Icons.location_on,
-                              size: 16, color: Colors.grey),
+                              size: 16, color: Colors.blueGrey),
                           const SizedBox(width: 5),
                           Text(
                             "${widget.distance} ",
-                            style: const TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.blueGrey),
                           ),
                         ],
                       ),
@@ -144,7 +149,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ),
                   const Divider(),
                   summaryRow("Total","${totalPrice.toStringAsFixed(2)} JD",
-                      isBold: true, color: Colors.blue),
+                      isBold: true, color: Color(0XFF2F66F5),),
                 ],
               ),
             ),
@@ -173,7 +178,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                     if (availableSpots.isEmpty) {
                       return const Center(
-                        child: Text("No available spots 😔"),
+                        child: Text("No available spots"),
                       );
                     }
 
@@ -272,7 +277,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor:  Color(0XFF2F66F5),
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -324,7 +329,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         SnackBar(
           behavior: SnackBarBehavior.floating, // modern floating style
           margin: const EdgeInsets.all(16),   // floating with space around
-          backgroundColor: Colors.black87,    // dark, modern look
+          backgroundColor:  Color(0XFF2F66F5),    // dark, modern look
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20), // super rounded corners
           ),
@@ -507,7 +512,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   child: Icon(
                     Icons.local_parking_rounded,
                     size: 32,
-                    color: Theme.of(context).colorScheme.primary,
+                    color:  Color(0XFF2F66F5),
                   ),
                 ),
 
@@ -519,6 +524,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
+                    color: Color(0XFF2F66F5),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -546,6 +552,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
+                      backgroundColor:  Color(0XFF2F66F5),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -585,7 +592,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   child: Icon(
                                     Icons.check_circle_rounded,
                                     size: 22,
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color:  Color(0XFF2F66F5),
                                   ),
                                 ),
 
@@ -607,7 +614,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 const SizedBox(width: 8),
 
                                 // Emoji / subtle accent
-                                const Text("🚗", style: TextStyle(fontSize: 18)),
+                                // const Text("🚗", style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -617,7 +624,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     },
                     child: const Text(
                       "Confirm Spot",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16,color: Colors.white),
+
                     ),
                   ),
                 ),
