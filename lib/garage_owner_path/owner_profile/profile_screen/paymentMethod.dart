@@ -244,11 +244,53 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                          "$selectedPayment added successfully! Balance: ${(currentMoney + moneyToAdd).toStringAsFixed(2)} JD"),
-                                      backgroundColor: Colors.green,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.white,
+                                      elevation: 6,
+                                      margin: const EdgeInsets.all(16),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      content: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.check_circle_rounded,
+                                            color: Colors.green,
+                                            size: 26,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: "$selectedPayment ",
+                                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                                  ),
+                                                  const TextSpan(text: "added successfully.\n"),
+                                                  TextSpan(
+                                                    text:
+                                                    "Balance: ${(currentMoney + moneyToAdd).toStringAsFixed(2)} JD",
+                                                    style: const TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      duration: const Duration(seconds: 3),
                                     ),
                                   );
+
 
                                   // Clear the form
                                   nameController.clear();
@@ -299,11 +341,38 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               }, SetOptions(merge: true));
 
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Card removed. You can add a new one now."),
-                                  backgroundColor: Colors.orange,
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.white,
+                                  elevation: 6,
+                                  margin: const EdgeInsets.all(16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  content: Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.credit_card_off_rounded,
+                                        color: Colors.green,
+                                        size: 26,
+                                      ),
+                                      SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          "Card removed successfully. You can add a new one now.",
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  duration: Duration(seconds: 3),
                                 ),
                               );
+
                             },
                             child: const Text("Remove Card",style: TextStyle(color: Colors.white),),
 

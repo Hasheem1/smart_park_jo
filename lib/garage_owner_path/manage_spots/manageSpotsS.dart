@@ -49,7 +49,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
           end: Alignment.bottomCenter,
           colors: [
 
-            Colors.grey, Color(0xFF36D1DC),Colors.grey
+            Colors.white, Colors.white
           ],
         ),
 
@@ -68,7 +68,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                   IconButton(
                     icon:
                     const Icon(Icons.arrow_back_ios_new_rounded,
-                         color: Colors.white),
+                         color: Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 20),
@@ -77,7 +77,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -149,8 +149,8 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            Switch(focusColor: Color(0xFF36D1DC),
-                              activeColor: Color(0xFF36D1DC),
+                            Switch(focusColor: Color(0xFF2F66F5),
+                              activeColor: Color(0xFF2F66F5),
                               value: isAvailable,
                               onChanged: (value) {
                                 setState(() {
@@ -204,20 +204,27 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade50.withOpacity(0.5),
+              Colors.blue.shade100.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(color: Colors.white)),
+            Text(title, style: const TextStyle(color: Color(0xFF2F66F5),fontWeight: FontWeight.bold,fontSize: 20)),
             const SizedBox(height: 8),
             Text(
               "$value",
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xFF2F66F5),
               ),
             ),
           ],
@@ -237,17 +244,25 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(
-            colors: [Color(0xFF36D1DC), Color(0xFF36D1DC)],
-          )
-              : null,
-          color: !isSelected ? Colors.white24 : null,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isSelected
+                ? const [
+              Color(0xFF2F66F5),
+              Color(0xFF1E4FD8),
+            ]
+                : [
+              const Color(0xFF2F66F5).withOpacity(0.25),
+              const Color(0xFF1E4FD8).withOpacity(0.45),
+            ],
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
+
         child: Text(
           label,
-          style: const TextStyle(
+          style:  TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

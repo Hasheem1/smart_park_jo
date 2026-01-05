@@ -156,16 +156,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       CircleAvatar(
                                         backgroundColor: Colors.white,
                                         radius: 30,
-                                        child: Text(
-                                          trimEmail
-                                              .substring(0, 2)
-                                              .toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 30,
-                                            color:Color(0XFF2F66F5),
-
-                                          ),
-                                        ),
+                                        child: Icon(Icons.person,color:Color(0xFF2F66F5)  ,size: 40,)
+                                        // Text(
+                                        //   trimEmail
+                                        //       .substring(0, 2)
+                                        //       .toUpperCase(),
+                                        //   style: TextStyle(
+                                        //     fontSize: 30,
+                                        //     color:Color(0XFF2F66F5),
+                                        //
+                                        //   ),
+                                        // ),
                                       ),
                                       const SizedBox(width: 18),
                                       Column(
@@ -439,7 +440,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.red[400],
+            backgroundColor: Colors.grey[850],
             title: Text(
               "Log out of your account",
               style: TextStyle(color: Colors.white),
