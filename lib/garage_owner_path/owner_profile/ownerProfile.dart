@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/businessInfo.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/helpCenter.dart';
-import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/privacy&security.dart';
 import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
 

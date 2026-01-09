@@ -12,11 +12,6 @@ class ReservationScreen extends StatefulWidget {
   final String parkinguid;
   final String parkingPrice;
 
-
-
-
-
-
   const ReservationScreen({
     super.key,
     required this.garageName,

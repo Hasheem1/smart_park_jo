@@ -136,6 +136,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+
             );
           },
         ),
@@ -358,14 +359,9 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
         ],
       ),
     );
+
+
   }
-
-
-
-
-
-
-
 
   Widget _buildReservationImage(String? imageUrl) {
     const size = 80.0;
