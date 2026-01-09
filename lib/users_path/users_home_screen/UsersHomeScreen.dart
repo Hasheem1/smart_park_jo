@@ -144,15 +144,16 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            // gradient: LinearGradient(
-            //   colors: [
-            //     Color(0xFF2193B0),
-            //     Color(0xFF6DD5ED),
-            //   ],
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            // ),
-            color: Color(0XFF2F66F5),
+            gradient: LinearGradient(
+              colors: [
+                Color(0XFF2F66F5),
+                Color(0XFF2F66F5),
+                Colors.black
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            // color: Color(0XFF2F66F5),
             
             boxShadow: [
               BoxShadow(
@@ -206,7 +207,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   }
 
-  // 🌟 Bottom action buttons
+  // Bottom action buttons
   Widget _modernActions(BuildContext context) {
     return Row(
       children: [
@@ -233,7 +234,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 
-  // 🌟 Action card style
+  //  Action card style
   Widget _actionCard(
       BuildContext context, String title, IconData icon, VoidCallback onTap) {
     return Expanded(
@@ -282,7 +283,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 
-  // 🌟 Home tab with map
+  //  Home tab with map
   Widget _buildHomeTab() {
     return Column(
       children: [

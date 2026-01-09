@@ -29,7 +29,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
   }
 
   // ----------------------------
-  // 🔵 Beautiful Reservation Card
+  //  Beautiful Reservation Card
   // ----------------------------
 
   Widget buildReservationCard(Map<String, dynamic> r) {
