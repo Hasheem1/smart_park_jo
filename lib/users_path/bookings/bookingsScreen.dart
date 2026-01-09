@@ -166,6 +166,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
+
               ),
             ],
           ),
@@ -226,6 +227,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
   // ----------------------------
   // 🔥 Upcoming or Past Query
   // ----------------------------
+
   Stream<QuerySnapshot> reservationQuery() {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -261,7 +263,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                 ).createShader(bounds),
                 child:                const Icon(
                    Icons.arrow_back,
-                   color: Colors.white,
+                   color: Colors.black,
                    size: 28,
                  ),
               )
@@ -271,14 +273,13 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
             ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
                 colors: [
-                  Color(0XFF2F66F5),
-                  Color(0XFF2F66F5),
-                ],
+Colors.black,
+                Colors.black],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ).createShader(bounds),
               child: const Text(
-                "Profile",
+                "My Booking",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
