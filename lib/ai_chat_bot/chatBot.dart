@@ -117,9 +117,7 @@ class _ChatScreenState extends State<ChatScreen>
   late ChatService _service;
   bool _isSending = false;
 
-  // final String apiKey
-  // = "sk-proj--j60WtbKi3SWx5gkmpchLJzU0HRPQfvGMTssEE"
-  //     "w4oGOVZcMNQNl-6CHg0tZEtDyaXsGpbX-2ZfT3BlbkFJVXYh7aF8_19am8SNzzzmN0hT7T-ZF_flBefGYhKMj2oVRMbu6Zst14v_ls4_SkueLSsQN_1ioA"; // ← PUT YOUR KEY HERE
+  final String apiKey = "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"; // ← PUT YOUR KEY HERE
 
   final List<Map<String, String>> faqList = [
     {
@@ -147,7 +145,7 @@ class _ChatScreenState extends State<ChatScreen>
   @override
   void initState() {
     super.initState();
-   // _service = ChatService(apiKey.isEmpty ? null : apiKey);
+    _service = ChatService(apiKey.isEmpty ? null : apiKey);
 
     _messages.add(ChatMessage(
       id: _uuid.v4(),

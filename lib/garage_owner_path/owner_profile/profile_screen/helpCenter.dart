@@ -210,11 +210,38 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       //   SnackBar(content: Text("Thank you for reaching out!", style: TextStyle(color: Colors.green))),
       // );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Your message has been sent to the Help Center!"),
-          backgroundColor: Colors.green,
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.green.shade600,
+          elevation: 8,
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              const Icon(
+                Icons.support_agent_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  "Your message has been sent to the Help Center!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
+
       emailController.clear();
       _messageController.clear();
     }

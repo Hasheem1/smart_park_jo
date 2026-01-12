@@ -141,20 +141,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         double money = data['money']??0.0;
 
         return Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            gradient: LinearGradient(
-              colors: [
-                Color(0XFF2F66F5),
-                Color(0XFF2F66F5),
-                Colors.black
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            // color: Color(0XFF2F66F5),
-            
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -164,44 +158,68 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Park with a Smile",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+              // Left section: Title
+              Expanded(
+                child: Text(
+                  "Park with a Smile 😊",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              Row(
+
+              // Right section: Actions
+              Column(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const ChatScreen()),
+                  Row(
+                    children: [
+                      // Chat button
+
+                      IconButton(
+                        icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ChatScreen()),
+                        ),
+                      ),
+
+                      // Profile button
+                      IconButton(
+                        icon: const Icon(Icons.account_circle, color: Colors.white),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const UserProfileScreen()),
+                        ),
+                      ),
+
+                      // Money display
+
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      "$money JD",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.account_circle, color: Colors.white),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const UserProfileScreen()),
-                    ),
-                  ),
-                  Text(
-                    "$money jd",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
                 ],
               ),
             ],
           ),
         );
+
+
       },
     );
 

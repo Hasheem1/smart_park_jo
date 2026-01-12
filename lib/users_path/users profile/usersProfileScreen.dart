@@ -29,15 +29,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     );
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: const Color(0xFFF0F3F8),
 
       body: Container(
         decoration: const BoxDecoration(
           // gradient: LinearGradient(
           //     colors: [Colors.white,Colors.white]
           // ),
-          color: Colors.white
-        ),
+        color: Color(0xFFF0F3F8)),
         child: SafeArea(
           child: Column(
             children: [
@@ -372,9 +371,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white12,
+            color: Colors.white.withOpacity(0.75),
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Color(0XFF2F66F5)),
+            border: Border.all(color: Colors.white.withOpacity(0.3)),
           ),
           child: ListTile(
             leading: Icon(icon, color: color),
@@ -392,41 +391,41 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   // 🔹 Glassmorphic Tile with Switch
-  Widget _buildGlassSwitch({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-    Color? activeColor,
-  }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white12,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
-          ),
-          child: ListTile(
-            leading: Icon(icon, color: const Color(0xFF36D1DC)),
-            title: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: Text(subtitle),
-            trailing: Switch(
-              value: value,
-              onChanged: onChanged,
-              activeThumbColor: activeColor ?? const Color(0xFF36D1DC),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildGlassSwitch({
+  //   required IconData icon,
+  //   required String title,
+  //   required String subtitle,
+  //   required bool value,
+  //   required ValueChanged<bool> onChanged,
+  //   Color? activeColor,
+  // }) {
+  //   return ClipRRect(
+  //     borderRadius: BorderRadius.circular(18),
+  //     child: BackdropFilter(
+  //       filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.white12,
+  //           borderRadius: BorderRadius.circular(18),
+  //           border: Border.all(color: Colors.white.withOpacity(0.3)),
+  //         ),
+  //         child: ListTile(
+  //           leading: Icon(icon, color: const Color(0xFF36D1DC)),
+  //           title: Text(
+  //             title,
+  //             style: const TextStyle(fontWeight: FontWeight.w600),
+  //           ),
+  //           subtitle: Text(subtitle),
+  //           trailing: Switch(
+  //             value: value,
+  //             onChanged: onChanged,
+  //             activeThumbColor: activeColor ?? const Color(0xFF36D1DC),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void logout() {
     final user = FirebaseAuth.instance.currentUser;

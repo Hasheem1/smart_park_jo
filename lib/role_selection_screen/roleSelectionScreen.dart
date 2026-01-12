@@ -92,6 +92,7 @@ class RoleSelectionScreen extends StatelessWidget {
                         // Navigate to Owner screen
                       },
                     ),
+                    SizedBox(height: 40,)
                   ],
                 ),
               ),

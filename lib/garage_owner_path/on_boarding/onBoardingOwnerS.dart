@@ -61,7 +61,7 @@ class _OnboardingScreenParkingOwnerState
                           children: [
 
                             SizedBox(
-                              height: 300,
+                              height: 289,
                               child: Image.network(
                                 onboardingData[index]["image"]!,
                                 fit: BoxFit.fill,

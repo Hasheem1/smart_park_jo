@@ -156,8 +156,8 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                           ),
                                           buildInfoTile(
                                             context,
-                                            "fullName",
-                                            data['name'] ?? 'rgeg',
+                                            "Name",
+                                            data['fullname'] ?? 'rgeg',
                                             userEmail!,
                                           ),
                                           buildInfoTile(

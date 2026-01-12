@@ -375,7 +375,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.red[400],
+            backgroundColor: Colors.grey[850],
             title: Text(
               "Log out of your account",
               style: TextStyle(color: Colors.white),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../role_selection_screen/roleSelectionScreen.dart';
 import '../users_home_screen/UsersHomeScreen.dart';
 
 class UsersLogIn extends StatefulWidget {
@@ -99,14 +100,27 @@ class _UsersLogInState extends State<UsersLogIn> {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Welcome Driver",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    children:  [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Welcome Driver",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon:   Icon(Icons.swap_horiz, size: 32,color: Colors.white,),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) =>  RoleSelectionScreen()),
+                              );
+                            },
+                          )
+                        ],
                       ),
                       SizedBox(height: 8),
                       Text(

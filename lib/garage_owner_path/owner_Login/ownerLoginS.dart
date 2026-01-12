@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
 import '../owner_Dashboard/ownerDashboardS.dart';
 
 class OwnerLoginScreen extends StatefulWidget {
@@ -44,19 +45,33 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                       bottomRight: Radius.circular(24),
                     ),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Welcome Owner",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Welcome Owner",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  IconButton(
+                    icon:  const Icon(Icons.swap_horiz, size: 32,color: Colors.white,),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                         MaterialPageRoute(builder: (_) =>  RoleSelectionScreen()),
+                      );
+                    },
+                  )
+
+                  ],
                       ),
-                      SizedBox(height: 6),
-                      Text(
+                      const SizedBox(height: 6),
+                      const Text(
                         "مرحباً أيها المالك",
                         style: TextStyle(
                           color: Colors.white,

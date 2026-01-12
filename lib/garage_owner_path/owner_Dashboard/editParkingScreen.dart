@@ -141,8 +141,39 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
       });
 
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Parking updated successfully!")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.blueGrey.shade800,
+          elevation: 8,
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              const Icon(
+                Icons.update_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  "Parking updated successfully!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
 
       Navigator.pop(context, true); // Return true to refresh dashboard
     } catch (e) {

@@ -82,34 +82,34 @@ class PrivacySecurityScreen extends StatelessWidget {
                         SizedBox(height: 16),
                         Text(
                           "We are committed to protecting your personal information and ensuring transparency about how we collect, use, and store it. "
-                              "Your account data such as name, phone, and email are securely encrypted and never shared with third parties without your consent.",
+                              "Your account data such as name, phone, and email are never shared with third parties without your consent.",
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(height: 24),
-                        Text(
-                          "Security Practices",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2F66F5)
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        Text(
-                          "• All passwords are stored using industry-standard encryption.\n"
-                              "• We use secure HTTPS connections for all communications.\n"
-                              "• Two-step authentication is available for additional protection.\n"
-                              "• Regular system checks and audits are performed to detect vulnerabilities.",
-                          style: TextStyle(
-                            fontSize: 15,
-                            height: 1.6,
-                            color: Colors.black87,
-                          ),
-                        ),
+                        // SizedBox(height: 24),
+                        // Text(
+                        //   "Security Practices",
+                        //   style: TextStyle(
+                        //     fontSize: 18,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Color(0xFF2F66F5)
+                        //   ),
+                        // ),
+                        // SizedBox(height: 12),
+                        // Text(
+                        //   "• All passwords are stored using industry-standard encryption.\n"
+                        //       "• We use secure HTTPS connections for all communications.\n"
+                        //       "• Two-step authentication is available for additional protection.\n"
+                        //       "• Regular system checks and audits are performed to detect vulnerabilities.",
+                        //   style: TextStyle(
+                        //     fontSize: 15,
+                        //     height: 1.6,
+                        //     color: Colors.black87,
+                        //   ),
+                        // ),
                         SizedBox(height: 24),
                         Text(
                           "Your Control",
