@@ -304,8 +304,28 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
     if (selectedSpotId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select a parking spot!")),
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.warning_amber_rounded, color: Colors.white),
+              SizedBox(width: 10),
+              Expanded(child: Text(
+                "Please select a parking spot!",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              )),
+            ],
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.black87, // dark modern color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // extra rounded
+          ),
+          margin: const EdgeInsets.all(16),
+          elevation: 10, // noticeable modern shadow
+          duration: const Duration(seconds: 3),
+        ),
       );
+
       return;
     }
 
