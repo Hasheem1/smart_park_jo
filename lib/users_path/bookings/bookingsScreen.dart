@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../active reservation/active_reservation.dart';
 import 'package:intl/intl.dart';
 
+import '../active reservation/upComingShowQR.dart';
+
 
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
@@ -185,28 +187,195 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
           const SizedBox(height: 14),
 
           // BUTTON
+// BUTTON (QR OR RATE)
           SizedBox(
             width: double.infinity,
             child: Container(
               decoration: BoxDecoration(
-                color:  Color(0XFF2F66F5),
+                color: r["status"] == "completed"
+                    ? Color(0XFF2F66F5)
+                    : const Color(0XFF2F66F5),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ActiveReservationScreen(
-                        reservationId: r["reservationId"],
+                  if (r["status"] == "completed") {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        int selectedRating = 0;
+                        final TextEditingController commentController =
+                        TextEditingController();
+
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      "Rate Your Experience",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 12),
+
+                                    // ⭐ STAR RATING
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: List.generate(5, (index) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedRating = index + 1;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.star,
+                                            size: 32,
+                                            color: index < selectedRating
+                                                ? Color(0XFF2F66F5)
+                                                : Colors.grey.shade300,
+                                          ),
+                                        );
+                                      }),
+                                    ),
+
+                                    const SizedBox(height: 10),
+
+                                    // 📝 COMMENT
+                                    TextField(
+                                      controller: commentController,
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        hintText: "Leave a comment (optional)",
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 16),
+
+                                    // 🔘 BUTTONS
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextButton(
+                                            onPressed: () => Navigator.pop(context),
+                                            child: const Text("Cancel"),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: selectedRating == 0
+                                                ? null
+                                                : () async {
+                                              await FirebaseFirestore.instance
+                                                  .collection("reservations")
+                                                  .doc(r["reservationId"])
+                                                  .update({
+                                                "rating": selectedRating,
+                                                "review": commentController.text.trim(),
+                                                "ratedAt": FieldValue.serverTimestamp(),
+                                              });
+
+                                              Navigator.pop(context);
+
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  behavior: SnackBarBehavior.floating,
+                                                  backgroundColor: Colors.transparent,
+                                                  elevation: 0,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                                  content: Container(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                                    decoration: BoxDecoration(
+                                                      gradient: const LinearGradient(
+                                                        colors: [
+                                                          Colors.grey, // orange
+                                                          Color(0XFF2F66F5) // deep orange
+                                                        ],
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(14),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black.withOpacity(0.15),
+                                                          blurRadius: 10,
+                                                          offset: const Offset(0, 6),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      children: const [
+                                                        Icon(Icons.star_rounded, color: Colors.white, size: 26),
+                                                        SizedBox(width: 12),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "Thank you for your rating!",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(seconds: 3),
+                                                ),
+                                              );
+
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(0XFF2F66F5),
+                                            ),
+                                            child: const Text("Submit",style: TextStyle(color: Colors.white),),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }
+else {
+                    // 🔵 SHOW QR CODE
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ActiveReservationScreenUpcoming(
+                          reservationId: r["reservationId"],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
-                icon: const Icon(Icons.qr_code),
-                label: const Text("Show QR Code"),
+                icon: Icon(
+                  r["status"] == "completed" ? Icons.star_rate : Icons.qr_code,
+                ),
+                label: Text(
+                  r["status"] == "completed"
+                      ? "Rate Reservation"
+                      : "Show QR Code",
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent, // required for gradient
+                  backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -217,6 +386,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
               ),
             ),
           ),
+
 
         ],
       ),
