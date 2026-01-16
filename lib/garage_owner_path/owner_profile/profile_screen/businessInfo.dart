@@ -157,7 +157,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                           buildInfoTile(
                                             context,
                                             "Name",
-                                            data['fullname'] ?? 'rgeg',
+                                            data['name'] ?? 'rgeg',
                                             userEmail!,
                                           ),
                                           buildInfoTile(
@@ -220,21 +220,21 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
         children: [
           Expanded(
             child: Text(
-              "$label :",
+              "$label : $value",
               style: TextStyle(
                 color: Color(0xFF2F66F5),
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          Expanded(
-            child: Text(
-              "$value ",
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
-              textAlign: TextAlign.right,
-            ),
-          ),
+          //Expanded(
+            // child: Text(
+            //   "$value ",
+            //   style: const TextStyle(color: Colors.grey, fontSize: 20),
+            //   textAlign: TextAlign.right,
+            // ),
+         // ),
           IconButton(
             icon: Icon(Icons.mode_edit, color: Color(0xFF2F66F5)),
             onPressed: () {
