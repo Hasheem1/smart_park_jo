@@ -22,6 +22,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+    removeExpiredPendingReservations();
   }
 
   @override
@@ -29,10 +31,72 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
     _tabController.dispose();
     super.dispose();
   }
+  //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+  Future<void> removeExpiredPendingReservations() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('reservations')
+        .where('status', isEqualTo: 'pending')
+        .get();
+
+    final now = DateTime.now();
+
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final createdAt = data['createdAt'] as Timestamp?;
+      final spotId = data['spotId'] as String?;
+      final parkingId = data['parkingId'] as String?;
+      final ownerEmail = data['ownerId'] as String?;
+
+      if (createdAt != null && now.difference(createdAt.toDate()).inMinutes >= 30) {
+        // 1️⃣ Delete reservation
+        await doc.reference.delete();
+
+        // 2️⃣ Free the spot
+        if (spotId != null && ownerEmail != null && parkingId != null) {
+          await freeSpot(spotId, ownerEmail, parkingId);
+        }
+      }
+    }
+  }
+
+  // hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+  Future<void> freeSpot(String spotId, String ownerEmail, String parkingId) async {
+    final firestore = FirebaseFirestore.instance;
+
+    try {
+      final parkingDocRef = firestore
+          .collection('owners')
+          .doc(ownerEmail)
+          .collection('Owners Parking')
+          .doc(parkingId);
+
+      final docSnapshot = await parkingDocRef.get();
+      if (!docSnapshot.exists) return;
+
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      List spots = List.from(data['spots'] ?? []);
+
+      for (int i = 0; i < spots.length; i++) {
+        if (spots[i]['id'] == spotId) {
+          spots[i]['status'] = 'Available';
+          break;
+        }
+      }
+
+      await parkingDocRef.update({'spots': spots});
+      print("Spot $spotId is now available");
+    } catch (e) {
+      print("Error freeing spot: $e");
+    }
+  }
+
+
+
 
   // ----------------------------
   //  Beautiful Reservation Card
   // ----------------------------
+
 
   Widget buildReservationCard(Map<String, dynamic> r) {
     // Decide which timestamp to show based on status

@@ -156,16 +156,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         backgroundColor: Colors.white,
                                         radius: 30,
                                         child: Icon(Icons.person,color:Color(0xFF2F66F5)  ,size: 40,)
-                                        // Text(
-                                        //   trimEmail
-                                        //       .substring(0, 2)
-                                        //       .toUpperCase(),
-                                        //   style: TextStyle(
-                                        //     fontSize: 30,
-                                        //     color:Color(0XFF2F66F5),
-                                        //
-                                        //   ),
-                                        // ),
                                       ),
                                       const SizedBox(width: 18),
                                       Column(
@@ -180,7 +170,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-
                                           const SizedBox(height: 4),
                                           Text(
                                             data['password'].toString(),

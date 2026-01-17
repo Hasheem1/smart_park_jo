@@ -29,6 +29,15 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     _getUserLocation();
   }
 
+  Future<void> _goToMyLocation() async {
+    if (_userLocation == null || _mapController == null) return;
+
+    _mapController!.animateCamera(
+      CameraUpdate.newLatLngZoom(_userLocation!, 16),
+    );
+  }
+
+
   Future<void> _getUserLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return;
@@ -80,10 +89,86 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             right: 16,
             child: _modernActions(context),
           ),
+
+          /// zoom in out
+          Positioned(
+            bottom: 160, // above action buttons
+            right: 16,
+            child: Column(
+              children: [
+                _zoomButton(
+                  icon: Icons.add,
+                  onTap: _zoomIn,
+                ),
+                const SizedBox(height: 10),
+                _zoomButton(
+                  icon: Icons.remove,
+                  onTap: _zoomOut,
+                ),
+              ],
+            ),
+          ),
+
+          /// location button
+          Positioned(
+            bottom: 277, // adjust above zoom & action buttons
+            right: 16,
+            child: _myLocationButton(),
+          ),
+
         ],
       ),
     );
   }
+  void _zoomIn() {
+    _mapController?.animateCamera(CameraUpdate.zoomIn());
+  }
+
+  void _zoomOut() {
+    _mapController?.animateCamera(CameraUpdate.zoomOut());
+  }
+
+  Widget _zoomButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      elevation: 6,
+      shape: const CircleBorder(),
+      color: Colors.white,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Icon(icon, size: 24, color: Colors.black87),
+        ),
+      ),
+    );
+  }
+
+  Widget _myLocationButton() {
+    return Material(
+      elevation: 6,
+      shape: const CircleBorder(),
+      color: Colors.white,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: _goToMyLocation,
+        child: const Padding(
+          padding: EdgeInsets.all(12),
+          child: Icon(
+            Icons.my_location,
+            size: 24,
+            color: Color(0XFF2F66F5),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
 
   // ===================== HEADER =====================
 
@@ -318,6 +403,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           zoomControlsEnabled: false,
           onMapCreated: (controller) => _mapController = controller,
         );
+
+
       },
     );
   }
