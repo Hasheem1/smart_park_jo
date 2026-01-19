@@ -147,7 +147,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 _buildGlassTile(
                   icon: Icons.person_2_outlined,
                   title: "Parking Owner Information",
-                  subtitle: "Update Parking Owner details",
+                  subtitle: "معلومات المالك",
                   color: const Color(0xFF2F66F5),
                   onTap: () {
                     Navigator.push(
