@@ -76,7 +76,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// 🔵 FLOATING HEADER
           Positioned(
-            top: MediaQuery.of(context).padding.top + 18,
+            top: MediaQuery.of(context).padding.top + 13,
             left: 16,
             right: 16,
             child: _modernHeader(context),
@@ -84,7 +84,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// 🔵 FLOATING BOTTOM BUTTONS
           Positioned(
-            bottom: 60,
+            bottom: 30,
             left: 16,
             right: 16,
             child: _modernActions(context),
@@ -92,7 +92,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// zoom in out
           Positioned(
-            bottom: 160, // above action buttons
+            bottom: 120, // above action buttons
             right: 16,
             child: Column(
               children: [
@@ -111,7 +111,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// location button
           Positioned(
-            bottom: 277, // adjust above zoom & action buttons
+            bottom: 237, // adjust above zoom & action buttons
             right: 16,
             child: _myLocationButton(),
           ),
@@ -392,6 +392,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         }
 
         return GoogleMap(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.35, // 25% of screen
+            left: MediaQuery.of(context).size.width * 0.0,   // small margin
+          ),
           initialCameraPosition: CameraPosition(
             target: _userLocation ?? const LatLng(31.9539, 35.9106),
             zoom: 15.5,
@@ -403,6 +407,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           zoomControlsEnabled: false,
           onMapCreated: (controller) => _mapController = controller,
         );
+
+
 
 
       },
