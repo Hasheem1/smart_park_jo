@@ -17,6 +17,8 @@ class MyBookingsScreen extends StatefulWidget {
 class _MyBookingsScreenState extends State<MyBookingsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int selectedRating = 0; // stores rating from 1 to 5
+  TextEditingController commentController = TextEditingController(); // stores comment
 
   @override
   void initState() {
@@ -269,8 +271,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                       barrierDismissible: false,
                       builder: (context) {
                         int selectedRating = 0;
-                        final TextEditingController commentController =
-                        TextEditingController();
+                        final TextEditingController commentController = TextEditingController();
 
                         return StatefulBuilder(
                           builder: (context, setState) {
@@ -307,7 +308,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                             Icons.star,
                                             size: 32,
                                             color: index < selectedRating
-                                                ? Color(0XFF2F66F5)
+                                                ? const Color(0XFF2F66F5)
                                                 : Colors.grey.shade300,
                                           ),
                                         );
@@ -344,69 +345,133 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                             onPressed: selectedRating == 0
                                                 ? null
                                                 : () async {
-                                              await FirebaseFirestore.instance
-                                                  .collection("reservations")
-                                                  .doc(r["reservationId"])
-                                                  .update({
-                                                "rating": selectedRating,
-                                                "review": commentController.text.trim(),
-                                                "ratedAt": FieldValue.serverTimestamp(),
-                                              });
+                                              try {
+                                                final parkingName = r["parkingName"] ?? "Unknown Parking";
+                                                final userEmail = FirebaseAuth.instance.currentUser!.email ?? "unknown";
 
-                                              Navigator.pop(context);
+                                                final ratingsRef = FirebaseFirestore.instance
+                                                    .collection('AllRatings')
+                                                    .doc(parkingName);
 
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  behavior: SnackBarBehavior.floating,
-                                                  backgroundColor: Colors.transparent,
-                                                  elevation: 0,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                                  content: Container(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                                                    decoration: BoxDecoration(
-                                                      gradient: const LinearGradient(
-                                                        colors: [
-                                                          Colors.grey, // orange
-                                                          Color(0XFF2F66F5) // deep orange
+                                                final logRef = FirebaseFirestore.instance
+                                                    .collection('AllRatings')      // parent collection
+                                                    .doc(parkingName)              // parent doc per parking
+                                                    .collection('UsersRatings')     // subcollection
+                                                    .doc(parkingName);                        // auto-generated document for this rating
+
+                                                await logRef.set({
+                                                  'userPhoneNumber': userEmail,
+                                                  'message': commentController.text.trim(),
+                                                  'timestamp': FieldValue.serverTimestamp(),
+                                                  'rating': selectedRating,
+                                                });
+
+                                                final docSnapshot = await ratingsRef.get();
+
+                                                if (docSnapshot.exists) {
+                                                  // Get current userRatings map
+                                                  Map<String, dynamic> userRatings =
+                                                  Map<String, dynamic>.from(docSnapshot.data()?['userRatings'] ?? {});
+
+                                                  if (userRatings.containsKey(userEmail)) {
+                                                    // User already rated
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text("You have already rated this parking!"),
+                                                        behavior: SnackBarBehavior.floating,
+                                                      ),
+                                                    );
+                                                    return;
+                                                  }
+
+                                                  // Add new rating
+                                                  userRatings[userEmail] = selectedRating;
+
+                                                  // Calculate average
+                                                  double average = userRatings.values.fold(0, (sum, r) => sum + (r as int)) / userRatings.length;
+
+                                                  // Update ratings document
+                                                  await ratingsRef.update({
+                                                    'userRatings': userRatings,
+                                                    'averageRating': average,
+                                                  });
+                                                } else {
+                                                  // First rating
+                                                  await ratingsRef.set({
+                                                    'userRatings': {userEmail: selectedRating},
+                                                    'averageRating': selectedRating.toDouble(),
+                                                  });
+                                                }
+
+                                                // Log rating with comment and timestamp in a separate collection
+                                                await logRef.set({
+                                                  'userPhoneNumber': userEmail,
+                                                  'message': commentController.text.trim(), // can be empty
+                                                  'timestamp': FieldValue.serverTimestamp(),
+                                                  'rating': selectedRating,
+                                                });
+
+                                                Navigator.pop(context);
+
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    behavior: SnackBarBehavior.floating,
+                                                    backgroundColor: Colors.transparent,
+                                                    elevation: 0,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                                    content: Container(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                                      decoration: BoxDecoration(
+                                                        gradient: const LinearGradient(
+                                                          colors: [Colors.grey, Color(0XFF2F66F5)],
+                                                        ),
+                                                        borderRadius: BorderRadius.circular(14),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.black.withOpacity(0.15),
+                                                            blurRadius: 10,
+                                                            offset: const Offset(0, 6),
+                                                          ),
                                                         ],
                                                       ),
-                                                      borderRadius: BorderRadius.circular(14),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black.withOpacity(0.15),
-                                                          blurRadius: 10,
-                                                          offset: const Offset(0, 6),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Row(
-                                                      children: const [
-                                                        Icon(Icons.star_rounded, color: Colors.white, size: 26),
-                                                        SizedBox(width: 12),
-                                                        Expanded(
-                                                          child: Text(
-                                                            "Thank you for your rating!",
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
+                                                      child: Row(
+                                                        children: const [
+                                                          Icon(Icons.star_rounded, color: Colors.white, size: 26),
+                                                          SizedBox(width: 12),
+                                                          Expanded(
+                                                            child: Text(
+                                                              "Thank you for your rating!",
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 15,
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
+                                                    duration: Duration(seconds: 3),
                                                   ),
-                                                  duration: const Duration(seconds: 3),
-                                                ),
-                                              );
+                                                );
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text("Failed to submit rating: $e")),
+                                                );
+                                              }
 
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(0XFF2F66F5),
+                                              backgroundColor: const Color(0XFF2F66F5),
                                             ),
-                                            child: const Text("Submit",style: TextStyle(color: Colors.white),),
+                                            child: const Text(
+                                              "Submit",
+                                              style: TextStyle(color: Colors.white),
+                                            ),
                                           ),
                                         ),
+
+
                                       ],
                                     ),
                                   ],
@@ -417,6 +482,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                         );
                       },
                     );
+
                   }
 else {
                     // 🔵 SHOW QR CODE
@@ -470,6 +536,85 @@ else {
         .where("userId", isEqualTo: userId)
         .snapshots();
   }
+
+
+  Future<void> submitParkingRating() async {
+    // 1️⃣ Check if the user selected a rating
+    if (selectedRating == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select a rating")),
+      );
+      return;
+    }
+
+    final email = FirebaseAuth.instance.currentUser!.email!;
+
+    // 2️⃣ Create a new document in a "Parkings Rating" collection
+    final docRef = FirebaseFirestore.instance
+        .collection('Rating')
+        .doc(email)
+        .collection('Parkings Rating')
+        .doc(); // .doc() without an ID auto-generates a unique ID
+
+    try {
+      // 3️⃣ Save data
+      await docRef.set({
+        'rating': selectedRating,
+        'comment': commentController.text.isNotEmpty
+            ? commentController.text
+            : null,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // 4️⃣ Show success SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.blueGrey.shade800,
+          elevation: 8,
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              const Icon(
+                Icons.check_circle_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  "Rating submitted successfully!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      // 5️⃣ Clear the form
+      setState(() {
+        selectedRating = 0;
+        commentController.clear();
+      });
+
+      Navigator.pop(context, true); // Optional: go back or refresh dashboard
+    } catch (e) {
+      print("Submit failed: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Submit failed: $e")),
+      );
+    }
+  }
+
 
 
 

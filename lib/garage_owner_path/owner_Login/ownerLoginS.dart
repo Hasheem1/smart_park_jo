@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
+import '../../users_path/users_login_reg/usersLogIn.dart';
 import '../owner_Dashboard/ownerDashboardS.dart';
 
 class OwnerLoginScreen extends StatefulWidget {
@@ -63,7 +64,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                         MaterialPageRoute(builder: (_) =>  RoleSelectionScreen()),
+                         MaterialPageRoute(builder: (_) =>  UsersLogIn()),
                       );
                     },
                   )

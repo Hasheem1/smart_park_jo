@@ -198,7 +198,10 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InfoBox(title: "💰 Price/hour", value: widget.price),
-                          InfoBox(title: "⭐ Rating", value: widget.rating),
+                          InfoBox(
+                            title: "⭐ Rating",
+                            parkingName: widget.title, // Pass the parking name here
+                          ),
                           InfoBox(title: "📍 Distance", value: widget.distance),
                         ],
                       ),

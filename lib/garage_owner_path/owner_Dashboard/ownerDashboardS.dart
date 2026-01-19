@@ -389,13 +389,39 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  data['Parking name'] ?? "Unnamed Parking",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.black87,
-                  ),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      data['Parking name'] ?? "Unnamed Parking",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('AllRatings')
+                          .doc(data['Parking name']) // use parking name as doc id
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData || !snapshot.data!.exists) {
+                          return const Text("N/A");
+                        }
+
+                        final ratingData = snapshot.data!.data() as Map<String, dynamic>;
+                        final double averageRating = (ratingData['averageRating'] ?? 0).toDouble();
+
+                        return Text(
+                          "${averageRating.toStringAsFixed(1)} ⭐", // e.g., "4.5 ⭐"
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.orange,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      },
+                    ),                  ],
                 ),
                 const SizedBox(height: 6),
                 Text(
