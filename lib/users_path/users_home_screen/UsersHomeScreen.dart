@@ -71,10 +71,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          /// 🔵 FULL SCREEN MAP
+          ///  FULL SCREEN MAP
           _buildHomeTab(),
 
-          /// 🔵 FLOATING HEADER
+          ///  FLOATING HEADER
           Positioned(
             top: MediaQuery.of(context).padding.top + 18,
             left: 16,
@@ -82,9 +82,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             child: _modernHeader(context),
           ),
 
-          /// 🔵 FLOATING BOTTOM BUTTONS
+          ///  FLOATING BOTTOM BUTTONS
           Positioned(
-            bottom: 60,
+            bottom:30,
             left: 16,
             right: 16,
             child: _modernActions(context),
@@ -92,7 +92,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// zoom in out
           Positioned(
-            bottom: 160, // above action buttons
+            bottom: 130, // above action buttons
             right: 16,
             child: Column(
               children: [
@@ -111,7 +111,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// location button
           Positioned(
-            bottom: 277, // adjust above zoom & action buttons
+            bottom: 247, // adjust above zoom & action buttons
             right: 16,
             child: _myLocationButton(),
           ),

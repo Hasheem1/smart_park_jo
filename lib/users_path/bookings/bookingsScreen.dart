@@ -49,6 +49,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       final parkingId = data['parkingId'] as String?;
       final ownerEmail = data['ownerId'] as String?;
 
+
+      ///change the timeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
       if (createdAt != null && now.difference(createdAt.toDate()).inMinutes >= 30) {
         // 1️⃣ Delete reservation
         await doc.reference.delete();
