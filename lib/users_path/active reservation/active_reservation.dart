@@ -41,6 +41,9 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     super.dispose();
   }
 
+
+
+
   /// 🔥 Real-time listener
   void listenToReservation() {
     FirebaseFirestore.instance
@@ -362,6 +365,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
 
 
   }
+
 
   Widget _buildReservationImage(String? imageUrl) {
     const size = 80.0;

@@ -630,8 +630,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                                 const SizedBox(width: 8),
 
-                                // Emoji / subtle accent
-                                // const Text("🚗", style: TextStyle(fontSize: 18)),
+
                               ],
                             ),
                           ),

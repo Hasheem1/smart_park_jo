@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
-import 'package:smart_park_jo/role_selection_screen/roleSelectionScreen.dart';
 import '../../users_path/users_login_reg/usersLogIn.dart';
 import '../owner_Dashboard/ownerDashboardS.dart';
 
@@ -26,215 +25,179 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2F66F5),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(24),
-                      bottomRight: Radius.circular(24),
-                    ),
+          child: Stack(
+            children: [
+              // 🔵 BLUE HEADER (SAME AS USER)
+              Container(
+                height: 260,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2F66F5),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Welcome Owner",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
+                ),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Welcome Owner",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
-                  IconButton(
-                    icon:  const Icon(Icons.swap_horiz, size: 32,color: Colors.white,),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                         MaterialPageRoute(builder: (_) =>  UsersLogIn()),
-                      );
-                    },
-                  )
-
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.swap_horiz,
+                              size: 32, color: Colors.white),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const UsersLogIn()),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "مرحباً أيها المالك 👋",
+                      style: TextStyle(color: Colors.white70, fontSize: 18),
+                    ),
                   ],
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        "مرحباً أيها المالك",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-                const SizedBox(height: 30),
+              ),
 
-                // Toggle tabs
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => setState(() => isLogin = true),
-                          child: Container(
+              // ⚪ MAIN CARD
+              Padding(
+                padding: const EdgeInsets.only(top: 180),
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 🔁 TABS (MATCH USER)
+                          Container(
+                            height: 50,
                             decoration: BoxDecoration(
-                              color: isLogin ? Colors.white : Colors.transparent,
+                              color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(25),
                             ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: isLogin ? Colors.black : Colors.grey.shade700,
+                            child: Row(
+                              children: [
+                                _buildTab("Login", true),
+                                _buildTab("Register", false),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          if (!isLogin) ...[
+                            _buildField(
+                                "Full Name", Icons.person, fullNameController),
+                            const SizedBox(height: 20),
+                            _buildField(
+                                "Phone", Icons.phone, phoneController,
+                                type: TextInputType.phone),
+                            const SizedBox(height: 20),
+                          ],
+
+                          _buildField(
+                              "Email", Icons.email, emailController,
+                              type: TextInputType.emailAddress),
+                          const SizedBox(height: 20),
+
+                          _buildField(
+                              "Password", Icons.lock, passwordController,
+                              obscure: true),
+                          const SizedBox(height: 20),
+
+                          if (!isLogin)
+                            _buildField("Confirm Password", Icons.lock,
+                                confirmPasswordController,
+                                obscure: true),
+
+                          const SizedBox(height: 30),
+
+                          // 🔵 BUTTON
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _handleSubmit,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2F66F5),
+                                padding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Text(
+                                isLogin ? "Login" : "Register",
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.white),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => setState(() => isLogin = false),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: !isLogin ? Colors.white : Colors.transparent,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Register',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: !isLogin ? Colors.black : Colors.grey.shade700,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                if (!isLogin) ...[
-                  buildTextFormField(
-                    label: "Full Name",
-                    controller: fullNameController,
-                    icon: Icons.person,
-                    validator: (value) =>
-                    value!.isEmpty ? "Enter your full name" : null,
-                  ),
-                  const SizedBox(height: 20),
-                  buildTextFormField(
-                    label: "Phone",
-                    controller: phoneController,
-                    icon: Icons.phone,
-                    keyboardType: TextInputType.phone,
-                    validator: (value) =>
-                    value!.isEmpty ? "Enter your phone number" : null,
-                  ),
-                  const SizedBox(height: 20),
-                ],
-
-                buildTextFormField(
-                  label: "Email",
-                  controller: emailController,
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) =>
-                  value!.isEmpty ? "Enter your email" : null,
-                ),
-                const SizedBox(height: 20),
-
-                buildTextFormField(
-                  label: "Password",
-                  controller: passwordController,
-                  icon: Icons.lock_outline,
-                  obscureText: true,
-                  validator: (value) =>
-                  value!.length < 6 || value.isEmpty ? " Enter valid Password  " : null,
-                ),
-                const SizedBox(height: 20),
-
-                if (!isLogin)
-                  buildTextFormField(
-                    label: "Confirm Password",
-                    controller: confirmPasswordController,
-                    icon: Icons.lock,
-                    obscureText: true,
-                    validator: (value) => value != passwordController.text
-                        ? "Passwords do not match"
-                        : null,
-                  ),
-
-                const SizedBox(height: 30),
-
-                // Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                       // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>  OwnerDashboardScreen()));
-                      if (!_formKey.currentState!.validate()) return;
-
-                      if (isLogin) {
-                        final success = await signInFunction(
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                        );
-                        if (success && mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                              const OwnerDashboardScreen(),
-                            ),
-                          );
-                        }
-                      } else {
-                        await signUpFunction(
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2F66F5),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        ],
                       ),
                     ),
-                    child: Text(
-                      isLogin ? "Login" : "Register",
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ---------------- HELPERS ----------------
+
+  Widget _buildTab(String text, bool loginTab) {
+    final active = isLogin == loginTab;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => isLogin = loginTab),
+        child: Container(
+          decoration: BoxDecoration(
+            color: active ? const Color(0xFF2F66F5) : Colors.transparent,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: active ? Colors.white : Colors.grey.shade700,
             ),
           ),
         ),
@@ -242,31 +205,26 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
     );
   }
 
-  // Helper: Text field builder
-  Widget buildTextFormField({
-    required String label,
-    required TextEditingController controller,
-    required IconData icon,
-    bool obscureText = false,
-    String? Function(String?)? validator,
-    TextInputType? keyboardType,
-  }) {
+  Widget _buildField(String label, IconData icon,
+      TextEditingController controller,
+      {bool obscure = false, TextInputType? type}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            style: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
-          obscureText: obscureText,
-          validator: validator,
-          keyboardType: keyboardType,
+          obscureText: obscure,
+          keyboardType: type,
+          validator: (v) => v == null || v.isEmpty ? "Required" : null,
           decoration: InputDecoration(
-            prefixIcon: Icon(icon),
+            prefixIcon: Icon(icon, color: const Color(0xFF2F66F5)),
+            hintText: label,
             filled: true,
             fillColor: Colors.grey.shade100,
-            hintText: label,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -277,67 +235,56 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
     );
   }
 
-  Future<void> signUpFunction(String email, String pass) async {
-    try {
-      final credential = await auth.FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass);
+  // ---------------- AUTH LOGIC ----------------
 
-      await FirebaseFirestore.instance
-          .collection('owners')
-          .doc(credential.user!.email)
-          .set({
-        'name': fullNameController.text.trim(),
-        'phone number': phoneController.text.trim(),
-        'email': email,
-        'uid': credential.user!.uid,
-        'password':passwordController.text,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+  Future<void> _handleSubmit() async {
+    if (!_formKey.currentState!.validate()) return;
 
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const OwnerDashboardScreen()),
-      );
-    } on auth.FirebaseAuthException catch (e) {
-      String errorMsg;
-      if (e.code == 'weak-password') {
-        errorMsg = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMsg = 'The account already exists for that email.';
-      } else if (e.code == 'invalid-email') {
-        errorMsg = 'Invalid email address.';
-      } else {
-        errorMsg = 'Something went wrong. Please try again.';
+    if (isLogin) {
+      final success = await signInFunction(
+          emailController.text.trim(), passwordController.text.trim());
+      if (success && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const OwnerDashboardScreen()),
+        );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red),
-      );
+    } else {
+      await signUpFunction(
+          emailController.text.trim(), passwordController.text.trim());
     }
   }
 
+  Future<void> signUpFunction(String email, String pass) async {
+    final credential = await auth.FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: pass);
+
+    await FirebaseFirestore.instance
+        .collection('owners')
+        .doc(credential.user!.uid)
+        .set({
+      'name': fullNameController.text.trim(),
+      'phone': phoneController.text.trim(),
+      'email': email,
+      'uid': credential.user!.uid,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const OwnerDashboardScreen()),
+    );
+  }
 
   Future<bool> signInFunction(String email, String password) async {
     try {
       await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return true;
-    } on auth.FirebaseAuthException catch (e) {
-      String errorMessage;
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided.';
-      } else {
-        errorMessage = 'Login failed. Please try again.';
-      }
+    } catch (_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
+        const SnackBar(content: Text("Login failed")),
       );
       return false;
     }
