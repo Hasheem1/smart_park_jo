@@ -323,8 +323,15 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     required String? userEmail, // add this
   }) {
     final imageUrl = data['image_url'] ?? "";
+    final List spots = data['spots'] ?? [];
+
+    final int occupiedCount = spots
+        .where((spot) => spot['status'] == 'Occupied')
+        .length;
+
     final capacity =
-        "${data['Occupied Spots'] ?? 0}/${data['Parking Capacity'] ?? 0}";
+        "$occupiedCount/${data['Parking Capacity'] ?? spots.length}";
+
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -413,7 +420,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         final double averageRating = (ratingData['averageRating'] ?? 0).toDouble();
 
                         return Text(
-                          "${averageRating.toStringAsFixed(1)} ⭐", // e.g., "4.5 ⭐"
+                          "${averageRating.toStringAsFixed(0)} ⭐", // e.g., "4.5 ⭐"
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.orange,
