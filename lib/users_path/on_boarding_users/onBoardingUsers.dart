@@ -126,7 +126,7 @@ class _onBoardingUsersState
 
               const SizedBox(height: 40),
 
-              // 🎯 Next / Get Started button
+              //  Next / Get Started button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: ElevatedButton(
