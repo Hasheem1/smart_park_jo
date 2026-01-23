@@ -98,7 +98,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
 
   // ----------------------------
-  //  Beautiful Reservation Card
+  //  Reservation Card
   // ----------------------------
 
 
@@ -527,7 +527,7 @@ else {
 
 
   // ----------------------------
-  // 🔥 Upcoming or Past Query
+  // Upcoming or Past Query
   // ----------------------------
 
   Stream<QuerySnapshot> reservationQuery() {
@@ -541,7 +541,7 @@ else {
 
 
   Future<void> submitParkingRating() async {
-    // 1️⃣ Check if the user selected a rating
+    //  Check if the user selected a rating
     if (selectedRating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please select a rating")),
@@ -551,7 +551,7 @@ else {
 
     final email = FirebaseAuth.instance.currentUser!.email!;
 
-    // 2️⃣ Create a new document in a "Parkings Rating" collection
+    // Create a new document in a "Parkings Rating" collection
     final docRef = FirebaseFirestore.instance
         .collection('Rating')
         .doc(email)
@@ -559,7 +559,7 @@ else {
         .doc(); // .doc() without an ID auto-generates a unique ID
 
     try {
-      // 3️⃣ Save data
+      //  Save data
       await docRef.set({
         'rating': selectedRating,
         'comment': commentController.text.isNotEmpty
@@ -568,7 +568,7 @@ else {
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // 4️⃣ Show success SnackBar
+      //  Show success SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -602,7 +602,7 @@ else {
         ),
       );
 
-      // 5️⃣ Clear the form
+      //  Clear the form
       setState(() {
         selectedRating = 0;
         commentController.clear();
@@ -679,7 +679,7 @@ Colors.black,
           const SizedBox(height: 10),
 
           // ----------------------------
-          // 🔵 BEAUTIFUL TAB BAR
+          //  BEAUTIFUL TAB BAR
           // ----------------------------
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
