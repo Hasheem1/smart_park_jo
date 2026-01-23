@@ -67,7 +67,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 children: [
                   IconButton(
                     icon:
-                    const Icon(Icons.arrow_back_ios_new_rounded,
+                    const Icon(Icons.arrow_back,
                          color: Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),

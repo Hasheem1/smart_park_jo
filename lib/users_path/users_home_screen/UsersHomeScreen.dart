@@ -112,7 +112,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
           /// location button
           Positioned(
-            bottom: 237, // adjust above zoom & action buttons
+            bottom: 242, // adjust above zoom & action buttons
             right: 16,
             child: _myLocationButton(),
           ),

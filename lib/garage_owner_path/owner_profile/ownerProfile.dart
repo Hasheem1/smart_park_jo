@@ -51,12 +51,9 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
             child: Column(
               children: [
                 // ✨ Blue Glassmorphic Profile Header
-                FutureBuilder<DocumentSnapshot>(
-                  future: users.doc(userEmail).get(),
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot,
-                  ) {
+                StreamBuilder<DocumentSnapshot>(
+                  stream: users.doc(userEmail).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text(
@@ -79,11 +76,11 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                       );
-                      // );
                     }
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
+
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     String trimEmail = data['email'];
+
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: BackdropFilter(
@@ -92,8 +89,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            // gradient: primaryGradient,
-                            color: Color(0xFF2F66F5),
+                            color: const Color(0xFF2F66F5),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
@@ -105,20 +101,21 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                           ),
                           child: Row(
                             children: [
-                              CircleAvatar(backgroundColor: Colors.white,
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
                                 radius: 30,
-                                child: Text(trimEmail.substring(0,2).toUpperCase(),style: TextStyle(fontSize: 30,color: Color(0xFF2F66F5)),),
-                                // backgroundImage: NetworkImage(
-                                //   "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png",
-                                // ),
+                                child: Text(
+                                  trimEmail.substring(0, 2).toUpperCase(),
+                                  style: const TextStyle(fontSize: 30, color: Color(0xFF2F66F5)),
+                                ),
                               ),
                               const SizedBox(width: 18),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text(
+                                  Text(
                                     data['name'],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -141,6 +138,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     );
                   },
                 ),
+
 
                 const SizedBox(height: 25),
 
@@ -326,42 +324,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
     );
   }
 
-  // 🔹 Glassmorphic Tile with Switch
-  Widget _buildGlassSwitch({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-    Color? activeColor,
-  }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.75),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
-          ),
-          child: ListTile(
-            leading: Icon(icon, color: const Color(0xFF2F66F5)),
-            title: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: Text(subtitle),
-            trailing: Switch(
-              value: value,
-              onChanged: onChanged,
-              activeThumbColor: activeColor ?? const Color(0xFF2F66F5),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 
   void logout() {
     final user = FirebaseAuth.instance.currentUser;

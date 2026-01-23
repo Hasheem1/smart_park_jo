@@ -242,10 +242,25 @@ class _UsersLogInState extends State<UsersLogIn> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter your phone number";
+                                return "Phone number is required";
                               }
+
+                              // remove spaces
+                              String phone = value.trim();
+
+                              // check digits only
+                              if (!RegExp(r'^[0-9]+$').hasMatch(phone)) {
+                                return "Phone must contain digits only";
+                              }
+
+                              // check length = 10
+                              if (phone.length != 10) {
+                                return "Phone number must be exactly 10 digits";
+                              }
+
                               return null;
                             },
+
                           ),
 
                           const SizedBox(height: 30),
@@ -272,10 +287,16 @@ class _UsersLogInState extends State<UsersLogIn> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter your Password";
+                                return "Password is required";
                               }
+
+                              if (value.length < 6) {
+                                return "Password must be at least 6 characters";
+                              }
+
                               return null;
                             },
+
                           ),
 
 

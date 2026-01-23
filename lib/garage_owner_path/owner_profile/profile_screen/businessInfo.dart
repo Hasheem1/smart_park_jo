@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BusinessInfoScreen extends StatefulWidget {
   const BusinessInfoScreen({super.key});
@@ -11,8 +12,6 @@ class BusinessInfoScreen extends StatefulWidget {
 
 class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
   final _formKey = GlobalKey<FormState>();
-
-
 
   bool isPasswordVisible = false;
 
@@ -34,8 +33,8 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               )
-              : FutureBuilder<DocumentSnapshot>(
-                future: users.doc(userEmail).get(),
+              : StreamBuilder<DocumentSnapshot>(
+                stream: users.doc(userEmail).snapshots(),
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot,
@@ -63,6 +62,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                       ),
                     );
                   }
+
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
 
@@ -70,14 +70,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                     children: [
                       // 🔵 Fullscreen gradient background
                       Container(
-                        decoration: const BoxDecoration(
-                          // gradient: LinearGradient(
-                          //   colors: [Colors.grey, Color(0xFF36D1DC) ],
-                          //   begin: Alignment.topCenter,
-                          //   end: Alignment.bottomCenter,
-                          // ),
-                          color: Colors.white
-                        ),
+                        decoration: const BoxDecoration(color: Colors.white),
                       ),
 
                       // 🌫️ SafeArea + scrollable content
@@ -126,14 +119,6 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                     padding: const EdgeInsets.all(20),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      // gradient: LinearGradient(
-                                      //   colors: [
-                                      //     Colors.blue.shade50.withOpacity(0.5),
-                                      //     Colors.blue.shade100.withOpacity(0.3),
-                                      //   ],
-                                      //   begin: Alignment.topLeft,
-                                      //   end: Alignment.bottomRight,
-                                      // ),
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
@@ -163,7 +148,8 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                           buildInfoTile(
                                             context,
                                             "phone number",
-                                            data['phone number']?.toString() ?? '',
+                                            data['phone number']?.toString() ??
+                                                '',
                                             userEmail!,
                                           ),
                                           buildInfoTile(
@@ -172,13 +158,11 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                             data['password']?.toString() ?? '',
                                             userEmail!,
                                           ),
-
                                         ],
                                       ),
                                     ),
                                   ),
                                   const SizedBox(height: 30),
-
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(30),
                                     child: Image.network(
@@ -187,7 +171,6 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                       width: 150,
                                     ),
                                   ),
-
                                 ],
                               ),
                             ],
@@ -229,12 +212,12 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
             ),
           ),
           //Expanded(
-            // child: Text(
-            //   "$value ",
-            //   style: const TextStyle(color: Colors.grey, fontSize: 20),
-            //   textAlign: TextAlign.right,
-            // ),
-         // ),
+          // child: Text(
+          //   "$value ",
+          //   style: const TextStyle(color: Colors.grey, fontSize: 20),
+          //   textAlign: TextAlign.right,
+          // ),
+          // ),
           IconButton(
             icon: Icon(Icons.mode_edit, color: Color(0xFF2F66F5)),
             onPressed: () {
@@ -256,52 +239,98 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       text: oldValue,
     );
 
+    TextInputType inputType = TextInputType.text;
+    List<TextInputFormatter> formatters = [];
+
+    if (field.toLowerCase() == "phone number") {
+      inputType = TextInputType.phone;
+      formatters = [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(10),
+      ];
+    }
+
+    if (field.toLowerCase() == "password") {
+      formatters = [LengthLimitingTextInputFormatter(6)];
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Update $field"),
+          content: TextField(
+            controller: controller,
+            keyboardType: inputType,
+            obscureText: field.toLowerCase() == "password",
+            inputFormatters: formatters,
+            decoration: InputDecoration(
+              labelText: "Enter new $field",
+              border: const OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                String value = controller.text.trim();
+
+                // VALIDATIONS
+                if (field.toLowerCase() == "phone number" &&
+                    value.length != 10) {
+                  _showError(context, "Phone number must be 10 digits");
+                  return;
+                }
+
+                if (field.toLowerCase() == "password" && value.length != 6) {
+                  _showError(context, "Password must be exactly 6 characters");
+                  return;
+                }
+
+                if (field.toLowerCase() == "email" &&
+                    (!value.contains("@") || !value.contains(".com"))) {
+                  _showError(context, "Enter a valid email");
+                  return;
+                }
+
+                if (field.toLowerCase() == "name" &&
+                    !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                  _showError(context, "Name must contain letters only");
+                  return;
+                }
+
+                await FirebaseFirestore.instance
+                    .collection('owners')
+                    .doc(documentId)
+                    .update({field.toLowerCase(): value});
+
+                Navigator.pop(context);
+              },
+              child: const Text("Update"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showError(BuildContext context, String message) {
     showDialog(
       context: context,
       builder:
-          (context) => AlertDialog(
-            title: Text("Update $field"),
-            content: TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: "Enter new $field",
-                border: const OutlineInputBorder(),
-              ),
-            ),
+          (_) => AlertDialog(
+            title: const Text("Invalid Input"),
+            content: Text(message),
             actions: [
               TextButton(
-                onPressed: () async {
-                  String newValue = controller.text.trim();
-                  if (newValue.isNotEmpty) {
-                    await FirebaseFirestore.instance
-                        .collection('owners')
-                        .doc(documentId)
-                        .update({
-                          field.toLowerCase(): _castValue(field, newValue),
-                        });
-                    setState(() {
-                      Navigator.pop(context);
-                    });
-                  }
-                },
-                child: const Text("Update"),
-              ),
-              TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
+                child: const Text("OK"),
               ),
             ],
           ),
     );
-  }
-
-  dynamic _castValue(String field, String value) {
-    if (field.toLowerCase() == "email" ||
-        field.toLowerCase() == "fullName" ||
-        field.toLowerCase() == "phone number" ||
-        field.toLowerCase() == "password") {
-      return int.tryParse(value) ?? value;
-    }
-    return value;
   }
 }

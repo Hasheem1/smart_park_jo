@@ -499,8 +499,14 @@ else {
                   }
                 },
                 icon: Icon(
-                  r["status"] == "completed" ? Icons.star_rate : Icons.qr_code,
+                  r["status"] == "completed"
+                      ? Icons.star_rate
+                      : Icons.qr_code,
+                  color: r["status"] == "completed"
+                      ? Colors.yellowAccent
+                      : Colors.white,
                 ),
+
                 label: Text(
                   r["status"] == "completed"
                       ? "Rate Reservation"

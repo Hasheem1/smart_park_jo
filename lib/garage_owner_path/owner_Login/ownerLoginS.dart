@@ -13,6 +13,7 @@ class OwnerLoginScreen extends StatefulWidget {
 
 class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
   bool isLogin = true;
+  bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -20,7 +21,8 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              // 🔵 BLUE HEADER (SAME AS USER)
+              // 🔵 HEADER
               Container(
                 height: 260,
                 width: double.infinity,
@@ -52,10 +54,9 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                         const Text(
                           "Welcome Owner",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold),
                         ),
                         IconButton(
                           icon: const Icon(Icons.swap_horiz,
@@ -71,15 +72,14 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      "مرحباً أيها المالك 👋",
-                      style: TextStyle(color: Colors.white70, fontSize: 18),
-                    ),
+                    const Text("مرحباً أيها المالك 👋",
+                        style:
+                        TextStyle(color: Colors.white70, fontSize: 18)),
                   ],
                 ),
               ),
 
-              // ⚪ MAIN CARD
+              // ⚪ CARD
               Padding(
                 padding: const EdgeInsets.only(top: 180),
                 child: Center(
@@ -102,7 +102,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 🔁 TABS (MATCH USER)
+                          // TABS
                           Container(
                             height: 50,
                             decoration: BoxDecoration(
@@ -116,54 +116,114 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                               ],
                             ),
                           ),
-
                           const SizedBox(height: 20),
 
                           if (!isLogin) ...[
                             _buildField(
-                                "Full Name", Icons.person, fullNameController),
+                              "Full Name",
+                              Icons.person,
+                              fullNameController,
+                              validator: (v) {
+                                if (v == null || v.trim().isEmpty) {
+                                  return "Full name is required";
+                                }
+                                if (v.trim().length < 3) {
+                                  return "Name must be at least 3 letters";
+                                }
+                                return null;
+                              },
+                            ),
                             const SizedBox(height: 20),
                             _buildField(
-                                "Phone", Icons.phone, phoneController,
-                                type: TextInputType.phone),
+                              "Phone",
+                              Icons.phone,
+                              phoneController,
+                              type: TextInputType.number,
+                              validator: (v) {
+                                if (v == null || v.isEmpty) {
+                                  return "Phone number is required";
+                                }
+                                if (!RegExp(r'^[0-9]{10}$').hasMatch(v)) {
+                                  return "Phone number must be exactly 10 digits";
+                                }
+                                return null;
+                              },
+                            ),
+
                             const SizedBox(height: 20),
                           ],
 
                           _buildField(
-                              "Email", Icons.email, emailController,
-                              type: TextInputType.emailAddress),
+                            "Email",
+                            Icons.email,
+                            emailController,
+                            type: TextInputType.emailAddress,
+                            validator: (v) {
+                              if (v == null || v.isEmpty) {
+                                return "Email is required";
+                              }
+                              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
+                                return "Enter a valid email address";
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 20),
 
                           _buildField(
-                              "Password", Icons.lock, passwordController,
-                              obscure: true),
+                            "Password",
+                            Icons.lock,
+                            passwordController,
+                            obscure: true,
+                            validator: (v) {
+                              if (v == null || v.isEmpty) {
+                                return "Password is required";
+                              }
+                              if (v.length < 6) {
+                                return "Password must be at least 6 characters";
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 20),
 
                           if (!isLogin)
-                            _buildField("Confirm Password", Icons.lock,
-                                confirmPasswordController,
-                                obscure: true),
+                            _buildField(
+                              "Confirm Password",
+                              Icons.lock,
+                              confirmPasswordController,
+                              obscure: true,
+                              validator: (v) {
+                                if (v == null || v.isEmpty) {
+                                  return "Please confirm password";
+                                }
+                                if (v != passwordController.text) {
+                                  return "Passwords do not match";
+                                }
+                                return null;
+                              },
+                            ),
 
                           const SizedBox(height: 30),
 
-                          // 🔵 BUTTON
+                          // BUTTON
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: _handleSubmit,
+                              onPressed: isLoading ? null : _handleSubmit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF2F66F5),
                                 padding:
                                 const EdgeInsets.symmetric(vertical: 14),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                                    borderRadius: BorderRadius.circular(12)),
                               ),
-                              child: Text(
-                                isLogin ? "Login" : "Register",
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
+                              child: isLoading
+                                  ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                                  : Text(isLogin ? "Login" : "Register",
+                                  style: const TextStyle(
+                                      fontSize: 18, color: Colors.white)),
                             ),
                           ),
                         ],
@@ -179,8 +239,6 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
     );
   }
 
-  // ---------------- HELPERS ----------------
-
   Widget _buildTab(String text, bool loginTab) {
     final active = isLogin == loginTab;
     return Expanded(
@@ -192,53 +250,53 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
             borderRadius: BorderRadius.circular(25),
           ),
           alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: active ? Colors.white : Colors.grey.shade700,
-            ),
-          ),
+          child: Text(text,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: active ? Colors.white : Colors.grey.shade700)),
         ),
       ),
     );
   }
 
-  Widget _buildField(String label, IconData icon,
-      TextEditingController controller,
-      {bool obscure = false, TextInputType? type}) {
+  Widget _buildField(
+      String label,
+      IconData icon,
+      TextEditingController controller, {
+        bool obscure = false,
+        TextInputType? type,
+        String? Function(String?)? validator,
+      }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label,
-            style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           obscureText: obscure,
           keyboardType: type,
-          validator: (v) => v == null || v.isEmpty ? "Required" : null,
+          validator: validator,
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: const Color(0xFF2F66F5)),
             hintText: label,
             filled: true,
             fillColor: Colors.grey.shade100,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none),
           ),
         ),
       ],
     );
   }
 
-  // ---------------- AUTH LOGIC ----------------
-
   Future<void> _handleSubmit() async {
     if (!_formKey.currentState!.validate()) return;
+
+    setState(() => isLoading = true);
 
     if (isLogin) {
       final success = await signInFunction(
@@ -253,28 +311,44 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
       await signUpFunction(
           emailController.text.trim(), passwordController.text.trim());
     }
+
+    if (mounted) setState(() => isLoading = false);
   }
 
   Future<void> signUpFunction(String email, String pass) async {
-    final credential = await auth.FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: pass);
+    try {
+      final credential = await auth.FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: pass);
 
-    await FirebaseFirestore.instance
-        .collection('owners')
-        .doc(credential.user!.uid)
-        .set({
-      'name': fullNameController.text.trim(),
-      'phone': phoneController.text.trim(),
-      'email': email,
-      'uid': credential.user!.uid,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
+      await FirebaseFirestore.instance
+          .collection('owners')
+          .doc(credential.user!.uid)
+          .set({
+        'name': fullNameController.text.trim(),
+        'phone': phoneController.text.trim(),
+        'email': email,
+        'uid': credential.user!.uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-    if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const OwnerDashboardScreen()),
-    );
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OwnerDashboardScreen()),
+      );
+    } on auth.FirebaseAuthException catch (e) {
+      String message = "Registration failed";
+      if (e.code == 'email-already-in-use') {
+        message = "This email is already registered";
+      } else if (e.code == 'weak-password') {
+        message = "Password is too weak";
+      } else if (e.code == 'invalid-email') {
+        message = "Invalid email address";
+      }
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 
   Future<bool> signInFunction(String email, String password) async {
@@ -282,10 +356,18 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
       await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return true;
-    } catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login failed")),
-      );
+    } on auth.FirebaseAuthException catch (e) {
+      String message = "Login failed";
+      if (e.code == 'user-not-found') {
+        message = "No account found with this email";
+      } else if (e.code == 'wrong-password') {
+        message = "Incorrect password";
+      } else if (e.code == 'invalid-email') {
+        message = "Invalid email format";
+      }
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
       return false;
     }
   }
