@@ -139,13 +139,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           children: [
             _statCard(
               "Parking's Number",
-              totalCapacity.toString(),
+
+            snapshot.data!.docs.length.toString(),
               Icons.local_parking,
             ),
             const SizedBox(width: 12),
             _statCard(
               "Active Lots",
-              snapshot.data!.docs.length.toString(),
+              totalCapacity.toString(),
               Icons.layers,
             ),
           ],
