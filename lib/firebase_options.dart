@@ -50,8 +50,8 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCCqE1A7ZPaMAjaarOpJde-p58edaAbuA4',
-    appId: '1:927521008993:android:965cf23e3b4aae457a2920',
+    apiKey: 'AIzaSyAvi-1qCA4rbM7E6PIozb8mEbOK1iOLMz8',
+    appId: '1:927521008993:android:550ebf911d670ee47a2920',
     messagingSenderId: '927521008993',
     projectId: 'smartparkjo-6e537',
     storageBucket: 'smartparkjo-6e537.firebasestorage.app',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyAdoJKImI6sTPqU3wg3J1RWb7d5NRf2dB8',
-    appId: '1:927521008993:web:c01682f8dc66329f7a2920',
+    appId: '1:927521008993:web:bdc618bfd4e00acb7a2920',
     messagingSenderId: '927521008993',
     projectId: 'smartparkjo-6e537',
     authDomain: 'smartparkjo-6e537.firebaseapp.com',
