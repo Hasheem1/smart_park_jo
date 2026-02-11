@@ -38,7 +38,7 @@ Search for available parking spaces
 
 View spaces sorted from nearest to farthest
 
-Reserve parking spots بسهولة
+Reserve parking spots 
 
 View reservation history
 
