@@ -86,7 +86,6 @@ Smart Park JO aims to modernize parking management in Jordan by reducing manual 
 owners and drivers.
 
 
-![Uploading Screenshot 2026-01-20 221509.png…]()
 
 
 
