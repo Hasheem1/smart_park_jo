@@ -1,4 +1,4 @@
-Smart Park Jo PDF 
+Smart Park JO PDF 
 https://github.com/Hasheem1/smart_park_jo/blob/main/SMART%20PARK%20JO%202026.pdf
 
 
