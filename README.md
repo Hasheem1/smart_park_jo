@@ -10,8 +10,7 @@ Parking Owners
 
 Drivers
 
-The system simplifies parking space management, reservations, and payments<img width="487" height="1003" alt="Screenshot 2026-01-20 221509" src="https://github.com/user-attachments/assets/978e162e-17bd-4db4-9d2d-557ef670e112" />
- using an advanced QR code automation system.
+The system simplifies parking space management, reservations, and payments using an advanced QR code automation system.
 
 👤 For Parking Owners
 
