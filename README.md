@@ -1,3 +1,10 @@
+## License
+
+This project is proprietary and confidential.  
+You are not allowed to copy, modify, distribute, or use any part of this code without explicit permission from the owner.
+
+
+
 Smart Park JO PDF 
 https://github.com/Hasheem1/smart_park_jo/blob/main/SMART%20PARK%20JO%202026.pdf
 
