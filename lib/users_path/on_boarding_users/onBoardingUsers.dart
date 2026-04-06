@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../users_login_reg/usersLogIn.dart';
 
 class onBoardingUsers extends StatefulWidget {
@@ -12,25 +13,26 @@ class onBoardingUsers extends StatefulWidget {
 class _onBoardingUsersState
     extends State<onBoardingUsers> {
   final PageController _controller = PageController();
+  late final l10n = AppLocalizations.of(context)!;
   int _currentPage = 0;
 
-  final List<Map<String, String>> onboardingData = [
+  late final List<Map<String, String>> onboardingData = [
     {
-      "title": "Find Parking Near You",
+      "title": l10n.saveTimeMoney,
       "desc":
-      "Discover available parking spots in real-time on an interactive map.",
+      l10n.onboardingDesc1,
       "image": "https://i.pinimg.com/736x/c3/d5/46/c3d546e24f48b489e3a1a85b43a37e59.jpg",
     },
     {
-      "title": "Reserve in Seconds",
+      "title": l10n.reserveInSeconds,
       "desc":
-      "Book your parking spot instantly and avoid the hassle of searching.",
+      l10n.onboardingDesc2,
       "image": "https://i.pinimg.com/736x/37/49/cd/3749cddbfbd6398d326936f60fceec27.jpg",
     },
     {
-      "title": "Save Time & Money",
+      "title": l10n.findParkingNearYou,
       "desc":
-      "Get the best rates and never waste time looking for parking again.",
+      l10n.onboardingDesc3,
       "image": "https://i.pinimg.com/1200x/f3/54/8f/f3548ff58fc60fea162847c24e8b7796.jpg",
     },
   ];
@@ -155,8 +157,8 @@ class _onBoardingUsersState
                   },
                   child: Text(
                     _currentPage == onboardingData.length - 1
-                        ? "Get Started"
-                        : "Next",
+                        ? l10n.getStarted
+                        : l10n.next,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

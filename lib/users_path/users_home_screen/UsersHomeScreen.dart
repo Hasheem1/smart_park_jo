@@ -8,6 +8,8 @@ import 'package:smart_park_jo/users_path/bookings/bookingsScreen.dart';
 import 'package:smart_park_jo/users_path/users%20profile/usersProfileScreen.dart';
 import '../../ai_chat_bot/chatBot.dart';
 import 'letsPark.dart';
+import '../../l10n/app_localizations.dart';
+
 
 class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({super.key});
@@ -19,6 +21,8 @@ class DriverHomeScreen extends StatefulWidget {
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
   final Color primaryBlue = const Color(0XFF2F66F5);
   final Color background = const Color(0xFFF9FAFB);
+  late final l10n = AppLocalizations.of(context)!;
+
 
   GoogleMapController? _mapController;
   LatLng? _userLocation;
@@ -272,7 +276,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       children: [
         _actionCard(
           context,
-          "Let’s Park!",
+         l10n.letsPark,
           Icons.car_crash_outlined,
               () => Navigator.push(
             context,
@@ -282,7 +286,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         const SizedBox(width: 15),
         _actionCard(
           context,
-          "My Reservation",
+          l10n.myReservation,
           Icons.calendar_month,
               () => Navigator.push(
             context,

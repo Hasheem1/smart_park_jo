@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../active reservation/active_reservation.dart';
 import 'package:intl/intl.dart';
+import '../../l10n/app_localizations.dart';
+
 
 import '../active reservation/upComingShowQR.dart';
 
@@ -18,6 +20,10 @@ class MyBookingsScreen extends StatefulWidget {
 class _MyBookingsScreenState extends State<MyBookingsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late final l10n = AppLocalizations.of(context)!;
+
+
+
   int selectedRating = 0; // stores rating from 1 to 5
   TextEditingController commentController = TextEditingController(); // stores comment
 
@@ -626,6 +632,7 @@ else {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -695,7 +702,7 @@ Colors.black,
               indicatorColor: Colors.transparent,
               dividerColor: Colors.transparent,
               indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+              labelStyle:  TextStyle(fontWeight: FontWeight.w600),
               indicator: BoxDecoration(
                  //---------------------------------------
                  color:  Color(0XFF2F66F5),
@@ -711,9 +718,9 @@ Colors.black,
               ),
               labelColor: Colors.white,
               unselectedLabelColor: Colors.grey,
-              tabs: const [
-                Tab(text: "Upcoming"),
-                Tab(text: "Past",),
+              tabs: [
+                Tab(text: l10n.upcoming),
+                Tab(text: l10n.past),
               ],
             ),
           ),

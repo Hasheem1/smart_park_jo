@@ -1,6 +1,5 @@
 {
   "parkingName": "Parking Name",
-
   "smartParkJordan": "SmartPark JORDAN",
   "findReserveParkSmart": "Find. Reserve. Park Smart.",
   "thankYouForRating": "Thank you for your rating!",
@@ -82,7 +81,6 @@
   "confirmDelete": "Confirm Delete",
   "sendMessage": "Send Message",
   "messageSentHelpCenter": "Your message has been sent to the Help Center!",
-  "letsPark": "Let’s Park!",
   "editParking": "Edit Parking",
   "noParkingLotsFound": "No parking lots found",
   "noUserSet": "No user logged in",
@@ -103,5 +101,17 @@
   "privacyPolicy1": "We are committed to protecting your personal information and ensuring transparency about how we collect, use, and store it. ",
   "privacyPolicy2": "For more details, contact our support team or review our full privacy policy in the app settings.",
   "tellUsWhatsGoingOn": "Tell us what’s going on, and we’ll get back to you as soon as possible.",
-  "language": "Language"
+  "language": "Language",
+  "findParkingNearYou": "Find Parking Near You",
+  "reserveInSeconds": "Reserve in Seconds",
+  "saveTimeMoney": "Save Time & Money",
+  "onboardingDesc1": "Discover available parking spots in real-time on an interactive map.",
+  "onboardingDesc2": "Book your parking spot instantly and avoid the hassle of searching.",
+  "onboardingDesc3": "Get the best rates and never waste time looking for parking again.",
+  "getStarted": "Get Started",
+  "next": "Next",
+  "letsPark": "Let’s Park!",
+  "myReservation": "My Reservation",
+  "upcoming": "Upcoming",
+  "past": "Past"
 }

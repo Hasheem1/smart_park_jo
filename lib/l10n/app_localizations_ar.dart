@@ -255,9 +255,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get messageSentHelpCenter => 'تم إرسال رسالتك إلى مركز المساعدة!';
 
   @override
-  String get letsPark => 'فلنركن!';
-
-  @override
   String get editParking => 'تعديل الموقف';
 
   @override
@@ -325,4 +322,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get language => 'اللغة';
+
+  @override
+  String get findParkingNearYou => 'اعثر على موقف بالقرب منك';
+
+  @override
+  String get reserveInSeconds => 'احجز بثواني';
+
+  @override
+  String get saveTimeMoney => 'وفر الوقت والمال';
+
+  @override
+  String get onboardingDesc1 =>
+      'اكتشف مواقف السيارات المتاحة في الوقت الفعلي على خريطة تفاعلية.';
+
+  @override
+  String get onboardingDesc2 => 'احجز موقفك فوراً وتجنب عناء البحث.';
+
+  @override
+  String get onboardingDesc3 =>
+      'احصل على أفضل الأسعار ولا تضيع وقتك في البحث عن موقف مرة أخرى.';
+
+  @override
+  String get getStarted => 'ابدأ الآن';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get letsPark => 'هيا نصطف!';
+
+  @override
+  String get myReservation => 'حجوزاتي';
+
+  @override
+  String get upcoming => 'القادمة';
+
+  @override
+  String get past => 'السابقة';
 }

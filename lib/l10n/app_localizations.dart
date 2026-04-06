@@ -590,12 +590,6 @@ abstract class AppLocalizations {
   /// **'Your message has been sent to the Help Center!'**
   String get messageSentHelpCenter;
 
-  /// No description provided for @letsPark.
-  ///
-  /// In en, this message translates to:
-  /// **'Let’s Park!'**
-  String get letsPark;
-
   /// No description provided for @editParking.
   ///
   /// In en, this message translates to:
@@ -721,6 +715,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
+
+  /// No description provided for @findParkingNearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Parking Near You'**
+  String get findParkingNearYou;
+
+  /// No description provided for @reserveInSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve in Seconds'**
+  String get reserveInSeconds;
+
+  /// No description provided for @saveTimeMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Time & Money'**
+  String get saveTimeMoney;
+
+  /// No description provided for @onboardingDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover available parking spots in real-time on an interactive map.'**
+  String get onboardingDesc1;
+
+  /// No description provided for @onboardingDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Book your parking spot instantly and avoid the hassle of searching.'**
+  String get onboardingDesc2;
+
+  /// No description provided for @onboardingDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the best rates and never waste time looking for parking again.'**
+  String get onboardingDesc3;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @letsPark.
+  ///
+  /// In en, this message translates to:
+  /// **'Let’s Park!'**
+  String get letsPark;
+
+  /// No description provided for @myReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'My Reservation'**
+  String get myReservation;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get past;
 }
 
 class _AppLocalizationsDelegate

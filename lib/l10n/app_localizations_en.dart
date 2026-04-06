@@ -258,9 +258,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your message has been sent to the Help Center!';
 
   @override
-  String get letsPark => 'Let’s Park!';
-
-  @override
   String get editParking => 'Edit Parking';
 
   @override
@@ -328,4 +325,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get language => 'Language';
+
+  @override
+  String get findParkingNearYou => 'Find Parking Near You';
+
+  @override
+  String get reserveInSeconds => 'Reserve in Seconds';
+
+  @override
+  String get saveTimeMoney => 'Save Time & Money';
+
+  @override
+  String get onboardingDesc1 =>
+      'Discover available parking spots in real-time on an interactive map.';
+
+  @override
+  String get onboardingDesc2 =>
+      'Book your parking spot instantly and avoid the hassle of searching.';
+
+  @override
+  String get onboardingDesc3 =>
+      'Get the best rates and never waste time looking for parking again.';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get letsPark => 'Let’s Park!';
+
+  @override
+  String get myReservation => 'My Reservation';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get past => 'Past';
 }
