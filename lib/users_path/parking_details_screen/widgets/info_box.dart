@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
@@ -49,7 +50,7 @@ class InfoBox extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return const Text("N/A",
+                  return Text(AppLocalizations.of(context)!.na,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 15));
                 }

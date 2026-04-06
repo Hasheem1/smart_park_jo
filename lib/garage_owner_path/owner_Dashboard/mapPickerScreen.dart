@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -90,7 +91,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Pick Location")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.pickLocation)),
       body: Stack(
         children: [
           GoogleMap(
@@ -112,7 +113,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                 if (pickedLocation != null) Navigator.pop(context, pickedLocation);
               },
               icon: const Icon(Icons.check),
-              label: const Text("Confirm Location"),
+              label: Text(AppLocalizations.of(context)!.confirmLocation),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(

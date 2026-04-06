@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 // ✅ FINAL MODERNIZED UI VERSION OF OwnerDashboardScreen
 // You chose to use NEW FIREBASE FIELD NAMES:
 // Parking Image / Parking name / Parking Capacity / Occupied Spots / Today Earnings
@@ -39,8 +40,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               _modernActions(context),
               const SizedBox(height: 25),
 
-              const Text(
-                "My Parking Lots",
+              Text(AppLocalizations.of(context)!.myParkingLots,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 14),
@@ -61,8 +61,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
           colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
         ),
         boxShadow: [
           BoxShadow(
@@ -75,8 +75,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Owner Dashboard",
+          Text(AppLocalizations.of(context)!.ownerDashboard,
             style: TextStyle(
               color: Colors.white,
               fontSize: 22,
@@ -166,8 +165,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               Colors.blue.shade50.withOpacity(0.5),
               Colors.blue.shade100.withOpacity(0.3),
             ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: AlignmentDirectional.topStart,
+            end: AlignmentDirectional.bottomEnd,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
@@ -288,11 +287,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Padding(
+          return Padding(
             padding: EdgeInsets.all(20),
             child: Center(
-              child: Text(
-                "No parking lots added yet.",
+              child: Text(AppLocalizations.of(context)!.noParkingLotsYet,
                 style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
@@ -344,8 +342,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             Colors.blue.shade50.withOpacity(0.5),
             Colors.blue.shade100.withOpacity(0.3),
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
         ),
         boxShadow: [
           BoxShadow(
@@ -414,7 +412,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData || !snapshot.data!.exists) {
-                          return const Text("N/A");
+                          return Text(AppLocalizations.of(context)!.na);
                         }
 
                         final ratingData = snapshot.data!.data() as Map<String, dynamic>;
@@ -470,7 +468,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                     ),
                               ),
                             ),
-                        child: const Text("Edit"),
+                        child: Text(AppLocalizations.of(context)!.edit),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -500,7 +498,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                               ),
                             ),
 
-                        child: const Text("Manage"),
+                        child: Text(AppLocalizations.of(context)!.manage),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -551,16 +549,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                     ),
                                     const SizedBox(height: 16),
 
-                                    const Text(
-                                      "Confirm Delete",
+                                    Text(AppLocalizations.of(context)!.confirmDelete,
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
-                                    const Text(
-                                      "Are you sure you want to delete this parking lot?",
+                                    Text(AppLocalizations.of(context)!.confirmDeleteParking,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 16,
@@ -581,8 +577,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                               ),
                                               padding: const EdgeInsets.symmetric(vertical: 14),
                                             ),
-                                            child: const Text(
-                                              "Cancel",
+                                            child: Text(AppLocalizations.of(context)!.cancel,
                                               style: TextStyle(color: Colors.black87, fontSize: 16),
                                             ),
                                           ),
@@ -599,8 +594,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                               backgroundColor: Colors.redAccent,
                                               elevation: 0,
                                             ),
-                                            child: const Text(
-                                              "Delete",
+                                            child: Text(AppLocalizations.of(context)!.delete,
                                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white70),
                                             ),
                                           ),
@@ -637,12 +631,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                   elevation: 10,
                                   duration: const Duration(seconds: 3),
                                   content: Row(
-                                    children: const [
+                                    children: [
                                       Icon(Icons.check_circle, color: Colors.white),
                                       SizedBox(width: 12),
                                       Expanded(
-                                        child: Text(
-                                          "Parking lot deleted successfully!",
+                                        child: Text(AppLocalizations.of(context)!.parkingDeletedSuccessfully,
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
@@ -665,7 +658,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           }
                         },
 
-                        child: const Text("Delete"),
+                        child: Text(AppLocalizations.of(context)!.delete),
                       ),
                     ),
                   ],

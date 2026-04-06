@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
@@ -51,8 +52,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Welcome Owner",
+                        Text(AppLocalizations.of(context)!.welcomeOwner,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -72,9 +72,6 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text("مرحباً أيها المالك 👋",
-                        style:
-                        TextStyle(color: Colors.white70, fontSize: 18)),
                   ],
                 ),
               ),

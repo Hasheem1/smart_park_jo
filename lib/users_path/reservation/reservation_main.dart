@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,8 +57,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Reserve Spot",
+        title: Text(AppLocalizations.of(context)!.reserveSpot,
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -73,8 +73,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 gradient: LinearGradient( colors: [ Colors.blue.shade50.withOpacity(0.5),
                   Colors.blue.shade100.withOpacity(0.3),
                 ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
@@ -136,7 +136,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Summary",
+                  Text(AppLocalizations.of(context)!.summary,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 10),
@@ -174,15 +174,14 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         .toList();
 
                     if (availableSpots.isEmpty) {
-                      return const Center(
-                        child: Text("No available spots"),
+                      return Center(
+                        child: Text(AppLocalizations.of(context)!.noAvailableSpots),
                       );
                     }
 
                     return DropdownButtonFormField<String>(
                       value: selectedSpotId,
-                      hint: const Text(
-                        "Select parking spot",
+                      hint: Text(AppLocalizations.of(context)!.selectParkingSpot,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -281,8 +280,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                 ),
                 onPressed: saveReservation,
-                child: const Text(
-                  "Confirm reservation",
+                child: Text(AppLocalizations.of(context)!.confirmReservation,
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
@@ -299,7 +297,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("You must be logged in!")),
+        SnackBar(content: Text(AppLocalizations.of(context)!.mustBeLoggedIn)),
       );
       return;
     }
@@ -308,11 +306,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-            children: const [
+            children: [
               Icon(Icons.warning_amber_rounded, color: Colors.white),
               SizedBox(width: 10),
-              Expanded(child: Text(
-                "Please select a parking spot!",
+              Expanded(child: Text(AppLocalizations.of(context)!.pleaseSelectParkingSpot,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               )),
             ],
@@ -353,12 +350,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
           elevation: 6,
           duration: const Duration(seconds: 3),
           content: Row(
-            children: const [
+            children: [
               Icon(Icons.error_outline, color: Colors.redAccent),
               SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  "You don't have enough money to make a reservation!",
+                child: Text(AppLocalizations.of(context)!.notEnoughMoney,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -459,7 +455,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         DateFormat("yyyy-MM-dd").format(selectedDate);
 
     return Padding(
-      padding: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsetsDirectional.only(end: 10),
       child: GestureDetector(
         onTap: () => setState(() => selectedDate = date),
         child: Container(
@@ -536,8 +532,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 const SizedBox(height: 20),
 
                 // Title
-                const Text(
-                  "Confirm Parking Spot",
+                Text(AppLocalizations.of(context)!.confirmParkingSpot,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -638,8 +633,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       );
 
                     },
-                    child: const Text(
-                      "Confirm Spot",
+                    child: Text(AppLocalizations.of(context)!.confirmSpot,
                       style: TextStyle(fontSize: 16,color: Colors.white),
 
                     ),
@@ -651,8 +645,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 // Cancel Button
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    "Cancel",
+                  child: Text(AppLocalizations.of(context)!.cancel,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      "Help Center",
+                    Text(AppLocalizations.of(context)!.helpCenter,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -77,8 +77,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Need Help?",
+                          Text(AppLocalizations.of(context)!.needHelp,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -86,8 +85,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Text(
-                            "Tell us what’s going on, and we’ll get back to you as soon as possible.",
+                          Text(AppLocalizations.of(context)!.tellUsWhatsGoingOn,
                             style: TextStyle(fontSize: 15, color: Colors.black87, height: 1.6),
                           ),
                           const SizedBox(height: 25),
@@ -98,7 +96,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             minLines: 5,
                             maxLines: 10,
                             decoration: InputDecoration(
-                              labelText: "Your Message",
+                              labelText: AppLocalizations.of(context)!.yourMessage,
                               labelStyle: const TextStyle(color: Colors.black54),
                               alignLabelWithHint: true,
                               prefixIcon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF2F66F5)),
@@ -154,8 +152,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                                 ),
                                 child: Container(
                                   alignment: Alignment.center,
-                                  child: const Text(
-                                    "Send Message",
+                                  child: Text(AppLocalizations.of(context)!.sendMessage,
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
@@ -207,7 +204,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text("Thank you for reaching out!", style: TextStyle(color: Colors.green))),
+      //   SnackBar(content: Text(AppLocalizations.of(context)!.thankYouForReachingOut, style: TextStyle(color: Colors.green))),
       // );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -227,9 +224,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 size: 22,
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  "Your message has been sent to the Help Center!",
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.messageSentHelpCenter,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,

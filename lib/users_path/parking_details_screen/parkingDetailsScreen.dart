@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smart_park_jo/users_path/parking_details_screen/theme/app_colors.dart';
@@ -269,7 +270,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Price per hour",
+                      Text(AppLocalizations.of(context)!.pricePerHour,
                           style: TextStyle(color: Colors.grey, fontSize: 13)),
                       Text(widget.price,
                           style: const TextStyle(
@@ -305,8 +306,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: const Text(
-                      "Reserve Spot",
+                    child: Text(AppLocalizations.of(context)!.reserveSpot,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

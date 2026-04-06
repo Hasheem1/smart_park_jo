@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -104,7 +105,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
         _capacityController.text.isEmpty ||
         _priceController.text.isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please fill all required fields")));
+          .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.fillRequiredFields)));
       return;
     }
 
@@ -159,9 +160,8 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                 size: 22,
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  "Parking updated successfully!",
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.parkingUpdatedSuccessfully,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -186,7 +186,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text("Edit Parking",style: TextStyle(fontWeight: FontWeight.bold
+      // appBar: AppBar(title: Text(AppLocalizations.of(context)!.editParking,style: TextStyle(fontWeight: FontWeight.bold
       // ),
       // ),
       //     centerTitle: true,
@@ -231,8 +231,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 20),
-                    const Text(
-                      "Edit Parking",
+                    Text(AppLocalizations.of(context)!.editParking,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -319,10 +318,10 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(Icons.add_location_alt_outlined),
                       SizedBox(width: 8),
-                      Text("Save Changes"),
+                      Text(AppLocalizations.of(context)!.saveChanges),
                     ],
                   ),
                 ),

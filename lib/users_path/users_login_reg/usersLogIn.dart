@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -104,8 +105,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                     children:  [
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Welcome Driver",
+                          Text(AppLocalizations.of(context)!.welcomeDriver,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -124,13 +124,6 @@ class _UsersLogInState extends State<UsersLogIn> {
                         ],
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        "مرحباً أيها السائق 👋",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 18,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -179,8 +172,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                                         borderRadius: BorderRadius.circular(25),
                                       ),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        'Login',
+                                      child: Text(AppLocalizations.of(context)!.login,
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -203,8 +195,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                                         borderRadius: BorderRadius.circular(25),
                                       ),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        'Register',
+                                      child: Text(AppLocalizations.of(context)!.register,
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -222,8 +213,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                           const SizedBox(height: 20),
 
                           // ----------------Phone Number (used as email)------------------
-                          const Text(
-                            "Phone Number",
+                          Text(AppLocalizations.of(context)!.phoneNumber,
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
@@ -266,8 +256,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                           const SizedBox(height: 30),
 
                           // ----------------Plate Number (used as password)---------------
-                          const Text(
-                            "Password",
+                          Text(AppLocalizations.of(context)!.password,
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
@@ -277,7 +266,7 @@ class _UsersLogInState extends State<UsersLogIn> {
                             decoration: InputDecoration(
                               prefixIcon:
                               const Icon(Icons.security, color: Color(0xFF2F66F5)),
-                              hintText: "Enter your Password",
+                              hintText: AppLocalizations.of(context)!.enterPassword,
                               filled: true,
                               fillColor: Colors.grey.shade100,
                               border: OutlineInputBorder(

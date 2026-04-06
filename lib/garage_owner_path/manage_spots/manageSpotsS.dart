@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +73,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 20),
-                  const Text(
-                    "Manage Spots",
+                  Text(AppLocalizations.of(context)!.manageSpots,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
@@ -209,8 +209,8 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
               Colors.blue.shade50.withOpacity(0.5),
               Colors.blue.shade100.withOpacity(0.3),
             ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: AlignmentDirectional.topStart,
+            end: AlignmentDirectional.bottomEnd,
           ),
           borderRadius: BorderRadius.circular(16),
         ),
@@ -245,8 +245,8 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: AlignmentDirectional.topStart,
+            end: AlignmentDirectional.bottomEnd,
             colors: isSelected
                 ? const [
               Color(0xFF2F66F5),

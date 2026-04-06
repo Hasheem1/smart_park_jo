@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +53,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 8),
-                        const Text(
-                          "Add Payment Method",
+                        Text(AppLocalizations.of(context)!.addPaymentMethod,
                           style: TextStyle(
                             color: Colors.black,
 
@@ -87,8 +87,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 10),
-                          const Text(
-                            "Select Payment Type",
+                          Text(AppLocalizations.of(context)!.selectPaymentType,
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -197,8 +196,8 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
 
                                   if (user == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text("No user logged in!"),
+                                      SnackBar(
+                                        content: Text(AppLocalizations.of(context)!.noUserLoggedInError),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -216,8 +215,8 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                   // Check if a card already exists
                                   if (data.containsKey('card') && data['card'] != null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text("You already have a card! Remove it first to add a new one."),
+                                      SnackBar(
+                                        content: Text(AppLocalizations.of(context)!.alreadyHaveCard),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -310,8 +309,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                               ),
-                              child: const Text(
-                                "Add Payment Method",
+                              child: Text(AppLocalizations.of(context)!.addPaymentMethod,
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -350,7 +348,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   content: Row(
-                                    children: const [
+                                    children: [
                                       Icon(
                                         Icons.credit_card_off_rounded,
                                         color: Colors.green,
@@ -358,8 +356,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                       ),
                                       SizedBox(width: 12),
                                       Expanded(
-                                        child: Text(
-                                          "Card removed successfully. You can add a new one now.",
+                                        child: Text(AppLocalizations.of(context)!.cardRemovedSuccessfully,
                                           style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 14,
@@ -374,7 +371,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               );
 
                             },
-                            child: const Text("Remove Card",style: TextStyle(color: Colors.white),),
+                            child: Text(AppLocalizations.of(context)!.removeCard,style: TextStyle(color: Colors.white),),
 
                           )
 

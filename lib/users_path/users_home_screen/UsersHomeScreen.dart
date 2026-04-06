@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -207,9 +208,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           ),
           child: Row(
             children: [
-              const Expanded(
-                child: Text(
-                  "Park with a Smile 😊",
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.parkWithSmile,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,

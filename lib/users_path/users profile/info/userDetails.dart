@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,10 +64,10 @@ class _UserdetailsState extends State<Userdetails> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-            children: const [
+            children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 12),
-              Expanded(child: Text("Updated successfully!")),
+              Expanded(child: Text(AppLocalizations.of(context)!.updatedSuccessfully)),
             ],
           ),
           backgroundColor: const Color(0xFF4CAF50),
@@ -81,10 +82,10 @@ class _UserdetailsState extends State<Userdetails> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-            children: const [
+            children: [
               Icon(Icons.error, color: Colors.white),
               SizedBox(width: 12),
-              Expanded(child: Text("Failed to update, try again.")),
+              Expanded(child: Text(AppLocalizations.of(context)!.failedToUpdateTryAgain)),
             ],
           ),
           backgroundColor: const Color(0xFFF44336),
@@ -168,14 +169,14 @@ class _UserdetailsState extends State<Userdetails> {
               shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            child: const Text("Update"),
+            child: Text(AppLocalizations.of(context)!.update),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0XFF2F66F5),
             ),
-            child: const Text("Cancel"),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
         ],
       ),
@@ -236,8 +237,8 @@ class _UserdetailsState extends State<Userdetails> {
     }
 
     if (user == null) {
-      return const Scaffold(
-        body: Center(child: Text("No user logged in", style: TextStyle(color: Colors.black, fontSize: 18))),
+      return Scaffold(
+        body: Center(child: Text(AppLocalizations.of(context)!.noUserSet, style: TextStyle(color: Colors.black, fontSize: 18))),
       );
     }
 
@@ -265,8 +266,7 @@ class _UserdetailsState extends State<Userdetails> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 4),
-                        const Text(
-                          "User Information",
+                        Text(AppLocalizations.of(context)!.userInformation,
                           style: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                       ],

@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -72,12 +73,12 @@ class MessageBubble extends StatelessWidget {
           gradient: isUser
               ? const LinearGradient(
               colors: [Color(0xFF2F66F5), Color(0xFF5B8DFB)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight)
+              begin: AlignmentDirectional.topStart,
+              end: AlignmentDirectional.bottomEnd)
               : LinearGradient(
               colors: [Colors.grey.shade200, Colors.grey.shade100],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
+              begin: AlignmentDirectional.topStart,
+              end: AlignmentDirectional.bottomEnd),
           borderRadius: radius,
           boxShadow: [
             BoxShadow(
@@ -245,11 +246,10 @@ class _ChatScreenState extends State<ChatScreen>
               colors: [
                 Colors.grey,
                 Color(0xFF2F66F5)              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: AlignmentDirectional.topStart,
+              end: AlignmentDirectional.bottomEnd,
             ).createShader(bounds),
-            child: const Text(
-              "AI Chat Bot",
+            child: Text(AppLocalizations.of(context)!.aiChatBot,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -290,8 +290,8 @@ class _ChatScreenState extends State<ChatScreen>
                     Colors.white.withOpacity(0.4),
                     Colors.white.withOpacity(0.2),
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
                 ),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
@@ -312,8 +312,8 @@ class _ChatScreenState extends State<ChatScreen>
                     child: TextField(
                       controller: _controller,
                       style: const TextStyle(fontSize: 16, color: Colors.black87),
-                      decoration: const InputDecoration(
-                        hintText: "Type a message...",
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.typeMessage,
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.black45),
                       ),
@@ -327,8 +327,8 @@ class _ChatScreenState extends State<ChatScreen>
                         gradient: const LinearGradient(
                           colors: [Colors.grey, Color(0xFF2F66F5),
                           ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                          begin: AlignmentDirectional.topStart,
+                          end: AlignmentDirectional.bottomEnd,
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [

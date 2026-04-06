@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
 
   bool isPasswordVisible = false;
 
-  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  final String? uid = FirebaseAuth.instance.currentUser?.uid;
   final CollectionReference users = FirebaseFirestore.instance.collection(
     'owners',
   );
@@ -26,23 +27,21 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body:
-          userEmail == null
-              ? const Center(
-                child: Text(
-                  "No user logged in",
+          uid == null
+              ? Center(
+                child: Text(AppLocalizations.of(context)!.noUserSet,
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               )
               : StreamBuilder<DocumentSnapshot>(
-                stream: users.doc(userEmail).snapshots(),
+                stream: users.doc(uid).snapshots(),
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot,
                 ) {
                   if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        "Something went wrong",
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!.somethingWentWrong,
                         style: TextStyle(color: Colors.red, fontSize: 18),
                       ),
                     );
@@ -55,9 +54,8 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                   }
 
                   if (!snapshot.hasData || !snapshot.data!.exists) {
-                    return const Center(
-                      child: Text(
-                        "No data found",
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!.noDataFound,
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     );
@@ -99,8 +97,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                       onPressed: () => Navigator.pop(context),
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
-                                      "My Information",
+                                    Text(AppLocalizations.of(context)!.myInformation,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 22,
@@ -137,27 +134,27 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                             context,
                                             "email",
                                             data['email']?.toString() ?? '',
-                                            userEmail!,
+                                            uid!,
                                           ),
                                           buildInfoTile(
                                             context,
                                             "Name",
                                             data['name'] ?? 'rgeg',
-                                            userEmail!,
+                                            uid!,
                                           ),
                                           buildInfoTile(
                                             context,
                                             "phone number",
-                                            data['phone number']?.toString() ??
+                                            data['phone']?.toString() ??
                                                 '',
-                                            userEmail!,
+                                            uid!,
                                           ),
-                                          buildInfoTile(
-                                            context,
-                                            "password",
-                                            data['password']?.toString() ?? '',
-                                            userEmail!,
-                                          ),
+                                          // buildInfoTile(
+                                          //   context,
+                                          //   "password",
+                                          //   data['password']?.toString() ?? '',
+                                          //   uid!,
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -305,11 +302,11 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
 
                 Navigator.pop(context);
               },
-              child: const Text("Update"),
+              child: Text(AppLocalizations.of(context)!.update),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ],
         );
@@ -322,12 +319,12 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       context: context,
       builder:
           (_) => AlertDialog(
-            title: const Text("Invalid Input"),
+            title: Text(AppLocalizations.of(context)!.invalidInput),
             content: Text(message),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("OK"),
+                child: Text(AppLocalizations.of(context)!.ok),
               ),
             ],
           ),

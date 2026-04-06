@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class PrivacySecurityScreen extends StatelessWidget {
@@ -31,8 +32,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      "Privacy & Security",
+                    Text(AppLocalizations.of(context)!.privacySecurity,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -57,8 +57,8 @@ class PrivacySecurityScreen extends StatelessWidget {
                       //     Colors.blue.shade50.withOpacity(0.5),
                       //     Colors.blue.shade100.withOpacity(0.3),
                       //   ],
-                      //   begin: Alignment.topLeft,
-                      //   end: Alignment.bottomRight,
+                      //   begin: AlignmentDirectional.topStart,
+                      //   end: AlignmentDirectional.bottomEnd,
                       // ),                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -68,11 +68,10 @@ class PrivacySecurityScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Your Privacy Matters",
+                        Text(AppLocalizations.of(context)!.privacyMatters,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -80,9 +79,8 @@ class PrivacySecurityScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        Text(
-                          "We are committed to protecting your personal information and ensuring transparency about how we collect, use, and store it. "
-                              "Your account data such as name, phone, and email are never shared with third parties without your consent.",
+                        Text(AppLocalizations.of(context)!.privacyPolicy1 + 
+                              "\nYour account data such as name, phone, and email are never shared with third parties without your consent.",
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,
@@ -111,8 +109,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                         //   ),
                         // ),
                         SizedBox(height: 24),
-                        Text(
-                          "Your Control",
+                        Text(AppLocalizations.of(context)!.yourControl,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -120,9 +117,8 @@ class PrivacySecurityScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 12),
-                        Text(
-                          "You can update or delete your personal information at any time from your profile settings. "
-                              "We will always notify you before any significant changes to our privacy policy.",
+                        Text(AppLocalizations.of(context)!.updatePrivacySettings + 
+                              "\nWe will always notify you before any significant changes to our privacy policy.",
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,
@@ -130,8 +126,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 24),
-                        Text(
-                          "For more details, contact our support team or review our full privacy policy in the app settings.",
+                        Text(AppLocalizations.of(context)!.privacyPolicy2,
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,

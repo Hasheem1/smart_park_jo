@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../garage_owner_path/on_boarding/onBoardingOwnerS.dart';
@@ -29,8 +30,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     ClipRRect(borderRadius: BorderRadius.circular(10)
                         ,child: Image(image: NetworkImage("https://i.pinimg.com/1200x/24/17/85/2417854e56cdab795d8abf85998e86f8.jpg"),height: 100,width: 100,)),
                     const SizedBox(height: 30,),
-                    const Text(
-                      "SmartPark JORDAN",
+                    Text(AppLocalizations.of(context)!.smartParkJordan,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -38,12 +38,7 @@ class RoleSelectionScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      "Find. Reserve. Park Smart.",
-                      style: TextStyle(color: Colors.white70, fontSize: 20),
-                    ),
-                    const Text(
-                      "ابحث. احجز. أوقف بذكاء.",
+                    Text(AppLocalizations.of(context)!.findReserveParkSmart,
                       style: TextStyle(color: Colors.white70, fontSize: 20),
                     ),
                     const SizedBox(height: 40),

@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -286,8 +287,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text(
-                                      "Rate Your Experience",
+                                    Text(AppLocalizations.of(context)!.rateYourExperience,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -324,7 +324,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                       controller: commentController,
                                       maxLines: 3,
                                       decoration: InputDecoration(
-                                        hintText: "Leave a comment (optional)",
+                                        hintText: AppLocalizations.of(context)!.leaveComment,
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(12),
                                         ),
@@ -339,7 +339,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                         Expanded(
                                           child: TextButton(
                                             onPressed: () => Navigator.pop(context),
-                                            child: const Text("Cancel"),
+                                            child: Text(AppLocalizations.of(context)!.cancel),
                                           ),
                                         ),
                                         Expanded(
@@ -378,8 +378,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                                   if (userRatings.containsKey(userEmail)) {
                                                     // User already rated
                                                     ScaffoldMessenger.of(context).showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text("You have already rated this parking!"),
+                                                      SnackBar(
+                                                        content: Text(AppLocalizations.of(context)!.alreadyRated),
                                                         behavior: SnackBarBehavior.floating,
                                                       ),
                                                     );
@@ -437,12 +437,11 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                                         ],
                                                       ),
                                                       child: Row(
-                                                        children: const [
+                                                        children: [
                                                           Icon(Icons.star_rounded, color: Colors.white, size: 26),
                                                           SizedBox(width: 12),
                                                           Expanded(
-                                                            child: Text(
-                                                              "Thank you for your rating!",
+                                                            child: Text(AppLocalizations.of(context)!.thankYouForRating,
                                                               style: TextStyle(
                                                                 color: Colors.white,
                                                                 fontSize: 15,
@@ -466,8 +465,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: const Color(0XFF2F66F5),
                                             ),
-                                            child: const Text(
-                                              "Submit",
+                                            child: Text(AppLocalizations.of(context)!.submit,
                                               style: TextStyle(color: Colors.white),
                                             ),
                                           ),
@@ -550,7 +548,7 @@ else {
     //  Check if the user selected a rating
     if (selectedRating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select a rating")),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectRating)),
       );
       return;
     }
@@ -593,9 +591,8 @@ else {
                 size: 22,
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  "Rating submitted successfully!",
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.ratingSubmittedSuccess,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -645,8 +642,8 @@ else {
                     Color(0XFF2F66F5),
                     Color(0XFF2F66F5),
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
                 ).createShader(bounds),
                 child:                const Icon(
                    Icons.arrow_back,
@@ -662,11 +659,10 @@ else {
                 colors: [
 Colors.black,
                 Colors.black],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: AlignmentDirectional.topStart,
+                end: AlignmentDirectional.bottomEnd,
               ).createShader(bounds),
-              child: const Text(
-                "My Booking",
+              child: Text(AppLocalizations.of(context)!.myBooking,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -743,7 +739,7 @@ Colors.black,
                     }
 
                     if (!snapshot.hasData) {
-                      return const Center(child: Text("No upcoming reservations."));
+                      return Center(child: Text(AppLocalizations.of(context)!.noUpcomingReservations));
                     }
 
                     final docs = snapshot.data!.docs;
@@ -771,7 +767,7 @@ Colors.black,
 
 
                     if (upcoming.isEmpty) {
-                      return const Center(child: Text("No upcoming reservations."));
+                      return Center(child: Text(AppLocalizations.of(context)!.noUpcomingReservations));
                     }
 
                     return ListView.builder(
@@ -797,7 +793,7 @@ Colors.black,
                     }
 
                     if (!snapshot.hasData) {
-                      return const Center(child: Text("No past reservations."));
+                      return Center(child: Text(AppLocalizations.of(context)!.noPastReservations));
                     }
 
                     final docs = snapshot.data!.docs;
@@ -828,7 +824,7 @@ Colors.black,
 
 
                     if (past.isEmpty) {
-                      return const Center(child: Text("No past reservations."));
+                      return Center(child: Text(AppLocalizations.of(context)!.noPastReservations));
                     }
 
                     return ListView.builder(

@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,8 +77,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        title: const Text(
-          'Earnings',
+        title: Text(AppLocalizations.of(context)!.earnings,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -111,8 +111,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Total This Month",
+                  Text(AppLocalizations.of(context)!.totalThisMonth,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14,

@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -97,8 +98,7 @@ class _letsparkState extends State<letspark> {
                         onPressed: () => Navigator.pop(context),
                       ),
                       const SizedBox(width: 4),
-                      const Text(
-                        "Let’s Park!",
+                      Text(AppLocalizations.of(context)!.letsPark,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 22,
@@ -123,14 +123,14 @@ class _letsparkState extends State<letspark> {
                             Colors.blue.shade50.withOpacity(0.5),
                             Colors.blue.shade100.withOpacity(0.3),
                           ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                          begin: AlignmentDirectional.topStart,
+                          end: AlignmentDirectional.bottomEnd,
                         ),
                       ),
                       child: TextField(
                         controller: _searchController,
                         decoration: InputDecoration(
-                          hintText: 'Search by location or name...',
+                          hintText: AppLocalizations.of(context)!.searchLocationName,
                           prefixIcon: const Icon(Icons.search),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -300,9 +300,8 @@ class _letsparkState extends State<letspark> {
                               (a, b) => a['distanceKm'].compareTo(b['distanceKm']));
 
                       if (parkingList.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            "No parking lots found",
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!.noParkingLotsFound,
                             style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
                         );
@@ -350,8 +349,8 @@ class _letsparkState extends State<letspark> {
                                     Colors.blue.shade50.withOpacity(0.5),
                                     Colors.blue.shade100.withOpacity(0.3),
                                   ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
+                                  begin: AlignmentDirectional.topStart,
+                                  end: AlignmentDirectional.bottomEnd,
                                 ),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(color: Colors.grey.shade100),
@@ -442,7 +441,7 @@ class _letsparkState extends State<letspark> {
                                   ),
 
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 12),
+                                    padding: const EdgeInsetsDirectional.only(end: 12),
                                     child: Icon(Icons.arrow_forward_ios,
                                         size: 16, color: Colors.grey[500]),
                                   )

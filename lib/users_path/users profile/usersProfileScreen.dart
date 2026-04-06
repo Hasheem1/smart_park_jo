@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,7 @@ import 'package:smart_park_jo/garage_owner_path/owner_profile/profile_screen/pri
 import '../../garage_owner_path/owner_profile/profile_screen/paymentMethod.dart';
 import '../../role_selection_screen/roleSelectionScreen.dart';
 import 'info/userDetails.dart';
+import '../../main.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -18,8 +20,8 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-  final String? userEmail = FirebaseAuth.instance.currentUser?.uid;
-  final String? phoneNumber = FirebaseAuth.instance.currentUser?.uid;
+  final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+  final String? phoneNumber = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     final primaryGradient = const LinearGradient(
@@ -59,8 +61,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      "Profile",
+                    Text(AppLocalizations.of(context)!.profile,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -91,9 +92,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         AsyncSnapshot<DocumentSnapshot> snapshot,
                         ) {
                       if (snapshot.hasError) {
-                        return const Center(
-                          child: Text(
-                            "Something went wrong",
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!.somethingWentWrong,
                             style: TextStyle(
                               color: Colors.red,
                               fontSize: 18,
@@ -111,9 +111,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       }
 
                       if (!snapshot.hasData || !snapshot.data!.exists) {
-                        return const Center(
-                          child: Text(
-                            "No data found",
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!.noDataFound,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -229,8 +228,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         // ⚙️ Settings Section
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Settings",
+                          child: Text(AppLocalizations.of(context)!.settings,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -242,6 +240,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         const SizedBox(height: 12),
 
                         const SizedBox(height: 12),
+                        _buildGlassTile(
+                          icon: Icons.language_outlined,
+                          title: AppLocalizations.of(context)!.language,
+                          subtitle: Localizations.localeOf(context).languageCode == 'ar' ? "العربية" : "English",
+                          color: const Color(0XFF2F66F5),
+                          onTap: () => _showLanguageDialog(context),
+                        ),
                         _buildGlassTile(
                           icon: Icons.lock_outline,
                           title: "Privacy & Security",
@@ -262,8 +267,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         // 🆘 Support Section
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Support",
+                          child: Text(AppLocalizations.of(context)!.support,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -321,8 +325,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: Container(
                                 alignment: Alignment.center,
                                 height: 56,
-                                child: const Text(
-                                  "Log Out",
+                                child: Text(AppLocalizations.of(context)!.logOut,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -416,6 +419,39 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   //   );
   // }
 
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(AppLocalizations.of(context)!.language, style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text("English"),
+                trailing: Localizations.localeOf(context).languageCode == 'en' ? const Icon(Icons.check, color: Color(0xFF2F66F5)) : null,
+                onTap: () {
+                  MyApp.setLocale(context, const Locale('en'));
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text("العربية"),
+                trailing: Localizations.localeOf(context).languageCode == 'ar' ? const Icon(Icons.check, color: Color(0xFF2F66F5)) : null,
+                onTap: () {
+                  MyApp.setLocale(context, const Locale('ar'));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void logout() {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -429,12 +465,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Colors.grey[850],
-            title: Text(
-              "Log out of your account",
+            title: Text(AppLocalizations.of(context)!.logOutAccount,
               style: TextStyle(color: Colors.white),
             ),
-            content: Text(
-              "Are you sure you want to log out?",
+            content: Text(AppLocalizations.of(context)!.confirmLogOut,
               style: TextStyle(color: Colors.white70),
             ),
             actions: [
@@ -448,12 +482,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                   );
                 },
-                child: const Text("OK", style: TextStyle(color: Colors.white)),
+                child: Text(AppLocalizations.of(context)!.ok, style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Cancel",
+                child: Text(AppLocalizations.of(context)!.cancel,
                   style: TextStyle(color: Colors.white),
                 ),
               ),

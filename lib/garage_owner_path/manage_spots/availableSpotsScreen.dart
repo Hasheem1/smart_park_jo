@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 // import 'package:flutter/material.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +25,7 @@
 //
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: const Text("Choose Available Spot"),
+//         title: Text(AppLocalizations.of(context)!.chooseAvailableSpot),
 //         backgroundColor: const Color(0xFF1565C0),
 //       ),
 //       body: Column(
@@ -60,7 +61,7 @@
 //             final List spots = List<Map<String, dynamic>>.from(data?['spots'] ?? []);
 //
 //             if (spots.isEmpty) {
-//               return const Center(child: Text("No spots available"));
+//               return const Center(child: Text(AppLocalizations.of(context)!.noSpotsAvailable));
 //             }
 //
 //             return GridView.builder(
@@ -129,12 +130,12 @@
 //     showDialog(
 //       context: context,
 //       builder: (context) => AlertDialog(
-//         title: const Text("Confirm Spot"),
+//         title: Text(AppLocalizations.of(context)!.confirmSpot),
 //         content: Text("Do you want to choose spot $spotId ?"),
 //         actions: [
 //           TextButton(
 //             onPressed: () => Navigator.pop(context),
-//             child: const Text("Cancel"),
+//             child: Text(AppLocalizations.of(context)!.cancel),
 //           ),
 //           ElevatedButton(
 //             onPressed: () {
@@ -145,7 +146,7 @@
 //
 //               // Later we can convert this to REAL RESERVATION
 //             },
-//             child: const Text("Confirm"),
+//             child: Text(AppLocalizations.of(context)!.confirm),
 //           ),
 //         ],
 //       ),

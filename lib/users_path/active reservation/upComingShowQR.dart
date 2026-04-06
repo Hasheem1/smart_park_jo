@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -110,11 +111,11 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreenUpcomin
     if (reservationData == null) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Active Reservation"),
+          title: Text(AppLocalizations.of(context)!.activeReservation),
           backgroundColor: Colors.green,
         ),
-        body: const Center(
-          child: Text("No reservation found.",
+        body: Center(
+          child: Text(AppLocalizations.of(context)!.noReservationFound,
               style: TextStyle(fontSize: 18, color: Colors.black54)),
         ),
       );
@@ -143,8 +144,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreenUpcomin
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        title: const Text(
-          "Active Reservation",
+        title: Text(AppLocalizations.of(context)!.activeReservation,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -199,8 +199,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreenUpcomin
       ),
       child: Column(
         children: [
-          const Text(
-            "Time Elapsed",
+          Text(AppLocalizations.of(context)!.timeElapsed,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,

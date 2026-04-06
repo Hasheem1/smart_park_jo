@@ -1,3 +1,4 @@
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -101,8 +102,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  "Please fill all required fields",
+                child: Text(AppLocalizations.of(context)!.fillRequiredFields,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -180,9 +180,8 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
               size: 22,
             ),
             const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                "Parking Added Successfully",
+            Expanded(
+              child: Text(AppLocalizations.of(context)!.parkingAddedSuccessfully,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -202,7 +201,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Parking Lot",style: TextStyle(fontWeight: FontWeight.bold),),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addParkingLot,style: TextStyle(fontWeight: FontWeight.bold),),
 
         centerTitle: true,
       ),
@@ -246,28 +245,28 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             const SizedBox(height: 20),
             _buildTextField(
               _nameController,
-              "Parking Name",
-              Icons.local_parking_rounded,
+              AppLocalizations.of(context)!.parkingName
+              ,Icons.local_parking_rounded,
             ),
-            _buildTextField(
-              _descController,
-              "Description",
-              Icons.text_fields_outlined,
-            ),
-            _buildLocationField(), // Modern location picker with map preview
-            const SizedBox(height: 16),
-            _buildTextField(
-              _capacityController,
-              "Capacity",
-              Icons.people_outline,
-              inputType: TextInputType.number,
-            ),
-            _buildTextField(
-              _priceController,
-              "Price per hour",
-              Icons.attach_money_outlined,
-              inputType: TextInputType.numberWithOptions(decimal: true),
-            ),
+            // _buildTextField(
+            //   _descController,
+            //   "Description",
+            //   Icons.text_fields_outlined,
+            // ),
+            // _buildLocationField(), // Modern location picker with map preview
+            // const SizedBox(height: 16),
+            // _buildTextField(
+            //   _capacityController,
+            //   "Capacity",
+            //   Icons.people_outline,
+            //   inputType: TextInputType.number,
+            // ),
+            // _buildTextField(
+            //   _priceController,
+            //   "Price per hour",
+            //   Icons.attach_money_outlined,
+            //   inputType: TextInputType.numberWithOptions(decimal: true),
+            // ),
             const SizedBox(height: 20),
             _buildCheckbox(
               "24/7 Access",
@@ -318,10 +317,10 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Icon(Icons.add_location_alt_outlined),
                     SizedBox(width: 8),
-                    Text("Add Parking"),
+                    Text(AppLocalizations.of(context)!.addParking),
                   ],
                 ),
               ),
@@ -336,7 +335,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
 
   Widget _buildTextField(
     TextEditingController controller,
-    String label,
+      String label,
     IconData icon, {
     TextInputType inputType = TextInputType.text,
     bool readOnly = false,
@@ -364,7 +363,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
       ValueChanged<bool?> onChanged,
       ) {
     return CheckboxListTile(
-      contentPadding: const EdgeInsets.only(left: 12, right: 16), // 👈 spacing
+      contentPadding: const EdgeInsetsDirectional.only(start: 12, end: 16), // 👈 spacing
       title: Text(
         title,
         style: TextStyle(
@@ -400,8 +399,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
             Expanded(
               child:
                   _pickedLocation == null
-                      ? const Text(
-                        "Pick parking location",
+                      ? Text(AppLocalizations.of(context)!.pickParkingLocation,
                         style: TextStyle(
                           fontSize: 16,
                           color: Color(0xFF2F66F5),
@@ -440,8 +438,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: const Text(
-                "Pick",
+              child: Text(AppLocalizations.of(context)!.pick,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
