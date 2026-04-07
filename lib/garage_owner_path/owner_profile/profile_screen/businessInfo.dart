@@ -132,21 +132,22 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                                           const SizedBox(height: 10),
                                           buildInfoTile(
                                             context,
-                                            "email",
+                                            AppLocalizations.of(context)!.email,
                                             data['email']?.toString() ?? '',
                                             uid!,
                                           ),
+
                                           buildInfoTile(
                                             context,
-                                            "Name",
-                                            data['name'] ?? 'rgeg',
+                                            AppLocalizations.of(context)!.fullName,
+                                            data['name'] ?? '',
                                             uid!,
                                           ),
+
                                           buildInfoTile(
                                             context,
-                                            "phone number",
-                                            data['phone']?.toString() ??
-                                                '',
+                                            AppLocalizations.of(context)!.phone,
+                                            data['phone']?.toString() ?? '',
                                             uid!,
                                           ),
                                           // buildInfoTile(
@@ -227,11 +228,11 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
   }
 
   void showEditDialogInfo(
-    BuildContext context,
-    String field,
-    String oldValue,
-    String documentId,
-  ) {
+      BuildContext context,
+      String field,
+      String oldValue,
+      String documentId,
+      ) {
     final TextEditingController controller = TextEditingController(
       text: oldValue,
     );
@@ -239,7 +240,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
     TextInputType inputType = TextInputType.text;
     List<TextInputFormatter> formatters = [];
 
-    if (field.toLowerCase() == "phone number") {
+    if (field.toLowerCase() == AppLocalizations.of(context)!.phone.toLowerCase()) {
       inputType = TextInputType.phone;
       formatters = [
         FilteringTextInputFormatter.digitsOnly,
@@ -247,7 +248,7 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       ];
     }
 
-    if (field.toLowerCase() == "password") {
+    if (field.toLowerCase() == AppLocalizations.of(context)!.password.toLowerCase()) {
       formatters = [LengthLimitingTextInputFormatter(6)];
     }
 
@@ -255,14 +256,15 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Update $field"),
+          title: Text("${AppLocalizations.of(context)!.update} $field"),
           content: TextField(
             controller: controller,
             keyboardType: inputType,
-            obscureText: field.toLowerCase() == "password",
+            obscureText:
+            field.toLowerCase() == AppLocalizations.of(context)!.password.toLowerCase(),
             inputFormatters: formatters,
             decoration: InputDecoration(
-              labelText: "Enter new $field",
+              labelText: "${AppLocalizations.of(context)!.enterNew} $field",
               border: const OutlineInputBorder(),
             ),
           ),
@@ -272,26 +274,43 @@ class _BusinessInfoScreenState extends State<BusinessInfoScreen> {
                 String value = controller.text.trim();
 
                 // VALIDATIONS
-                if (field.toLowerCase() == "phone number" &&
+                if (field.toLowerCase() ==
+                    AppLocalizations.of(context)!.phone.toLowerCase() &&
                     value.length != 10) {
-                  _showError(context, "Phone number must be 10 digits");
+                  _showError(
+                    context,
+                    AppLocalizations.of(context)!.phoneInvalid,
+                  );
                   return;
                 }
 
-                if (field.toLowerCase() == "password" && value.length != 6) {
-                  _showError(context, "Password must be exactly 6 characters");
+                if (field.toLowerCase() ==
+                    AppLocalizations.of(context)!.password.toLowerCase() &&
+                    value.length != 6) {
+                  _showError(
+                    context,
+                    AppLocalizations.of(context)!.passwordInvalid,
+                  );
                   return;
                 }
 
-                if (field.toLowerCase() == "email" &&
-                    (!value.contains("@") || !value.contains(".com"))) {
-                  _showError(context, "Enter a valid email");
+                if (field.toLowerCase() ==
+                    AppLocalizations.of(context)!.email.toLowerCase() &&
+                    (!value.contains("@") || !value.contains("."))) {
+                  _showError(
+                    context,
+                    AppLocalizations.of(context)!.emailInvalid,
+                  );
                   return;
                 }
 
-                if (field.toLowerCase() == "name" &&
+                if (field.toLowerCase() ==
+                    AppLocalizations.of(context)!.fullName.toLowerCase() &&
                     !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                  _showError(context, "Name must contain letters only");
+                  _showError(
+                    context,
+                    AppLocalizations.of(context)!.nameInvalid,
+                  );
                   return;
                 }
 

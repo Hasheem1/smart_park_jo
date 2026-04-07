@@ -12,6 +12,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parkingName => 'Parking Name';
 
   @override
+  String get addYourParkingLotInMinutes => 'Add Your Parking Lot in Minutes';
+
+  @override
+  String get earnAndManageSmartly => 'Earn and Manage Smartly';
+
+  @override
+  String get joinSmartCityMovement => 'Join the Smart City Movement';
+
+  @override
+  String get parkingNumber => 'Parking\'s Number';
+
+  @override
+  String get activeLots => 'Active Lots';
+
+  @override
+  String get capacity => 'Capacity';
+
+  @override
+  String get locationServicesDisabled => 'Location services are disabled.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied.';
+
+  @override
+  String get failedToGetLocation => 'Failed to get location';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get occupied => 'Occupied';
+
+  @override
+  String get continueAsDriver => 'Continue as Driver';
+
+  @override
+  String get continueAsOwner => 'Continue as Parking Owner';
+
+  @override
   String get smartParkJordan => 'SmartPark JORDAN';
 
   @override
@@ -439,4 +481,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showQrCode => 'Show QR Code';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get fullNameRequired => 'Full name is required';
+
+  @override
+  String get nameTooShort => 'Name must be at least 3 letters';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get phoneInvalid => 'Phone number must be 10 digits';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get enterNew => 'Enter new';
+
+  @override
+  String get passwordInvalid => 'Password must be exactly 6 characters';
+
+  @override
+  String get nameInvalid => 'Name must contain letters only';
 }

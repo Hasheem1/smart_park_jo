@@ -136,15 +136,16 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
 
         return Row(
           children: [
+
             _statCard(
-              "Parking's Number",
+              AppLocalizations.of(context)!.parkingNumber,
 
             snapshot.data!.docs.length.toString(),
               Icons.local_parking,
             ),
             const SizedBox(width: 12),
             _statCard(
-              "Active Lots",
+              AppLocalizations.of(context)!.activeLots,
               totalCapacity.toString(),
               Icons.layers,
             ),
@@ -206,7 +207,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       children: [
         _actionCard(
           context,
-          "Add Lot",
+          AppLocalizations.of(context)!.addParking,
           Icons.add_circle,
           () => Navigator.push(
             context,
@@ -216,7 +217,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         const SizedBox(width: 15),
         _actionCard(
           context,
-          "Earnings",
+          AppLocalizations.of(context)!.earnings,
           Icons.payments,
           () => Navigator.push(
             context,
@@ -398,7 +399,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      data['Parking name'] ?? "Unnamed Parking",
+                      data['Parking name'] ?? AppLocalizations.of(context)!.na,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -431,7 +432,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "Capacity: $capacity",
+                  "${AppLocalizations.of(context)!.capacity}: $capacity",
                   style: TextStyle(
                     color: Colors.grey.shade700,
                     fontSize: 14,
@@ -652,7 +653,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                               setState(() {});
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Failed to delete: $e")),
+                                SnackBar(content: Text("${AppLocalizations.of(context)!.somethingWentWrong}: $e")),
                               );
                             }
                           }

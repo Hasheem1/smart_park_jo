@@ -1,8 +1,69 @@
 {
-
-  "smartParkJordan": "سمارت بارك الأردن",
     "parkingName": "اسم الكراج",
 
+  "addYourParkingLotInMinutes": "أضف موقفك خلال دقائق",
+  "addParkingDesc": "سجل موقع كراجك، حدد السعر بالساعة، واجعل موقفك متاح لآلاف السائقين فوراً.",
+
+  "earnAndManageSmartly": "اكسب وادِر بذكاء",
+  "earnDesc": "تابع الإشغال، تحكم بالمواقف، وشاهد أرباحك اليومية أو الشهرية من لوحة واحدة.",
+
+  "joinSmartCityMovement": "انضم لحركة المدينة الذكية",
+  "smartCityDesc": "ساعد في تقليل الازدحام واجعل ركن السيارات أسهل للجميع مع تنمية عملك.",
+
+  "next": "التالي",
+  "getStarted": "ابدأ الآن",
+
+    "parkingNumber": "عدد المواقف",
+    "activeLots": "المواقف النشطة",
+    "capacity": "السعة",
+    "locationServicesDisabled": "خدمات الموقع متوقفة.",
+    "locationPermissionDenied": "تم رفض إذن الموقع.",
+    "failedToGetLocation": "فشل في الحصول على الموقع",
+
+      "manageSpots": "إدارة المواقف",
+      "all": "الكل",
+      "available": "متاح",
+      "occupied": "مشغول",
+"continueAsDriver": "متابعة كسائق",
+"continueAsOwner": "متابعة كمالك مواقف",
+"fullName": "الاسم الكامل",
+  "fullNameRequired": "الاسم الكامل مطلوب",
+  "nameTooShort": "الاسم يجب أن يكون 3 أحرف على الأقل",
+
+  "phone": "رقم الهاتف",
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "phoneInvalid": "رقم الهاتف يجب أن يكون 10 أرقام",
+
+  "email": "البريد الإلكتروني",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emailInvalid": "أدخل بريد إلكتروني صحيح",
+
+  "password": "كلمة المرور",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordTooShort": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+
+  "confirmPassword": "تأكيد كلمة المرور",
+  "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "update": "تحديث",
+  "cancel": "إلغاء",
+  "enterNew": "أدخل جديد",
+  "phoneInvalid": "رقم الهاتف يجب أن يكون 10 أرقام",
+  "passwordInvalid": "كلمة المرور يجب أن تكون 6 أرقام",
+  "emailInvalid": "أدخل بريد إلكتروني صحيح",
+  "nameInvalid": "الاسم يجب أن يحتوي على حروف فقط",
+
+
+
+
+
+
+
+
+
+
+
+  "smartParkJordan": "سمارت بارك الأردن",
   "findReserveParkSmart": "ابحث. احجز. أوقف بذكاء.",
   "thankYouForRating": "شكراً لتقييمك!",
   "pickParkingLocation": "اختر موقع الموقف",

@@ -12,6 +12,48 @@ class AppLocalizationsAr extends AppLocalizations {
   String get parkingName => 'اسم الكراج';
 
   @override
+  String get addYourParkingLotInMinutes => 'أضف موقفك خلال دقائق';
+
+  @override
+  String get earnAndManageSmartly => 'اكسب وادِر بذكاء';
+
+  @override
+  String get joinSmartCityMovement => 'انضم لحركة المدينة الذكية';
+
+  @override
+  String get parkingNumber => 'عدد المواقف';
+
+  @override
+  String get activeLots => 'المواقف النشطة';
+
+  @override
+  String get capacity => 'السعة';
+
+  @override
+  String get locationServicesDisabled => 'خدمات الموقع متوقفة.';
+
+  @override
+  String get locationPermissionDenied => 'تم رفض إذن الموقع.';
+
+  @override
+  String get failedToGetLocation => 'فشل في الحصول على الموقع';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get available => 'متاح';
+
+  @override
+  String get occupied => 'مشغول';
+
+  @override
+  String get continueAsDriver => 'متابعة كسائق';
+
+  @override
+  String get continueAsOwner => 'متابعة كمالك مواقف';
+
+  @override
   String get smartParkJordan => 'سمارت بارك الأردن';
 
   @override
@@ -435,4 +477,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get showQrCode => 'إظهار رمز QR';
+
+  @override
+  String get fullName => 'الاسم الكامل';
+
+  @override
+  String get fullNameRequired => 'الاسم الكامل مطلوب';
+
+  @override
+  String get nameTooShort => 'الاسم يجب أن يكون 3 أحرف على الأقل';
+
+  @override
+  String get phone => 'رقم الهاتف';
+
+  @override
+  String get phoneRequired => 'رقم الهاتف مطلوب';
+
+  @override
+  String get phoneInvalid => 'رقم الهاتف يجب أن يكون 10 أرقام';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get emailInvalid => 'أدخل بريد إلكتروني صحيح';
+
+  @override
+  String get passwordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get passwordTooShort => 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get confirmPasswordRequired => 'يرجى تأكيد كلمة المرور';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get enterNew => 'أدخل جديد';
+
+  @override
+  String get passwordInvalid => 'كلمة المرور يجب أن تكون 6 أرقام';
+
+  @override
+  String get nameInvalid => 'الاسم يجب أن يحتوي على حروف فقط';
 }

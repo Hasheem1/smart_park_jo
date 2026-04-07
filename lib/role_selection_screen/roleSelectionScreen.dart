@@ -2,6 +2,7 @@ import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../garage_owner_path/on_boarding/onBoardingOwnerS.dart';
+import '../main.dart';
 import '../users_path/on_boarding_users/onBoardingUsers.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
@@ -22,6 +23,16 @@ class RoleSelectionScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16, top: 10),
+                  child: IconButton(
+                    icon: const Icon(Icons.language, color: Colors.white),
+                    onPressed: () => _showLanguageDialog(context),
+                  ),
+                ),
+              ),
               Expanded(
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -55,7 +66,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     _buildRoleCard(
                       backGroundColor: Colors.white,
                       context,
-                      title: "Continue as Driver",
+                      title: AppLocalizations.of(context)!.continueAsDriver,
                       icon: Icons.directions_car_rounded,
                       textColor: Colors.blueAccent,
                       onTap: () {
@@ -74,7 +85,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     _buildRoleCard(
                       backGroundColor:Colors.green,
                       context,
-                      title: "Continue as Parking Owner",
+                      title: AppLocalizations.of(context)!.continueAsOwner,
                       icon: Icons.business_rounded,
                       textColor: Colors.white,
                       onTap: () {
@@ -96,6 +107,7 @@ class RoleSelectionScreen extends StatelessWidget {
         ),
       ),
     );
+
   }
 
   Widget _buildRoleCard(
@@ -133,6 +145,49 @@ class RoleSelectionScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            l10n.language,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text("English"),
+                trailing: Localizations.localeOf(dialogContext).languageCode == 'en'
+                    ? const Icon(Icons.check, color: Color(0xFF2F66F5))
+                    : null,
+                onTap: () {
+                  MyApp.setLocale(context, const Locale('en'));
+                  Navigator.pop(dialogContext);
+                },
+              ),
+              ListTile(
+                title: const Text("العربية"),
+                trailing: Localizations.localeOf(dialogContext).languageCode == 'ar'
+                    ? const Icon(Icons.check, color: Color(0xFF2F66F5))
+                    : null,
+                onTap: () {
+                  MyApp.setLocale(context, const Locale('ar'));
+                  Navigator.pop(dialogContext);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

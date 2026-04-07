@@ -13,6 +13,8 @@ class OwnerLoginScreen extends StatefulWidget {
 }
 
 class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
+  late final l10n = AppLocalizations.of(context)!;
+
   bool isLogin = true;
   bool isLoading = false;
 
@@ -108,8 +110,8 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                             ),
                             child: Row(
                               children: [
-                                _buildTab("Login", true),
-                                _buildTab("Register", false),
+                                _buildTab(AppLocalizations.of(context)!.login, true),
+                                _buildTab(AppLocalizations.of(context)!.register, false),
                               ],
                             ),
                           ),
@@ -117,50 +119,49 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
 
                           if (!isLogin) ...[
                             _buildField(
-                              "Full Name",
+                              AppLocalizations.of(context)!.fullName,
                               Icons.person,
                               fullNameController,
                               validator: (v) {
                                 if (v == null || v.trim().isEmpty) {
-                                  return "Full name is required";
+                                  return AppLocalizations.of(context)!.fullNameRequired;
                                 }
                                 if (v.trim().length < 3) {
-                                  return "Name must be at least 3 letters";
+                                  return AppLocalizations.of(context)!.nameTooShort;
                                 }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 20),
                             _buildField(
-                              "Phone",
+                              AppLocalizations.of(context)!.phone,
                               Icons.phone,
                               phoneController,
                               type: TextInputType.number,
                               validator: (v) {
                                 if (v == null || v.isEmpty) {
-                                  return "Phone number is required";
+                                  return AppLocalizations.of(context)!.phoneRequired;
                                 }
                                 if (!RegExp(r'^[0-9]{10}$').hasMatch(v)) {
-                                  return "Phone number must be exactly 10 digits";
+                                  return AppLocalizations.of(context)!.phoneInvalid;
                                 }
                                 return null;
                               },
                             ),
-
                             const SizedBox(height: 20),
                           ],
 
                           _buildField(
-                            "Email",
+                            AppLocalizations.of(context)!.email,
                             Icons.email,
                             emailController,
                             type: TextInputType.emailAddress,
                             validator: (v) {
                               if (v == null || v.isEmpty) {
-                                return "Email is required";
+                                return AppLocalizations.of(context)!.emailRequired;
                               }
                               if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
-                                return "Enter a valid email address";
+                                return AppLocalizations.of(context)!.emailInvalid;
                               }
                               return null;
                             },
@@ -168,16 +169,16 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                           const SizedBox(height: 20),
 
                           _buildField(
-                            "Password",
+                            AppLocalizations.of(context)!.password,
                             Icons.lock,
                             passwordController,
                             obscure: true,
                             validator: (v) {
                               if (v == null || v.isEmpty) {
-                                return "Password is required";
+                                return AppLocalizations.of(context)!.passwordRequired;
                               }
                               if (v.length < 6) {
-                                return "Password must be at least 6 characters";
+                                return AppLocalizations.of(context)!.passwordTooShort;
                               }
                               return null;
                             },
@@ -186,16 +187,16 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
 
                           if (!isLogin)
                             _buildField(
-                              "Confirm Password",
+                              AppLocalizations.of(context)!.confirmPassword,
                               Icons.lock,
                               confirmPasswordController,
                               obscure: true,
                               validator: (v) {
                                 if (v == null || v.isEmpty) {
-                                  return "Please confirm password";
+                                  return AppLocalizations.of(context)!.confirmPasswordRequired;
                                 }
                                 if (v != passwordController.text) {
-                                  return "Passwords do not match";
+                                  return AppLocalizations.of(context)!.passwordsDoNotMatch;
                                 }
                                 return null;
                               },
@@ -218,7 +219,9 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                               child: isLoading
                                   ? const CircularProgressIndicator(
                                   color: Colors.white)
-                                  : Text(isLogin ? "Login" : "Register",
+                                  : Text(isLogin
+                                  ? AppLocalizations.of(context)!.login
+                                  : AppLocalizations.of(context)!.register,
                                   style: const TextStyle(
                                       fontSize: 18, color: Colors.white)),
                             ),

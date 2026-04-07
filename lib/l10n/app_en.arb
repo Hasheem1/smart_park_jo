@@ -1,5 +1,19 @@
 {
-  "parkingName": "Parking Name",
+"parkingName": "Parking Name",
+"addYourParkingLotInMinutes":"Add Your Parking Lot in Minutes",
+"earnAndManageSmartly": "Earn and Manage Smartly",
+"joinSmartCityMovement": "Join the Smart City Movement",
+"parkingNumber": "Parking's Number",
+"activeLots": "Active Lots",
+"capacity": "Capacity",
+"locationServicesDisabled": "Location services are disabled.",
+"locationPermissionDenied": "Location permission denied.",
+"failedToGetLocation": "Failed to get location",
+  "all": "All",
+  "available": "Available",
+  "occupied": "Occupied",
+"continueAsDriver": "Continue as Driver",
+"continueAsOwner": "Continue as Parking Owner",
   "smartParkJordan": "SmartPark JORDAN",
   "findReserveParkSmart": "Find. Reserve. Park Smart.",
   "thankYouForRating": "Thank you for your rating!",
@@ -134,5 +148,32 @@
   "yourDuration": "Your duration: {duration}",
   "yourTotalPrice": "Your total Price: {total}",
   "rateReservation": "Rate Reservation",
-  "showQrCode": "Show QR Code"
+  "showQrCode": "Show QR Code",
+  "fullName": "Full Name",
+    "fullNameRequired": "Full name is required",
+    "nameTooShort": "Name must be at least 3 letters",
+
+    "phone": "Phone",
+    "phoneRequired": "Phone number is required",
+    "phoneInvalid": "Phone number must be exactly 10 digits",
+
+    "email": "Email",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+
+    "password": "Password",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 6 characters",
+
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordRequired": "Please confirm password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "update": "Update",
+    "cancel": "Cancel",
+    "enterNew": "Enter new",
+    "phoneInvalid": "Phone number must be 10 digits",
+    "passwordInvalid": "Password must be exactly 6 characters",
+    "emailInvalid": "Enter a valid email address",
+    "nameInvalid": "Name must contain letters only"
+
 }

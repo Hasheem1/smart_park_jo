@@ -104,6 +104,90 @@ abstract class AppLocalizations {
   /// **'Parking Name'**
   String get parkingName;
 
+  /// No description provided for @addYourParkingLotInMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Your Parking Lot in Minutes'**
+  String get addYourParkingLotInMinutes;
+
+  /// No description provided for @earnAndManageSmartly.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn and Manage Smartly'**
+  String get earnAndManageSmartly;
+
+  /// No description provided for @joinSmartCityMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the Smart City Movement'**
+  String get joinSmartCityMovement;
+
+  /// No description provided for @parkingNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking\'s Number'**
+  String get parkingNumber;
+
+  /// No description provided for @activeLots.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Lots'**
+  String get activeLots;
+
+  /// No description provided for @capacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity'**
+  String get capacity;
+
+  /// No description provided for @locationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled.'**
+  String get locationServicesDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @failedToGetLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get location'**
+  String get failedToGetLocation;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @occupied.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get occupied;
+
+  /// No description provided for @continueAsDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Driver'**
+  String get continueAsDriver;
+
+  /// No description provided for @continueAsOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Parking Owner'**
+  String get continueAsOwner;
+
   /// No description provided for @smartParkJordan.
   ///
   /// In en, this message translates to:
@@ -913,6 +997,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show QR Code'**
   String get showQrCode;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @fullNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name is required'**
+  String get fullNameRequired;
+
+  /// No description provided for @nameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 3 letters'**
+  String get nameTooShort;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be 10 digits'**
+  String get phoneInvalid;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get emailInvalid;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @confirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm password'**
+  String get confirmPasswordRequired;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @enterNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new'**
+  String get enterNew;
+
+  /// No description provided for @passwordInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be exactly 6 characters'**
+  String get passwordInvalid;
+
+  /// No description provided for @nameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must contain letters only'**
+  String get nameInvalid;
 }
 
 class _AppLocalizationsDelegate

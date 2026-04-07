@@ -79,8 +79,7 @@ class PrivacySecurityScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        Text(AppLocalizations.of(context)!.privacyPolicy1 + 
-                              "\nYour account data such as name, phone, and email are never shared with third parties without your consent.",
+                        Text(AppLocalizations.of(context)!.privacyPolicy1,
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,
@@ -117,8 +116,8 @@ class PrivacySecurityScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 12),
-                        Text(AppLocalizations.of(context)!.updatePrivacySettings + 
-                              "\nWe will always notify you before any significant changes to our privacy policy.",
+                        Text(AppLocalizations.of(context)!.updatePrivacySettings ,
+
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.6,

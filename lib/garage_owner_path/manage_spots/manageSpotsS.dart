@@ -18,63 +18,75 @@ class ManageSpotsScreen extends StatefulWidget {
 }
 
 class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
-  String selectedFilter = "All";
+  String selectedFilter = "all";
   late List<Map<String, dynamic>> spots;
 
   @override
-  @override
   void initState() {
     super.initState();
-    spots = List<Map<String, dynamic>>.from(widget.parkingData['spots'] ?? []);
+    spots = List<Map<String, dynamic>>.from(
+      widget.parkingData['spots'] ?? [],
+    );
   }
 
+  // ✅ STATUS TRANSLATION
+  String getStatusText(String status, AppLocalizations l10n) {
+    switch (status) {
+      case "Available":
+        return l10n.available;
+      case "Occupied":
+        return l10n.occupied;
+      default:
+        return status;
+    }
+  }
+
+  // ✅ FILTERED LIST (IMPORTANT FIX)
+  List<Map<String, dynamic>> get filteredSpots {
+    return spots.where((spot) {
+      if (selectedFilter == "all") return true;
+      return spot["status"] == selectedFilter;
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final availableCount =
         spots.where((spot) => spot["status"] == "Available").length;
+
     final occupiedCount =
         spots.where((spot) => spot["status"] == "Occupied").length;
 
-    List<Map<String, dynamic>> filteredSpots = spots.where((spot) {
-      if (selectedFilter == "All") return true;
-      return spot["status"] == selectedFilter;
-    }).toList();
-
     return Scaffold(
-
       backgroundColor: Colors.transparent,
-      body: Container(decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-
-            Colors.white, Colors.white
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Colors.white],
+          ),
         ),
-
-
-      ),
-
         height: double.infinity,
-
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              SizedBox(height: 20,),
+              const SizedBox(height: 20),
+
+              // HEADER
               Row(
                 children: [
                   IconButton(
-                    icon:
-                    const Icon(Icons.arrow_back,
-                         color: Colors.black),
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 20),
-                  Text(AppLocalizations.of(context)!.manageSpots,
-                    style: TextStyle(
+                  Text(
+                    l10n.manageSpots,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                       color: Colors.black,
@@ -82,30 +94,33 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
 
-              // SUMMARY CARDS
+              // SUMMARY
               Row(
                 children: [
-                  _summaryCard("Available", availableCount),
+                  _summaryCard(l10n.available, availableCount),
                   const SizedBox(width: 12),
-                  _summaryCard("Occupied", occupiedCount),
+                  _summaryCard(l10n.occupied, occupiedCount),
                 ],
               ),
+
               const SizedBox(height: 20),
 
-              // FILTER BUTTONS
+              // FILTERS
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _filterButton("All"),
-                  _filterButton("Available"),
-                  _filterButton("Occupied"),
+                  _filterButton(l10n.all, "all"),
+                  _filterButton(l10n.available, "Available"),
+                  _filterButton(l10n.occupied, "Occupied"),
                 ],
               ),
+
               const SizedBox(height: 20),
 
-              // SPOTS GRID
+              // GRID
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -119,8 +134,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                 ),
                 itemBuilder: (context, index) {
                   final spot = filteredSpots[index];
-                  final isAvailable =
-                      spot["status"] == "Available";
+                  final isAvailable = spot["status"] == "Available";
 
                   return Container(
                     padding: const EdgeInsets.all(16),
@@ -149,23 +163,26 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            Switch(focusColor: Color(0xFF2F66F5),
-                              activeColor: Color(0xFF2F66F5),
+                            Switch(
+                              activeColor: const Color(0xFF2F66F5),
                               value: isAvailable,
                               onChanged: (value) {
                                 setState(() {
-                                  spot["status"] = value ? "Available" : "Occupied";
+                                  spot["status"] =
+                                  value ? "Available" : "Occupied";
                                 });
 
-                                _updateSpotsInFirebase(); // ✅ SAVE IN FIREBASE
+                                _updateSpotsInFirebase();
                               },
                             ),
-
                           ],
                         ),
+
                         const SizedBox(height: 6),
+
+                        // ✅ TRANSLATED STATUS
                         Text(
-                          spot["status"],
+                          getStatusText(spot["status"], l10n),
                           style: TextStyle(
                             color: isAvailable
                                 ? const Color(0xFF2E7D32)
@@ -184,12 +201,12 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
       ),
     );
   }
+
+  // ✅ FIREBASE UPDATE
   Future<void> _updateSpotsInFirebase() async {
     final userEmail = FirebaseAuth.instance.currentUser!.email;
 
-    final firestore = FirebaseFirestore.instance;
-
-    await firestore
+    await FirebaseFirestore.instance
         .collection('owners')
         .doc(userEmail)
         .collection('Owners Parking')
@@ -199,6 +216,7 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
     });
   }
 
+  // SUMMARY CARD
   Widget _summaryCard(String title, int value) {
     return Expanded(
       child: Container(
@@ -209,15 +227,20 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
               Colors.blue.shade50.withOpacity(0.5),
               Colors.blue.shade100.withOpacity(0.3),
             ],
-            begin: AlignmentDirectional.topStart,
-            end: AlignmentDirectional.bottomEnd,
           ),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(color: Color(0xFF2F66F5),fontWeight: FontWeight.bold,fontSize: 20)),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFF2F66F5),
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
             const SizedBox(height: 8),
             Text(
               "$value",
@@ -233,36 +256,36 @@ class _ManageSpotsScreenState extends State<ManageSpotsScreen> {
     );
   }
 
-  Widget _filterButton(String label) {
-    final bool isSelected = selectedFilter == label;
+  // FILTER BUTTON
+  Widget _filterButton(String label, String value) {
+    final bool isSelected = selectedFilter == value;
+
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedFilter = label;
+          selectedFilter = value;
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding:
+        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: AlignmentDirectional.topStart,
-            end: AlignmentDirectional.bottomEnd,
             colors: isSelected
                 ? const [
               Color(0xFF2F66F5),
               Color(0xFF1E4FD8),
             ]
                 : [
-              const Color(0xFF2F66F5).withOpacity(0.25),
-              const Color(0xFF1E4FD8).withOpacity(0.45),
+              Color(0xFF2F66F5).withOpacity(0.25),
+              Color(0xFF1E4FD8).withOpacity(0.45),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
         ),
-
         child: Text(
           label,
-          style:  TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../owner_Login/ownerLoginS.dart';
+import '../../l10n/app_localizations.dart';
 
 class OnboardingScreenParkingOwner extends StatefulWidget {
   const OnboardingScreenParkingOwner({super.key});
@@ -14,29 +15,34 @@ class _OnboardingScreenParkingOwnerState
   final PageController _controller = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, String>> onboardingData = [
-    {
-      "title": "Add Your Parking Lot in Minutes",
-      "desc":
-      "Register your garage location, set your price per hour, and make it visible to thousands of drivers instantly..",
-      "image": "https://media.istockphoto.com/id/1068879782/vector/isometric-cars-in-the-car-parking-mobile-searching-looking-for-parking-flat-3d-isometric.jpg?s=612x612&w=0&k=20&c=dWEGHlqiuWQabjeO0sN102SaM9hKLewT8xUNxIbfdZI=",
-    },
-    {
-      "title": "Earn and Manage Smartly",
-      "desc":
-      "Track occupancy, control spot availability, and see your daily or monthly revenue in one dashboard.",
-      "image": "https://i.pinimg.com/1200x/81/38/fb/8138fbd86197f17374d4a40a4eabbcf4.jpg",
-    },
-    {
-      "title": "Join the Smart City Movement",
-      "desc":
-      "Help reduce traffic congestion and make parking easier for everyone — all while growing your business.",
-      "image": "https://i.pinimg.com/736x/26/88/ff/2688ff3973d4057f20801a0f9436eea2.jpg",
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final List<Map<String, String>> onboardingData = [
+      {
+        "title": l10n.addYourParkingLotInMinutes,
+        "desc":
+        l10n.onboardingDesc1,
+        "image":
+        "https://media.istockphoto.com/id/1068879782/vector/isometric-cars-in-the-car-parking-mobile-searching-looking-for-parking-flat-3d-isometric.jpg?s=612x612&w=0&k=20&c=dWEGHlqiuWQabjeO0sN102SaM9hKLewT8xUNxIbfdZI=",
+      },
+      {
+        "title": l10n.earnAndManageSmartly,
+        "desc":
+        l10n.onboardingDesc2,
+        "image":
+        "https://i.pinimg.com/1200x/81/38/fb/8138fbd86197f17374d4a40a4eabbcf4.jpg",
+      },
+      {
+        "title": l10n.joinSmartCityMovement,
+        "desc":
+        l10n.onboardingDesc3,
+        "image":
+        "https://i.pinimg.com/736x/26/88/ff/2688ff3973d4057f20801a0f9436eea2.jpg",
+      },
+    ];
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -59,7 +65,6 @@ class _OnboardingScreenParkingOwnerState
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
                             SizedBox(
                               height: 289,
                               child: Image.network(
@@ -69,7 +74,6 @@ class _OnboardingScreenParkingOwnerState
                             ),
                             const SizedBox(height: 30),
 
-                            // 🧾 Title
                             Text(
                               onboardingData[index]["title"]!,
                               textAlign: TextAlign.center,
@@ -82,7 +86,6 @@ class _OnboardingScreenParkingOwnerState
 
                             const SizedBox(height: 15),
 
-                            // 🧠 Description
                             Text(
                               onboardingData[index]["desc"]!,
                               textAlign: TextAlign.center,
@@ -102,7 +105,7 @@ class _OnboardingScreenParkingOwnerState
 
               const SizedBox(height: 20),
 
-              // 🔘 Page indicator dots
+              // dots
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -152,8 +155,8 @@ class _OnboardingScreenParkingOwnerState
                   },
                   child: Text(
                     _currentPage == onboardingData.length - 1
-                        ? "Get Started"
-                        : "Next",
+                        ? l10n.getStarted
+                        : l10n.next,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

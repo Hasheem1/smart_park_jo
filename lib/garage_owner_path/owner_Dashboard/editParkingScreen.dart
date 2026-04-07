@@ -185,6 +185,7 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       // appBar: AppBar(title: Text(AppLocalizations.of(context)!.editParking,style: TextStyle(fontWeight: FontWeight.bold
       // ),
@@ -263,19 +264,19 @@ class _EditParkingScreenState extends State<EditParkingScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _buildModernTextField(_nameController, "Parking Name", Icons.local_parking_rounded),
-                _buildModernTextField(_descController, "Description", Icons.text_fields_outlined),
-                _buildModernTextField(_locationController, "Location", Icons.location_on_outlined,
+                _buildModernTextField(_nameController, l10n.parkingName, Icons.local_parking_rounded),
+                _buildModernTextField(_descController, l10n.about, Icons.text_fields_outlined),
+                _buildModernTextField(_locationController, l10n.pickLocation, Icons.location_on_outlined,
                     readOnly: true, onTap: _pickLocationOnMap),
-                _buildModernTextField(_capacityController, "Capacity", Icons.people_outline,
+                _buildModernTextField(_capacityController, l10n.capacity, Icons.people_outline,
                     inputType: TextInputType.number),
-                _buildModernTextField(_priceController, "Price per hour", Icons.attach_money_outlined,
+                _buildModernTextField(_priceController, l10n.pricePerHour, Icons.attach_money_outlined,
                     inputType: TextInputType.numberWithOptions(decimal: true)),
                 const SizedBox(height: 20),
-                _buildModernCheckbox("24/7 Access", access24, (v) => setState(() => access24 = v!)),
-                _buildModernCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
-                _buildModernCheckbox("EV Charging", evCharging, (v) => setState(() => evCharging = v!)),
-                _buildModernCheckbox("Disabled Access", disabledAccess, (v) => setState(() => disabledAccess = v!)),
+                _buildModernCheckbox(l10n.access24, access24, (v) => setState(() => access24 = v!)),
+                _buildModernCheckbox(l10n.cctv, cctv, (v) => setState(() => cctv = v!)),
+                _buildModernCheckbox(l10n.evCharging, evCharging, (v) => setState(() => evCharging = v!)),
+                _buildModernCheckbox(l10n.disabledAccess, disabledAccess, (v) => setState(() => disabledAccess = v!)),
                 const SizedBox(height: 25),
 
 

@@ -19,6 +19,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
   LatLng? currentLocation;
   GoogleMapController? _controller;
   bool loading = true;
+  late final l10n = AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        _showError('Location services are disabled.');
+        _showError(l10n.locationServicesDisabled);
         setState(() => loading = false);
         return;
       }
@@ -43,7 +44,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
-        _showError('Location permission denied.');
+        _showError(l10n.locationPermissionDenied);
         setState(() => loading = false);
         return;
       }
@@ -85,6 +86,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (loading) {
       return const Scaffold(
           body: Center(child: CircularProgressIndicator()));
