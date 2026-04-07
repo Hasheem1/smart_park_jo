@@ -360,4 +360,79 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get past => 'السابقة';
+
+  @override
+  String get features => 'المميزات';
+
+  @override
+  String get about => 'عن الموقف';
+
+  @override
+  String get access24 => 'دخول 24/7';
+
+  @override
+  String get cctv => 'كاميرات مراقبة';
+
+  @override
+  String get evCharging => 'شحن سيارات كهربائية';
+
+  @override
+  String get disabledAccess => 'مدخل ذوي الاحتياجات';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get rating => 'التقييم';
+
+  @override
+  String get distance => 'المسافة';
+
+  @override
+  String get pricePerHourLabel => 'سعر الساعة';
+
+  @override
+  String get totalLabel => 'المجموع الكلي';
+
+  @override
+  String reserveSpotConfirmation(Object id) {
+    return 'أنت على وشك حجز\nالموقف رقم $id';
+  }
+
+  @override
+  String spotOccupied(Object id) {
+    return 'الموقف $id محجوز حالياً';
+  }
+
+  @override
+  String spotSelected(Object id) {
+    return 'تم اختيار الموقف $id';
+  }
+
+  @override
+  String get reservationCompleted => 'تم اكتمال الحجز';
+
+  @override
+  String get showQrInstruction => 'إعرض رمز الـ QR عند مدخل الموقف';
+
+  @override
+  String pricePerHourValue(Object price) {
+    return 'سعر الساعة: $price دينار';
+  }
+
+  @override
+  String yourDuration(Object duration) {
+    return 'مدة الاصطفاف: $duration';
+  }
+
+  @override
+  String yourTotalPrice(Object total) {
+    return 'المجموع الكلي: $total دينار';
+  }
+
+  @override
+  String get rateReservation => 'تقييم الحجز';
+
+  @override
+  String get showQrCode => 'إظهار رمز QR';
 }

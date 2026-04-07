@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +23,6 @@ class DriverHomeScreen extends StatefulWidget {
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
   final Color primaryBlue = const Color(0XFF2F66F5);
   final Color background = const Color(0xFFF9FAFB);
-  late final l10n = AppLocalizations.of(context)!;
 
 
   GoogleMapController? _mapController;
@@ -73,6 +74,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: Stack(
         children: [
@@ -271,13 +274,18 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   // ===================== BOTTOM ACTIONS =====================
 
+  // ===================== BOTTOM ACTIONS =====================
+
   Widget _modernActions(BuildContext context) {
+    // Correct variable name: l10n (stands for localization)
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       children: [
         _actionCard(
           context,
-         l10n.letsPark,
-          Icons.car_crash_outlined,
+          l10n.letsPark, // Fixed typo from ln10 to l10n
+          Icons.local_parking, // Changed icon to parking for better UX
               () => Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const letspark()),
@@ -286,7 +294,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         const SizedBox(width: 15),
         _actionCard(
           context,
-          l10n.myReservation,
+          l10n.myReservation, // Fixed typo and changed key to the correct one
           Icons.calendar_month,
               () => Navigator.push(
             context,

@@ -513,8 +513,8 @@ else {
 
                 label: Text(
                   r["status"] == "completed"
-                      ? "Rate Reservation"
-                      : "Show QR Code",
+                      ? l10n.rateReservation
+                      : l10n.showQrCode,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
@@ -654,7 +654,7 @@ else {
                 ).createShader(bounds),
                 child:                const Icon(
                    Icons.arrow_back,
-                   color: Colors.black,
+                   color: Colors.red,
                    size: 28,
                  ),
               )

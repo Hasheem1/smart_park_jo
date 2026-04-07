@@ -3,7 +3,6 @@
   "smartParkJordan": "سمارت بارك الأردن",
     "parkingName": "اسم الكراج",
 
-
   "findReserveParkSmart": "ابحث. احجز. أوقف بذكاء.",
   "thankYouForRating": "شكراً لتقييمك!",
   "pickParkingLocation": "اختر موقع الموقف",
@@ -116,5 +115,27 @@
   "letsPark": "هيا نصطف!",
   "myReservation": "حجوزاتي",
   "upcoming": "القادمة",
-  "past": "السابقة"
+  "past": "السابقة",
+  "features": "المميزات",
+  "about": "عن الموقف",
+  "access24": "دخول 24/7",
+  "cctv": "كاميرات مراقبة",
+  "evCharging": "شحن سيارات كهربائية",
+  "disabledAccess": "مدخل ذوي الاحتياجات",
+  "price": "السعر",
+  "rating": "التقييم",
+  "distance": "المسافة",
+  "pricePerHourLabel": "سعر الساعة",
+  "totalLabel": "المجموع الكلي",
+  "reserveSpotConfirmation": "أنت على وشك حجز\nالموقف رقم {id}",
+  "spotOccupied": "الموقف {id} محجوز حالياً",
+  "spotSelected": "تم اختيار الموقف {id}",
+  "reservationCompleted": "تم اكتمال الحجز",
+  "showQrInstruction": "إعرض رمز الـ QR عند مدخل الموقف",
+  "pricePerHourValue": "سعر الساعة: {price} دينار",
+  "yourDuration": "مدة الاصطفاف: {duration}",
+  "yourTotalPrice": "المجموع الكلي: {total} دينار",
+  "rateReservation": "تقييم الحجز",
+  "showQrCode": "إظهار رمز QR"
+
 }

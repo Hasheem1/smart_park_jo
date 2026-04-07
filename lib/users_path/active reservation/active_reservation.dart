@@ -105,6 +105,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // Define at the start
     if (loading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -224,6 +225,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     );
   }
   Widget _buildQRCard(String status) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -246,8 +248,8 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
           const SizedBox(height: 12),
           Text(
             status == "completed"
-                ? "Reservation Completed"
-                : "Show this QR at the parking entrance",
+                ? l10n.reservationCompleted
+                : l10n.showQrInstruction,
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
@@ -264,6 +266,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     required String distance,
     required double totalPrice,
   }) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(18),
       width: double.infinity,
@@ -303,7 +306,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  "Price/hour: $totalPrice JOD",
+                  l10n.pricePerHourValue(totalPrice.toStringAsFixed(2)),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.green.shade700,
@@ -318,7 +321,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
     );
   }
   Widget _buildBillCard(String durationTime, double totalPrice) {
-
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -338,7 +341,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Your duration: $durationTime",
+                l10n.yourDuration(durationTime),
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
@@ -348,7 +351,7 @@ class _ActiveReservationScreenState extends State<ActiveReservationScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                "Your total Price: $totalPrice",
+                l10n.yourTotalPrice(totalPrice.toStringAsFixed(2)),
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,

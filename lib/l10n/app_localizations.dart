@@ -787,6 +787,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Past'**
   String get past;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @access24.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7 Access'**
+  String get access24;
+
+  /// No description provided for @cctv.
+  ///
+  /// In en, this message translates to:
+  /// **'CCTV Security'**
+  String get cctv;
+
+  /// No description provided for @evCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'EV Charging'**
+  String get evCharging;
+
+  /// No description provided for @disabledAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled Access'**
+  String get disabledAccess;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// No description provided for @distance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distance;
+
+  /// No description provided for @pricePerHourLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per hour'**
+  String get pricePerHourLabel;
+
+  /// No description provided for @totalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get totalLabel;
+
+  /// No description provided for @reserveSpotConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re about to reserve\nspot {id}'**
+  String reserveSpotConfirmation(Object id);
+
+  /// No description provided for @spotOccupied.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot {id} is now occupied'**
+  String spotOccupied(Object id);
+
+  /// No description provided for @spotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot {id} selected'**
+  String spotSelected(Object id);
+
+  /// No description provided for @reservationCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation Completed'**
+  String get reservationCompleted;
+
+  /// No description provided for @showQrInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this QR at the parking entrance'**
+  String get showQrInstruction;
+
+  /// No description provided for @pricePerHourValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Price/hour: {price} JOD'**
+  String pricePerHourValue(Object price);
+
+  /// No description provided for @yourDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Your duration: {duration}'**
+  String yourDuration(Object duration);
+
+  /// No description provided for @yourTotalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your total Price: {total}'**
+  String yourTotalPrice(Object total);
+
+  /// No description provided for @rateReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Reservation'**
+  String get rateReservation;
+
+  /// No description provided for @showQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Show QR Code'**
+  String get showQrCode;
 }
 
 class _AppLocalizationsDelegate

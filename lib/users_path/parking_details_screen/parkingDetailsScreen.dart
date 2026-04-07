@@ -51,6 +51,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.backgroundGray,
       body: Stack(
@@ -198,48 +199,38 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InfoBox(title: "💰 Price/hour", value: widget.price),
+                          InfoBox(title: "💰 ${l10n.price}", value: widget.price),
                           InfoBox(
-                            title: "⭐ Rating",
-                            parkingName: widget.title, // Pass the parking name here
+                            title: "⭐ ${l10n.rating}",
+                            parkingName: widget.title,
                           ),
-                          InfoBox(title: "📍 Distance", value: widget.distance),
+                          InfoBox(title: "📍 ${l10n.distance}", value: widget.distance),
                         ],
                       ),
                       const SizedBox(height: 24),
 
                       // 🔥 Dynamic Features
-                      SectionBox(title: "Features", children: [
+                      SectionBox(title: l10n.features, children: [
                         if (widget.access24)
-                          const FeatureItem(
-                              icon: Icons.lock_clock, text: "24/7 Access"),
+                          FeatureItem(icon: Icons.lock_clock, text: l10n.access24),
 
                         if (widget.cctv)
-                          const FeatureItem(
-                              icon: Icons.videocam_outlined,
-                              text: "CCTV Security"),
+                          FeatureItem(icon: Icons.videocam_outlined, text: l10n.cctv),
 
                         if (widget.evCharging)
-                          const FeatureItem(
-                              icon: Icons.ev_station_outlined,
-                              text: "EV Charging"),
+                          FeatureItem(icon: Icons.ev_station_outlined, text: l10n.evCharging),
 
                         if (widget.disabledAccess)
-                          const FeatureItem(
-                              icon: Icons.accessible,
-                              text: "Disabled Access"),
+                          FeatureItem(icon: Icons.accessible, text: l10n.disabledAccess),
                       ]),
 
                       const SizedBox(height: 16),
 
-                      // About Section
-                      SectionBox(title: "About ", children: [
+// About Section
+                      SectionBox(title: l10n.about, children: [
                         Text(
                           widget.description,
-                          style: const TextStyle(
-                              color: Colors.black87,
-                              height: 1.5,
-                              fontSize: 15),
+                          style: const TextStyle(color: Colors.black87, height: 1.5, fontSize: 15),
                         ),
                       ]),
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +45,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
 
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     double pricePerHour = double.parse(widget.parkingPrice);
     double totalPrice = pricePerHour * durationHours;
     final firestore = FirebaseFirestore.instance;
@@ -140,13 +143,17 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 10),
-                summaryRow(
-                  "Price per hour",
-                  "${double.tryParse(widget.parkingPrice)?.toStringAsFixed(2) ?? '0.00'} JD",
-                ),
+                  summaryRow(
+                    l10n.pricePerHour,
+                    "${double.tryParse(widget.parkingPrice)?.toStringAsFixed(2) ?? '0.00'} JD",
+                  ),
                   const Divider(),
-                  summaryRow("Total","${totalPrice.toStringAsFixed(2)} JD",
-                      isBold: true, color: Color(0XFF2F66F5),),
+      summaryRow(
+        l10n.totalLabel,
+        "${totalPrice.toStringAsFixed(2)} JD",
+        isBold: true,
+        color: const Color(0XFF2F66F5),
+      ),
                 ],
               ),
             ),
@@ -500,6 +507,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
     );
   }
   void _selectSpot(BuildContext context, String spotId) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.35),
@@ -545,7 +553,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                 // Subtitle
                 Text(
-                  "You’re about to reserve\nspot $spotId",
+                  l10n.reserveSpotConfirmation(spotId), // Pass your variable here
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -613,12 +621,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 // Text
                                 Expanded(
                                   child: Text(
-                                    "Spot $spotId selected",
+                                    l10n.spotSelected(spotId),
                                     style: const TextStyle(
-
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -658,6 +665,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   }
 
   Future<void> occupySpot(String spotId) async {
+    final l10n = AppLocalizations.of(context)!;
     final firestore = FirebaseFirestore.instance;
 
     try {
@@ -688,6 +696,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
       // Optional: show confirmation
       ScaffoldMessenger.of(context).showSnackBar(
+
         SnackBar(
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
@@ -728,7 +737,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 // Text
                 Expanded(
                   child: Text(
-                    "Spot $spotId is now occupied",
+                    l10n.spotOccupied(spotId), // Pass the variable here
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 15,

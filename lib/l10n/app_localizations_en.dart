@@ -364,4 +364,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get past => 'Past';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get access24 => '24/7 Access';
+
+  @override
+  String get cctv => 'CCTV Security';
+
+  @override
+  String get evCharging => 'EV Charging';
+
+  @override
+  String get disabledAccess => 'Disabled Access';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String get distance => 'Distance';
+
+  @override
+  String get pricePerHourLabel => 'Price per hour';
+
+  @override
+  String get totalLabel => 'Total';
+
+  @override
+  String reserveSpotConfirmation(Object id) {
+    return 'You’re about to reserve\nspot $id';
+  }
+
+  @override
+  String spotOccupied(Object id) {
+    return 'Spot $id is now occupied';
+  }
+
+  @override
+  String spotSelected(Object id) {
+    return 'Spot $id selected';
+  }
+
+  @override
+  String get reservationCompleted => 'Reservation Completed';
+
+  @override
+  String get showQrInstruction => 'Show this QR at the parking entrance';
+
+  @override
+  String pricePerHourValue(Object price) {
+    return 'Price/hour: $price JOD';
+  }
+
+  @override
+  String yourDuration(Object duration) {
+    return 'Your duration: $duration';
+  }
+
+  @override
+  String yourTotalPrice(Object total) {
+    return 'Your total Price: $total';
+  }
+
+  @override
+  String get rateReservation => 'Rate Reservation';
+
+  @override
+  String get showQrCode => 'Show QR Code';
 }
