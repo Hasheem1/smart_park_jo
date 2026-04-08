@@ -189,6 +189,46 @@
   "yourDuration": "مدة الاصطفاف: {duration}",
   "yourTotalPrice": "المجموع الكلي: {total} دينار",
   "rateReservation": "تقييم الحجز",
-  "showQrCode": "إظهار رمز QR"
+  "showQrCode": "إظهار رمز QR",
+  "addPaymentMethod": "إضافة طريقة دفع",
+  "selectPaymentType": "اختر نوع الدفع",
+  "cardHolderName": "اسم صاحب البطاقة",
+  "cardNumber": "رقم البطاقة",
+  "expiryDate": "تاريخ الانتهاء (MM/YY)",
+  "cvv": "رمز التحقق (CVV)",
+  "pleaseEnter": "يرجى إدخال",
+  "removeCard": "إزالة البطاقة",
+  "cardRemovedSuccessfully": "تمت إزالة البطاقة بنجاح",
+  "noUserLoggedInError": "لم يتم تسجيل الدخول",
+  "alreadyHaveCard": "لديك بطاقة مضافة بالفعل",
+  "balanceLabel": "الرصيد",
+  "paymentAddedSuccess": "تمت إضافة {type} بنجاح",
+  "@paymentAddedSuccess": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "userInformation": "معلومات المستخدم",
+  "phoneNumber": "رقم الهاتف",
+  "password": "كلمة المرور",
+  "updateField": "تحديث {field}",
+  "enterNewField": "أدخل {field} الجديد",
+  "update": "تحديث",
+  "cancel": "إلغاء",
+  "updatedSuccessfully": "تم التحديث بنجاح",
+  "failedToUpdateTryAgain": "فشل التحديث، حاول مرة أخرى",
+  "noUserSet": "لم يتم العثور على بيانات مستخدم",
+  "phoneValidationError": "يجب أن يتكون رقم الهاتف من 10 أرقام",
+  "passwordValidationError": "يجب أن تتكون كلمة المرور من 6 خانات على الأقل",
+  "pending": "قيد الانتظار",
+  "active": "نشط",
+  "completed": "مكتمل",
+  "createdAt": "تم الإنشاء في",
+  "startedAt": "بدأ في",
+  "endedAt": "انتهى في",
+  "spot": "الموقف"
+
 
 }

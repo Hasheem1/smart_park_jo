@@ -110,19 +110,20 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
 
   Widget buildReservationCard(Map<String, dynamic> r) {
+    final l10n = AppLocalizations.of(context)!;
     // Decide which timestamp to show based on status
     Timestamp? selectedTime;
     String timeLabel = "";
 
     if (r["status"] == "pending") {
       selectedTime = r["createdAt"];
-      timeLabel = "Created at:";
+      timeLabel = l10n.createdAt;
     } else if (r["status"] == "active") {
       selectedTime = r["startTime"];
-      timeLabel = "Started at:";
+      timeLabel = l10n.startedAt;
     } else if (r["status"] == "completed") {
       selectedTime = r["endTime"];
-      timeLabel = "Ended at:";
+      timeLabel = l10n.endedAt;
     }
 
     String formattedTime = "";
@@ -203,7 +204,13 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  r["status"] ?? "Confirmed",
+                  r["status"] == "pending"
+                      ? l10n.pending
+                      : r["status"] == "active"
+                      ? l10n.active
+                      : r["status"] == "completed"
+                      ? l10n.completed
+                      : "",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: (() {
@@ -252,7 +259,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
 
           // Spot number
           Text(
-            "Spot: ${r["spotId"] ?? "-"}",
+            "${l10n.spot}: ${r["spotId"] ?? "-"}",
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
@@ -636,51 +643,29 @@ else {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        automaticallyImplyLeading: false, // remove default back button
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child:ShaderMask(
-                shaderCallback: (bounds) => const LinearGradient(
-                  colors: [
-                    Color(0XFF2F66F5),
-                    Color(0XFF2F66F5),
-                  ],
-                  begin: AlignmentDirectional.topStart,
-                  end: AlignmentDirectional.bottomEnd,
-                ).createShader(bounds),
-                child:                const Icon(
-                   Icons.arrow_back,
-                   color: Colors.red,
-                   size: 28,
-                 ),
-              )
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
 
-            ),
-            const SizedBox(width: 10),
-            ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [
-Colors.black,
-                Colors.black],
-                begin: AlignmentDirectional.topStart,
-                end: AlignmentDirectional.bottomEnd,
-              ).createShader(bounds),
-              child: Text(AppLocalizations.of(context)!.myBooking,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+            size: 22,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+
+        title: Text(
+          AppLocalizations.of(context)!.myBooking,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
-
 
 
       body: Column(

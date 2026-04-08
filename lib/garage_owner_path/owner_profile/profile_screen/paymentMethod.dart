@@ -24,8 +24,9 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar:true,
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
@@ -125,12 +126,14 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
 
                           _buildInputField(
                             controller: nameController,
-                            label: "Cardholder Name",
+                            label: l10n.cardHolderName,
+                            fieldName: l10n.cardHolderName,
                             icon: Icons.person_outline,
                           ),
                           _buildInputField(
                             controller: cardNumberController,
-                            label: "Card Number",
+                            label: l10n.cardNumber,
+                            fieldName: l10n.cardNumber,
                             icon: Icons.credit_card_outlined,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
@@ -144,19 +147,19 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                               Expanded(
                                 child: _buildInputField(
                                   controller: expiryController,
-                                  label: "Expiry (MM/YY)",
+                                  label: l10n.expiryDate,
+                                  fieldName: l10n.expiryDate,
                                   icon: Icons.date_range_outlined,
                                   keyboardType: TextInputType.datetime,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(5)
-                                  ],
+                                  inputFormatters: [LengthLimitingTextInputFormatter(5)],
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: _buildInputField(
                                   controller: cvvController,
-                                  label: "CVV",
+                                  label: l10n.cvv,
+                                  fieldName: l10n.cvv,
                                   icon: Icons.lock_outline,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
@@ -267,14 +270,13 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                                 children: [
+                                                  // This span now handles the entire "Visa added successfully" sentence
                                                   TextSpan(
-                                                    text: "$selectedPayment ",
+                                                    text: "${l10n.paymentAddedSuccess(selectedPayment)}\n",
                                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  const TextSpan(text: "added successfully.\n"),
                                                   TextSpan(
-                                                    text:
-                                                    "Balance: ${(currentMoney + moneyToAdd).toStringAsFixed(2)} JD",
+                                                    text: "${l10n.balanceLabel}: ${(currentMoney + moneyToAdd).toStringAsFixed(2)} JD",
                                                     style: const TextStyle(
                                                       color: Colors.green,
                                                       fontWeight: FontWeight.w600,
@@ -393,6 +395,7 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
     required TextEditingController controller,
     required String label,
     required IconData icon,
+    required String fieldName,
     TextInputType keyboardType = TextInputType.text,
     List<TextInputFormatter>? inputFormatters,
   }) {
@@ -402,8 +405,9 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
         controller: controller,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
+        // Localized validation message
         validator: (value) =>
-        (value == null || value.isEmpty) ? "Please enter $label" : null,
+        (value == null || value.isEmpty) ? "${AppLocalizations.of(context)!.pleaseEnter} $fieldName" : null,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: const Color(0XFF2F66F5)),
           labelText: label,
@@ -412,14 +416,13 @@ class _AddPaymentMethodScreenState extends State<AddPaymentMethodScreen> {
           fillColor: Colors.white.withOpacity(0.9),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide:
-            const BorderSide(color: Color(0XFF2F66F5), width: 1.2),
+            borderSide: const BorderSide(color: Color(0XFF2F66F5), width: 1.2),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide:
-            const BorderSide(color: Color(0XFF2F66F5), width: 1.5),
+            borderSide: const BorderSide(color: Color(0XFF2F66F5), width: 1.5),
           ),
+          // ... border styles stay the same
         ),
       ),
     );

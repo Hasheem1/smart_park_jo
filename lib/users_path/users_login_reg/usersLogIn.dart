@@ -81,6 +81,7 @@ class _UsersLogInState extends State<UsersLogIn> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
@@ -312,11 +313,11 @@ class _UsersLogInState extends State<UsersLogIn> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              child: Text(
-                                isLogin ? "Login" : "Register",
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
+                                child: Text(
+                                  isLogin ? AppLocalizations.of(context)!.login : AppLocalizations.of(context)!.register,
+                                  style: const TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                )
                             ),
                           ),
                         ],
