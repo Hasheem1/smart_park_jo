@@ -102,7 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get somethingWentWrong => 'Something went wrong';
 
   @override
-  String get failedToUpdateTryAgain => 'Failed to update, try again.';
+  String get failedToUpdateTryAgain => 'Failed to update. Try again.';
 
   @override
   String get chooseAvailableSpot => 'Choose Available Spot';
@@ -124,7 +124,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noPastReservations => 'No past reservations.';
 
   @override
-  String get noUserLoggedInError => 'No user logged in!';
+  String get noUserLoggedInError => 'No user logged in';
 
   @override
   String get confirmLogOut => 'Are you sure you want to log out?';
@@ -248,7 +248,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get updatedSuccessfully => 'Updated successfully!';
+  String get updatedSuccessfully => 'Updated successfully';
 
   @override
   String get parkingUpdatedSuccessfully => 'Parking updated successfully!';
@@ -306,7 +306,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noParkingLotsFound => 'No parking lots found';
 
   @override
-  String get noUserSet => 'No user logged in';
+  String get noUserSet => 'No user details found';
 
   @override
   String get searchLocationName => 'Search by location or name...';
@@ -342,12 +342,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logOut => 'Log Out';
 
   @override
-  String get cardRemovedSuccessfully =>
-      'Card removed successfully. You can add a new one now.';
+  String get cardRemovedSuccessfully => 'Card removed successfully';
 
   @override
-  String get alreadyHaveCard =>
-      'You already have a card! Remove it first to add a new one.';
+  String get alreadyHaveCard => 'You already have a card linked';
 
   @override
   String get updatePrivacySettings =>
@@ -532,4 +530,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nameInvalid => 'Name must contain letters only';
+
+  @override
+  String get cardHolderName => 'Cardholder Name';
+
+  @override
+  String get cardNumber => 'Card Number';
+
+  @override
+  String get expiryDate => 'Expiry (MM/YY)';
+
+  @override
+  String get cvv => 'CVV';
+
+  @override
+  String get pleaseEnter => 'Please enter';
+
+  @override
+  String get balanceLabel => 'Balance';
+
+  @override
+  String paymentAddedSuccess(String type) {
+    return '$type added successfully';
+  }
+
+  @override
+  String updateField(Object field) {
+    return 'Update $field';
+  }
+
+  @override
+  String enterNewField(Object field) {
+    return 'Enter new $field';
+  }
+
+  @override
+  String get phoneValidationError => 'Phone number must be exactly 10 digits';
+
+  @override
+  String get passwordValidationError =>
+      'Password must be at least 6 characters';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get createdAt => 'Created at';
+
+  @override
+  String get startedAt => 'Started at';
+
+  @override
+  String get endedAt => 'Ended at';
+
+  @override
+  String get spot => 'Spot';
 }

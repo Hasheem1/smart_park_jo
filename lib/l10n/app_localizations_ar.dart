@@ -102,7 +102,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get somethingWentWrong => 'حدث خطأ ما';
 
   @override
-  String get failedToUpdateTryAgain => 'فشل التحديث، يرجى المحاولة مرة أخرى.';
+  String get failedToUpdateTryAgain => 'فشل التحديث، حاول مرة أخرى';
 
   @override
   String get chooseAvailableSpot => 'اختر مكاناً متاحاً';
@@ -123,7 +123,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noPastReservations => 'لا توجد حجوزات سابقة.';
 
   @override
-  String get noUserLoggedInError => 'لم يتم تسجيل الدخول!';
+  String get noUserLoggedInError => 'لم يتم تسجيل الدخول';
 
   @override
   String get confirmLogOut => 'هل أنت متأكد من تسجيل الخروج؟';
@@ -201,7 +201,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get register => 'تسجيل';
 
   @override
-  String get selectPaymentType => 'اختر طريقة الدفع';
+  String get selectPaymentType => 'اختر نوع الدفع';
 
   @override
   String get activeReservation => 'حجز نشط';
@@ -246,7 +246,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get updatedSuccessfully => 'تم التحديث بنجاح!';
+  String get updatedSuccessfully => 'تم التحديث بنجاح';
 
   @override
   String get parkingUpdatedSuccessfully => 'تم تحديث الموقف بنجاح!';
@@ -255,7 +255,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noAvailableSpots => 'لا تتوفر أماكن';
 
   @override
-  String get removeCard => 'حذف البطاقة';
+  String get removeCard => 'إزالة البطاقة';
 
   @override
   String get parkingDeletedSuccessfully => 'تم حذف الموقف بنجاح!';
@@ -303,7 +303,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noParkingLotsFound => 'لم يتم العثور على مواقف';
 
   @override
-  String get noUserSet => 'لم يتم تسجيل الدخول';
+  String get noUserSet => 'لم يتم العثور على بيانات مستخدم';
 
   @override
   String get searchLocationName => 'البحث حسب الموقع أو الاسم...';
@@ -339,12 +339,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logOut => 'تسجيل الخروج';
 
   @override
-  String get cardRemovedSuccessfully =>
-      'تم حذف البطاقة بنجاح. يمكنك إضافة بطاقة جديدة الآن.';
+  String get cardRemovedSuccessfully => 'تمت إزالة البطاقة بنجاح';
 
   @override
-  String get alreadyHaveCard =>
-      'لديك بطاقة بالفعل! قم بإزالتها أولاً لإضافة واحدة جديدة.';
+  String get alreadyHaveCard => 'لديك بطاقة مضافة بالفعل';
 
   @override
   String get updatePrivacySettings =>
@@ -528,4 +526,65 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nameInvalid => 'الاسم يجب أن يحتوي على حروف فقط';
+
+  @override
+  String get cardHolderName => 'اسم صاحب البطاقة';
+
+  @override
+  String get cardNumber => 'رقم البطاقة';
+
+  @override
+  String get expiryDate => 'تاريخ الانتهاء (MM/YY)';
+
+  @override
+  String get cvv => 'رمز التحقق (CVV)';
+
+  @override
+  String get pleaseEnter => 'يرجى إدخال';
+
+  @override
+  String get balanceLabel => 'الرصيد';
+
+  @override
+  String paymentAddedSuccess(String type) {
+    return 'تمت إضافة $type بنجاح';
+  }
+
+  @override
+  String updateField(Object field) {
+    return 'تحديث $field';
+  }
+
+  @override
+  String enterNewField(Object field) {
+    return 'أدخل $field الجديد';
+  }
+
+  @override
+  String get phoneValidationError => 'يجب أن يتكون رقم الهاتف من 10 أرقام';
+
+  @override
+  String get passwordValidationError =>
+      'يجب أن تتكون كلمة المرور من 6 خانات على الأقل';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String get createdAt => 'تم الإنشاء في';
+
+  @override
+  String get startedAt => 'بدأ في';
+
+  @override
+  String get endedAt => 'انتهى في';
+
+  @override
+  String get spot => 'الموقف';
 }

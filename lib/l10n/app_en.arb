@@ -174,6 +174,48 @@
     "phoneInvalid": "Phone number must be 10 digits",
     "passwordInvalid": "Password must be exactly 6 characters",
     "emailInvalid": "Enter a valid email address",
-    "nameInvalid": "Name must contain letters only"
+    "nameInvalid": "Name must contain letters only",
+  "addPaymentMethod": "Add Payment Method",
+  "selectPaymentType": "Select Payment Type",
+  "cardHolderName": "Cardholder Name",
+  "cardNumber": "Card Number",
+  "expiryDate": "Expiry (MM/YY)",
+  "cvv": "CVV",
+  "pleaseEnter": "Please enter",
+  "removeCard": "Remove Card",
+  "cardRemovedSuccessfully": "Card removed successfully",
+  "noUserLoggedInError": "No user logged in",
+  "alreadyHaveCard": "You already have a card linked",
+  "balanceLabel": "Balance",
+  "paymentAddedSuccess": "{type} added successfully",
+  "@paymentAddedSuccess": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "userInformation": "User Information",
+  "phoneNumber": "Phone Number",
+  "password": "Password",
+  "updateField": "Update {field}",
+  "enterNewField": "Enter new {field}",
+  "update": "Update",
+  "cancel": "Cancel",
+  "updatedSuccessfully": "Updated successfully",
+  "failedToUpdateTryAgain": "Failed to update. Try again.",
+  "noUserSet": "No user details found",
+  "phoneValidationError": "Phone number must be exactly 10 digits",
+  "passwordValidationError": "Password must be at least 6 characters",
+  "pending": "Pending",
+  "active": "Active",
+  "completed": "Completed",
+  "createdAt": "Created at",
+  "startedAt": "Started at",
+  "endedAt": "Ended at",
+  "spot": "Spot"
+
+
+
 
 }

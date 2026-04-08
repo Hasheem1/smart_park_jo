@@ -287,7 +287,7 @@ abstract class AppLocalizations {
   /// No description provided for @failedToUpdateTryAgain.
   ///
   /// In en, this message translates to:
-  /// **'Failed to update, try again.'**
+  /// **'Failed to update. Try again.'**
   String get failedToUpdateTryAgain;
 
   /// No description provided for @chooseAvailableSpot.
@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// No description provided for @noUserLoggedInError.
   ///
   /// In en, this message translates to:
-  /// **'No user logged in!'**
+  /// **'No user logged in'**
   String get noUserLoggedInError;
 
   /// No description provided for @confirmLogOut.
@@ -575,7 +575,7 @@ abstract class AppLocalizations {
   /// No description provided for @updatedSuccessfully.
   ///
   /// In en, this message translates to:
-  /// **'Updated successfully!'**
+  /// **'Updated successfully'**
   String get updatedSuccessfully;
 
   /// No description provided for @parkingUpdatedSuccessfully.
@@ -689,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @noUserSet.
   ///
   /// In en, this message translates to:
-  /// **'No user logged in'**
+  /// **'No user details found'**
   String get noUserSet;
 
   /// No description provided for @searchLocationName.
@@ -761,13 +761,13 @@ abstract class AppLocalizations {
   /// No description provided for @cardRemovedSuccessfully.
   ///
   /// In en, this message translates to:
-  /// **'Card removed successfully. You can add a new one now.'**
+  /// **'Card removed successfully'**
   String get cardRemovedSuccessfully;
 
   /// No description provided for @alreadyHaveCard.
   ///
   /// In en, this message translates to:
-  /// **'You already have a card! Remove it first to add a new one.'**
+  /// **'You already have a card linked'**
   String get alreadyHaveCard;
 
   /// No description provided for @updatePrivacySettings.
@@ -1099,6 +1099,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name must contain letters only'**
   String get nameInvalid;
+
+  /// No description provided for @cardHolderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardholder Name'**
+  String get cardHolderName;
+
+  /// No description provided for @cardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Number'**
+  String get cardNumber;
+
+  /// No description provided for @expiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry (MM/YY)'**
+  String get expiryDate;
+
+  /// No description provided for @cvv.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get cvv;
+
+  /// No description provided for @pleaseEnter.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter'**
+  String get pleaseEnter;
+
+  /// No description provided for @balanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balanceLabel;
+
+  /// No description provided for @paymentAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{type} added successfully'**
+  String paymentAddedSuccess(String type);
+
+  /// No description provided for @updateField.
+  ///
+  /// In en, this message translates to:
+  /// **'Update {field}'**
+  String updateField(Object field);
+
+  /// No description provided for @enterNewField.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new {field}'**
+  String enterNewField(Object field);
+
+  /// No description provided for @phoneValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be exactly 10 digits'**
+  String get phoneValidationError;
+
+  /// No description provided for @passwordValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordValidationError;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @createdAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get createdAt;
+
+  /// No description provided for @startedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Started at'**
+  String get startedAt;
+
+  /// No description provided for @endedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended at'**
+  String get endedAt;
+
+  /// No description provided for @spot.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot'**
+  String get spot;
 }
 
 class _AppLocalizationsDelegate
