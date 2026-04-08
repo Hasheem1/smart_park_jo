@@ -600,4 +600,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spot => 'Spot';
+
+  @override
+  String get bookingNotStarted => 'Booking has not started yet';
+
+  @override
+  String get notSelected => 'ghjg';
 }

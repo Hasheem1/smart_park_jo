@@ -214,9 +214,14 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                       items: spots.map<DropdownMenuItem<String>>((spot) {
                         final String id = spot['id'];
+                        final String statusKey = spot['status'];
                         final String status = spot['status'];
+                        final bool available = status == "Available"; // أو "Available" حسب تخزينك
+                        final String statusText =
+                        statusKey == 'Available'
+                            ? l10n.available
+                            : l10n.occupied;
 
-                        final bool available = status == "Available";
 
                         return DropdownMenuItem<String>(
                           value: id,
@@ -230,7 +235,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                "$id • $status",
+                                "$id • $statusText",
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w600,
@@ -686,7 +691,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       // Update the specific spot
       for (int i = 0; i < spots.length; i++) {
         if (spots[i]['id'] == spotId) {
-          spots[i]['status'] = l10n.occupied;
+          spots[i]['status'] = 'occupied';
           break;
         }
       }

@@ -228,7 +228,11 @@
   "createdAt": "تم الإنشاء في",
   "startedAt": "بدأ في",
   "endedAt": "انتهى في",
-  "spot": "الموقف"
+  "spot": "الموقف",
+  "bookingNotStarted": "الحجز لم يبدأ بعد",
+  "notSelected": "غير محدد"
+
+
 
 
 }

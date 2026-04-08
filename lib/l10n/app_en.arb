@@ -216,7 +216,11 @@
   "createdAt": "Created at",
   "startedAt": "Started at",
   "endedAt": "Ended at",
-  "spot": "Spot"
+  "spot": "Spot",
+  "bookingNotStarted": "Booking has not started yet",
+  "notSelected": "ghjg"
+
+
 
 
 

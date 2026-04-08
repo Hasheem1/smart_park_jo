@@ -596,4 +596,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get spot => 'الموقف';
+
+  @override
+  String get bookingNotStarted => 'الحجز لم يبدأ بعد';
+
+  @override
+  String get notSelected => 'غير محدد';
 }

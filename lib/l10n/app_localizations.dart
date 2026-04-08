@@ -1225,6 +1225,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spot'**
   String get spot;
+
+  /// No description provided for @bookingNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking has not started yet'**
+  String get bookingNotStarted;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'ghjg'**
+  String get notSelected;
 }
 
 class _AppLocalizationsDelegate
