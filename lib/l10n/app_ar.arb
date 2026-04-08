@@ -52,17 +52,9 @@
   "passwordInvalid": "كلمة المرور يجب أن تكون 6 أرقام",
   "emailInvalid": "أدخل بريد إلكتروني صحيح",
   "nameInvalid": "الاسم يجب أن يحتوي على حروف فقط",
-
-
-
-
-
-
-
-
-
-
-
+  "description":"الوصف",
+  "thisWeek":"هذه الاسوع",
+   "today":"اليوم",
   "smartParkJordan": "سمارت بارك الأردن",
   "findReserveParkSmart": "ابحث. احجز. أوقف بذكاء.",
   "thankYouForRating": "شكراً لتقييمك!",

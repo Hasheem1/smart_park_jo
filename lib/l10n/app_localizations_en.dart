@@ -532,4 +532,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nameInvalid => 'Name must contain letters only';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get today => 'Today';
 }

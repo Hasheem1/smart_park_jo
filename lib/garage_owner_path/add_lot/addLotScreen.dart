@@ -248,39 +248,39 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
               AppLocalizations.of(context)!.parkingName
               ,Icons.local_parking_rounded,
             ),
-            // _buildTextField(
-            //   _descController,
-            //   "Description",
-            //   Icons.text_fields_outlined,
-            // ),
-            // _buildLocationField(), // Modern location picker with map preview
-            // const SizedBox(height: 16),
-            // _buildTextField(
-            //   _capacityController,
-            //   "Capacity",
-            //   Icons.people_outline,
-            //   inputType: TextInputType.number,
-            // ),
-            // _buildTextField(
-            //   _priceController,
-            //   "Price per hour",
-            //   Icons.attach_money_outlined,
-            //   inputType: TextInputType.numberWithOptions(decimal: true),
-            // ),
+            _buildTextField(
+              _descController,
+              AppLocalizations.of(context)!.about,
+              Icons.text_fields_outlined,
+            ),
+            _buildLocationField(), // Modern location picker with map preview
+            const SizedBox(height: 16),
+            _buildTextField(
+              _capacityController,
+              AppLocalizations.of(context)!.capacity,
+              Icons.people_outline,
+              inputType: TextInputType.number,
+            ),
+            _buildTextField(
+              _priceController,
+              AppLocalizations.of(context)!.pricePerHour,
+              Icons.attach_money_outlined,
+              inputType: TextInputType.numberWithOptions(decimal: true),
+            ),
             const SizedBox(height: 20),
             _buildCheckbox(
-              "24/7 Access",
+              AppLocalizations.of(context)!.access24,
               access24,
               (v) => setState(() => access24 = v!),
             ),
-            _buildCheckbox("CCTV", cctv, (v) => setState(() => cctv = v!)),
+            _buildCheckbox(AppLocalizations.of(context)!.cctv, cctv, (v) => setState(() => cctv = v!)),
             _buildCheckbox(
-              "EV Charging",
+              AppLocalizations.of(context)!.evCharging,
               evCharging,
               (v) => setState(() => evCharging = v!),
             ),
             _buildCheckbox(
-              "Disabled Access",
+              AppLocalizations.of(context)!.disabledAccess,
               disabledAccess,
                   (v) => setState(() => disabledAccess = v!),
             ),
@@ -416,7 +416,7 @@ class _AddParkingLotScreenState extends State<AddParkingLotScreen> {
                             ),
                             markers: {
                               Marker(
-                                markerId: const MarkerId('picked'),
+                                markerId:  MarkerId('picked'),
                                 position: _pickedLocation!,
                               ),
                             },

@@ -528,4 +528,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nameInvalid => 'الاسم يجب أن يحتوي على حروف فقط';
+
+  @override
+  String get description => 'الوصف';
+
+  @override
+  String get thisWeek => 'هذه الاسوع';
+
+  @override
+  String get today => 'اليوم';
 }

@@ -134,9 +134,9 @@ class _EarningsScreenState extends State<EarningsScreen> {
 
             Row(
               children: [
-                Expanded(child: _statCard("Today", todayTotal)),
+                Expanded(child: _statCard(AppLocalizations.of(context)!.today, todayTotal)),
                 const SizedBox(width: 12),
-                Expanded(child: _statCard("This Week", weekTotal)),
+                Expanded(child: _statCard(AppLocalizations.of(context)!.thisWeek, weekTotal)),
               ],
             ),
           ],
