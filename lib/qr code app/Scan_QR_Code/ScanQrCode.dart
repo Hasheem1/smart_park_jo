@@ -164,7 +164,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.title),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF2F66F5),
         foregroundColor: Colors.white,
 
         actions: [

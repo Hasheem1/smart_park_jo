@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.scannerLogin),
-        backgroundColor: Colors.blue.shade700,
+        backgroundColor: Color(0xFF2F66F5),
         foregroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Icon(
                       Icons.qr_code_scanner,
                       size: 70,
-                      color: Colors.blue,
+                      color: Color(0xFF2F66F5),
                     ),
 
                     const SizedBox(height: 10),
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Color(0xFF2F66F5),
                       ),
                     ),
 
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: isLoading ? null : signIn,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade700,
+                          backgroundColor: Color(0xFF2F66F5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
