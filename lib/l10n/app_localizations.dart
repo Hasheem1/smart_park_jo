@@ -1226,13 +1226,6 @@ abstract class AppLocalizations {
   /// **'Spot'**
   String get spot;
 
-
-  /// No description provided for @notSelected.
-  ///
-  /// In en, this message translates to:
-  /// **'hhhhhhhhh'**
-  String get notSelected;
-
   /// No description provided for @bookingNotStarted.
   ///
   /// In en, this message translates to:
@@ -1243,7 +1236,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'ghjg'**
-
+  String get notSelected;
 
   /// No description provided for @title.
   ///
@@ -1346,7 +1339,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Owner Options'**
   String get ownerOptions;
-
 }
 
 class _AppLocalizationsDelegate

@@ -691,7 +691,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       // Update the specific spot
       for (int i = 0; i < spots.length; i++) {
         if (spots[i]['id'] == spotId) {
-          spots[i]['status'] = 'occupied';
+          spots[i]['status'] = 'Occupied';
           break;
         }
       }

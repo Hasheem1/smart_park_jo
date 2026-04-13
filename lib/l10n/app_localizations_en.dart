@@ -602,12 +602,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get spot => 'Spot';
 
   @override
-
-  String get notSelected => 'hhhhhhhhh';
-
   String get bookingNotStarted => 'Booking has not started yet';
 
   @override
+  String get notSelected => 'ghjg';
 
   @override
   String get title => 'QR Scanner';
@@ -659,5 +657,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownerOptions => 'Owner Options';
-
 }

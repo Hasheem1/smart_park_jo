@@ -598,12 +598,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get spot => 'الموقف';
 
   @override
-
-  String get notSelected => 'غير محدد';
-
   String get bookingNotStarted => 'الحجز لم يبدأ بعد';
 
   @override
+  String get notSelected => 'غير محدد';
 
   @override
   String get title => 'ماسح الرمز المربع';
