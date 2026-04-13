@@ -587,4 +587,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get spot => 'الموقف';
+
+  @override
+  String get notSelected => 'غير محدد';
 }

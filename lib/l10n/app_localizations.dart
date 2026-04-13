@@ -1207,6 +1207,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spot'**
   String get spot;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'hhhhhhhhh'**
+  String get notSelected;
 }
 
 class _AppLocalizationsDelegate

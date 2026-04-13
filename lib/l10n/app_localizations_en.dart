@@ -591,4 +591,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spot => 'Spot';
+
+  @override
+  String get notSelected => 'hhhhhhhhh';
 }
