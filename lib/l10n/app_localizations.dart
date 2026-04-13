@@ -1100,6 +1100,24 @@ abstract class AppLocalizations {
   /// **'Name must contain letters only'**
   String get nameInvalid;
 
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
   /// No description provided for @cardHolderName.
   ///
   /// In en, this message translates to:
@@ -1208,11 +1226,127 @@ abstract class AppLocalizations {
   /// **'Spot'**
   String get spot;
 
+
   /// No description provided for @notSelected.
   ///
   /// In en, this message translates to:
   /// **'hhhhhhhhh'**
   String get notSelected;
+
+  /// No description provided for @bookingNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking has not started yet'**
+  String get bookingNotStarted;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'ghjg'**
+
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'QR Scanner'**
+  String get title;
+
+  /// No description provided for @sign_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get sign_in;
+
+  /// No description provided for @login_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected successfully ✅'**
+  String get login_success;
+
+  /// No description provided for @login_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed'**
+  String get login_failed;
+
+  /// No description provided for @checked_in.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Vehicle checked in!'**
+  String get checked_in;
+
+  /// No description provided for @checked_out.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Vehicle checked out! Duration: '**
+  String get checked_out;
+
+  /// No description provided for @already_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'ℹ️ Booking already completed.'**
+  String get already_completed;
+
+  /// No description provided for @not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Booking not found.'**
+  String get not_found;
+
+  /// No description provided for @not_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'⛔ This booking does not belong to your parking!'**
+  String get not_owner;
+
+  /// No description provided for @not_logged_in.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Owner not logged in'**
+  String get not_logged_in;
+
+  /// No description provided for @unknown_status.
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Unknown booking status'**
+  String get unknown_status;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Error: '**
+  String get error;
+
+  /// No description provided for @switch_to_arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get switch_to_arabic;
+
+  /// No description provided for @switch_to_english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get switch_to_english;
+
+  /// No description provided for @scannerLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanner Login'**
+  String get scannerLogin;
+
+  /// No description provided for @parkingOwnerScanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Owner Scanner'**
+  String get parkingOwnerScanner;
+
+  /// No description provided for @ownerOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Options'**
+  String get ownerOptions;
+
 }
 
 class _AppLocalizationsDelegate

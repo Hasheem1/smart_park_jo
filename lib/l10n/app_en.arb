@@ -175,6 +175,9 @@
     "passwordInvalid": "Password must be exactly 6 characters",
     "emailInvalid": "Enter a valid email address",
     "nameInvalid": "Name must contain letters only",
+    "description":"Description",
+    "thisWeek": "This Week",
+    "today" : "Today",
   "addPaymentMethod": "Add Payment Method",
   "selectPaymentType": "Select Payment Type",
   "cardHolderName": "Cardholder Name",
@@ -213,7 +216,32 @@
   "createdAt": "Created at",
   "startedAt": "Started at",
   "endedAt": "Ended at",
-  "spot": "Spot"
+  "spot": "Spot",
+  "bookingNotStarted": "Booking has not started yet",
+  "notSelected": "ghjg",
+      "title": "Parking Owner Scanner",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign In",
+      "login_success": "Connected successfully ✅",
+      "login_failed": "Login failed",
+      "title": "QR Scanner",
+      "checked_in": "✅ Vehicle checked in!",
+      "checked_out": "✅ Vehicle checked out! Duration: ",
+      "already_completed": "ℹ️ Booking already completed.",
+      "not_found": "❌ Booking not found.",
+      "not_owner": "⛔ This booking does not belong to your parking!",
+      "not_logged_in": "❌ Owner not logged in",
+      "unknown_status": "⚠️ Unknown booking status",
+      "error": "❌ Error: ",
+      "switch_to_arabic": "العربية",
+      "switch_to_english": "English",
+      "scannerLogin":"Scanner Login",
+      "parkingOwnerScanner":"Parking Owner Scanner",
+      "ownerOptions":"Owner Options"
+
+
+
 
 
 

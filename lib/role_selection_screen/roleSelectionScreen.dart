@@ -1,8 +1,9 @@
-import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_park_jo/l10n/app_localizations.dart';
 
 import '../garage_owner_path/on_boarding/onBoardingOwnerS.dart';
 import '../main.dart';
+import '../qr code app/login/login_screen.dart';
 import '../users_path/on_boarding_users/onBoardingUsers.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
@@ -12,8 +13,12 @@ class RoleSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
         decoration: const BoxDecoration(
+          // gradient: LinearGradient(
+          //   colors: [Color(0xFF2F66F5), Color(0xFF1B3FAE)],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
           gradient: LinearGradient(
             colors: [Color(0xFF2F66F5), Color(0xFF2F66F5)],
             begin: Alignment.topCenter,
@@ -23,82 +28,85 @@ class RoleSelectionScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              /// HEADER
               Align(
                 alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16, top: 10),
-                  child: IconButton(
-                    icon: const Icon(Icons.language, color: Colors.white),
-                    onPressed: () => _showLanguageDialog(context),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-
-                    ClipRRect(borderRadius: BorderRadius.circular(10)
-                        ,child: Image(image: NetworkImage("https://i.pinimg.com/1200x/24/17/85/2417854e56cdab795d8abf85998e86f8.jpg"),height: 100,width: 100,)),
-                    const SizedBox(height: 30,),
-                    Text(AppLocalizations.of(context)!.smartParkJordan,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(AppLocalizations.of(context)!.findReserveParkSmart,
-                      style: TextStyle(color: Colors.white70, fontSize: 20),
-                    ),
-                    const SizedBox(height: 40),
-                  ],
+                child: IconButton(
+                  icon: const Icon(Icons.language, color: Colors.white),
+                  onPressed: () => _showLanguageDialog(context),
                 ),
               ),
 
-              // Driver Card
-              Expanded(
-                child: Column(mainAxisAlignment: MainAxisAlignment.end,
+              const SizedBox(height: 20),
+
+              /// TITLE
+              ///
+              Transform.scale(
+                scale: 1.3, // increase this for more zoom
+                child: const CircleAvatar(
+                  radius: 65,
+                  backgroundColor: Colors.white24,
+                  backgroundImage: AssetImage("assets/icon/app_icon.png"),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              Text(
+                AppLocalizations.of(context)!.smartParkJordan,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              Text(
+                AppLocalizations.of(context)!.findReserveParkSmart,
+                style: const TextStyle(color: Colors.white70),
+              ),
+
+              const Spacer(),
+
+              /// BUTTONS SECTION
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
                   children: [
-                    // ElevatedButton(onPressed: (){}, child: Text("klkjkj,"),
-                    // style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),),
-                    _buildRoleCard(
-                      backGroundColor: Colors.white,
+                    /// DRIVER BUTTON
+                    _modernButton(
                       context,
+                      icon: Icons.directions_car,
                       title: AppLocalizations.of(context)!.continueAsDriver,
-                      icon: Icons.directions_car_rounded,
-                      textColor: Colors.blueAccent,
+                      color: Colors.white,
+                      textColor: Colors.blue,
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => onBoardingUsers(),
+                            builder: (_) => const onBoardingUsers(),
                           ),
                         );
-                        // Navigate to Driver screen
                       },
                     ),
-                    const SizedBox(height: 20),
 
-                    // Parking Owner Card
-                    _buildRoleCard(
-                      backGroundColor:Colors.green,
+                    const SizedBox(height: 15),
+
+                    /// OWNER BUTTON (COMBINED)
+                    _modernButton(
                       context,
+                      icon: Icons.business,
                       title: AppLocalizations.of(context)!.continueAsOwner,
-                      icon: Icons.business_rounded,
+                      color: Colors.green,
                       textColor: Colors.white,
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingScreenParkingOwner(),
-                          ),
-                        );
-                        // Navigate to Owner screen
+                        _showOwnerOptions(context);
                       },
                     ),
-                    SizedBox(height: 40,)
+
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -107,38 +115,42 @@ class RoleSelectionScreen extends StatelessWidget {
         ),
       ),
     );
-
   }
 
-  Widget _buildRoleCard(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required Color textColor,
-    required Color backGroundColor,
-
-    required VoidCallback onTap,
-  }) {
+  /// MODERN BUTTON UI
+  Widget _modernButton(
+      BuildContext context, {
+        required IconData icon,
+        required String title,
+        required Color color,
+        required Color textColor,
+        required VoidCallback onTap,
+      }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
         decoration: BoxDecoration(
-          color: backGroundColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.3)),
+          color: color.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: textColor, size: 20),
-            const SizedBox(width: 15),
+            Icon(icon, color: textColor),
+            const SizedBox(width: 12),
             Text(
               title,
               style: TextStyle(
                 color: textColor,
-                fontSize: 17,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -147,6 +159,61 @@ class RoleSelectionScreen extends StatelessWidget {
       ),
     );
   }
+
+  /// OWNER OPTIONS BOTTOM SHEET
+  void _showOwnerOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.ownerOptions,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+
+              const SizedBox(height: 20),
+
+              ListTile(
+                leading: const Icon(Icons.dashboard),
+                title:  Text(AppLocalizations.of(context)!.continueAsOwner),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => OnboardingScreenParkingOwner(),
+                    ),
+                  );
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.qr_code_scanner),
+                title:  Text(AppLocalizations.of(context)!.parkingOwnerScanner),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _showLanguageDialog(BuildContext context) {
     showDialog(
       context: context,

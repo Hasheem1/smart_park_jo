@@ -532,6 +532,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nameInvalid => 'Name must contain letters only';
 
   @override
+  String get description => 'Description';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get today => 'Today';
+
+  @override
   String get cardHolderName => 'Cardholder Name';
 
   @override
@@ -593,5 +602,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get spot => 'Spot';
 
   @override
+
   String get notSelected => 'hhhhhhhhh';
+
+  String get bookingNotStarted => 'Booking has not started yet';
+
+  @override
+
+  @override
+  String get title => 'QR Scanner';
+
+  @override
+  String get sign_in => 'Sign In';
+
+  @override
+  String get login_success => 'Connected successfully ✅';
+
+  @override
+  String get login_failed => 'Login failed';
+
+  @override
+  String get checked_in => '✅ Vehicle checked in!';
+
+  @override
+  String get checked_out => '✅ Vehicle checked out! Duration: ';
+
+  @override
+  String get already_completed => 'ℹ️ Booking already completed.';
+
+  @override
+  String get not_found => '❌ Booking not found.';
+
+  @override
+  String get not_owner => '⛔ This booking does not belong to your parking!';
+
+  @override
+  String get not_logged_in => '❌ Owner not logged in';
+
+  @override
+  String get unknown_status => '⚠️ Unknown booking status';
+
+  @override
+  String get error => '❌ Error: ';
+
+  @override
+  String get switch_to_arabic => 'العربية';
+
+  @override
+  String get switch_to_english => 'English';
+
+  @override
+  String get scannerLogin => 'Scanner Login';
+
+  @override
+  String get parkingOwnerScanner => 'Parking Owner Scanner';
+
+  @override
+  String get ownerOptions => 'Owner Options';
+
 }
