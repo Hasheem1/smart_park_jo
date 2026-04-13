@@ -2,6 +2,7 @@ import 'package:smart_park_jo/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import '../../role_selection_screen/roleSelectionScreen.dart';
 import '../../users_path/users_login_reg/usersLogIn.dart';
 import '../owner_Dashboard/ownerDashboardS.dart';
 
@@ -67,7 +68,7 @@ class _OwnerLoginScreenState extends State<OwnerLoginScreen> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => const UsersLogIn()),
+                                  builder: (_) => const RoleSelectionScreen()),
                             );
                           },
                         )

@@ -602,4 +602,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notSelected => 'غير محدد';
+
+  @override
+  String get title => 'ماسح الرمز المربع';
+
+  @override
+  String get sign_in => 'تسجيل الدخول';
+
+  @override
+  String get login_success => 'تم الاتصال بنجاح ✅';
+
+  @override
+  String get login_failed => 'فشل تسجيل الدخول';
+
+  @override
+  String get checked_in => '✅ تم تسجيل دخول المركبة!';
+
+  @override
+  String get checked_out => '✅ تم تسجيل خروج المركبة! المدة: ';
+
+  @override
+  String get already_completed => 'ℹ️ تم إتمام الحجز مسبقاً.';
+
+  @override
+  String get not_found => '❌ الحجز غير موجود.';
+
+  @override
+  String get not_owner => '⛔ هذا الحجز لا ينتمي إلى موقفك!';
+
+  @override
+  String get not_logged_in => '❌ صاحب الموقف غير مسجّل الدخول';
+
+  @override
+  String get unknown_status => '⚠️ حالة الحجز غير معروفة';
+
+  @override
+  String get error => '❌ خطأ: ';
+
+  @override
+  String get switch_to_arabic => 'العربية';
+
+  @override
+  String get switch_to_english => 'English';
+
+  @override
+  String get scannerLogin => 'تسجيل دخول الماسح';
+
+  @override
+  String get parkingOwnerScanner => ' متابعه كماسح qr';
+
+  @override
+  String get ownerOptions => 'خيارات المالك';
 }

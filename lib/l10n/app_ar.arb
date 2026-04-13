@@ -230,7 +230,31 @@
   "endedAt": "انتهى في",
   "spot": "الموقف",
   "bookingNotStarted": "الحجز لم يبدأ بعد",
-  "notSelected": "غير محدد"
+  "notSelected": "غير محدد",
+    "app_title": "ماسح أصحاب المواقف",
+        "title": "ماسح أصحاب المواقف",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "sign_in": "تسجيل الدخول",
+        "login_success": "تم الاتصال بنجاح ✅",
+        "login_failed": "فشل تسجيل الدخول",
+        "title": "ماسح الرمز المربع",
+        "checked_in": "✅ تم تسجيل دخول المركبة!",
+        "checked_out": "✅ تم تسجيل خروج المركبة! المدة: ",
+        "already_completed": "ℹ️ تم إتمام الحجز مسبقاً.",
+        "not_found": "❌ الحجز غير موجود.",
+        "not_owner": "⛔ هذا الحجز لا ينتمي إلى موقفك!",
+        "not_logged_in": "❌ صاحب الموقف غير مسجّل الدخول",
+        "unknown_status": "⚠️ حالة الحجز غير معروفة",
+        "error": "❌ خطأ: ",
+        "switch_to_arabic": "العربية",
+        "switch_to_english": "English",
+        "scannerLogin":"تسجيل دخول الماسح",
+        "parkingOwnerScanner":" متابعه كماسح qr",
+        "ownerOptions":"خيارات المالك"
+
+
+
 
 
 

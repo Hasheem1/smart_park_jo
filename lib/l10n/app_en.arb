@@ -218,7 +218,28 @@
   "endedAt": "Ended at",
   "spot": "Spot",
   "bookingNotStarted": "Booking has not started yet",
-  "notSelected": "ghjg"
+  "notSelected": "ghjg",
+      "title": "Parking Owner Scanner",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign In",
+      "login_success": "Connected successfully ✅",
+      "login_failed": "Login failed",
+      "title": "QR Scanner",
+      "checked_in": "✅ Vehicle checked in!",
+      "checked_out": "✅ Vehicle checked out! Duration: ",
+      "already_completed": "ℹ️ Booking already completed.",
+      "not_found": "❌ Booking not found.",
+      "not_owner": "⛔ This booking does not belong to your parking!",
+      "not_logged_in": "❌ Owner not logged in",
+      "unknown_status": "⚠️ Unknown booking status",
+      "error": "❌ Error: ",
+      "switch_to_arabic": "العربية",
+      "switch_to_english": "English",
+      "scannerLogin":"Scanner Login",
+      "parkingOwnerScanner":"Parking Owner Scanner",
+      "ownerOptions":"Owner Options"
+
 
 
 
